@@ -36,11 +36,6 @@ export const ContainerLogin = styled.div`
     padding-top: 15vh;
     text-align: center;
 
-    h1{
-        margin-bottom: 20px;
-        font-family: 'Prosto One', cursive;
-    }
-
     span{
         display: block;
         padding-top: 10px;
@@ -98,6 +93,22 @@ export const ContainerLogin = styled.div`
     // MD
     @media screen and (min-width: ${({theme})=>theme.breakpoints.value.md}) {
         padding-top: 20vh;
+    }
+`
+
+export const Logo = styled.div`
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-bottom: 20px;
+    gap: 12px;
+
+    svg path {
+        fill: ${({theme})=>theme.pallete.common.white};
+    }
+
+    h1{
+        font-family: 'Prosto One', cursive;
     }
 `
 

@@ -1,13 +1,17 @@
 import HeadPage from "../components/HeadPage";
-import { GoogleIcon } from "../components/Icons";
-import { ButtonGoogle, ContainerLogin, Content, Divider } from "../styles/login";
+import { GoogleIcon, NextFitIcon } from "../components/Icons";
+import { ButtonGoogle, ContainerLogin, Content, Divider, Logo } from "../styles/login";
 
 const Login = (): JSX.Element => {
     return(<>
     <HeadPage titlePage="NextFit - Login"/>
     <Content>
         <ContainerLogin>
-            <h1>NextFit</h1>
+
+            <Logo>
+                <h1>NextFit</h1>
+                <NextFitIcon/>
+            </Logo>
 
             <input type="email" placeholder="Email" />
             <input type="password" placeholder="Senha"/>
