@@ -11,17 +11,30 @@
   "dependencies": {
     "@types/styled-components": "^5.1.25",
     "next": "12.1.6",
+    "nprogress": "^0.2.0",
     "react": "18.1.0",
     "react-dom": "18.1.0",
     "styled-components": "^5.3.5"
   },
   "devDependencies": {
     "@types/node": "17.0.34",
+    "@types/nprogress": "^0.2.0",
     "@types/react": "18.0.9",
     "@types/react-dom": "18.0.4",
-    "eslint": "8.15.0",
+    "@typescript-eslint/eslint-plugin": "^5.27.0",
+    "@typescript-eslint/parser": "^5.27.0",
+    "babel-plugin-module-resolver": "^4.1.0",
+    "eslint": "^8.0.1",
     "eslint-config-next": "12.1.6",
+    "eslint-config-prettier": "^8.5.0",
+    "eslint-config-standard": "^17.0.0",
+    "eslint-plugin-import": "^2.25.2",
+    "eslint-plugin-n": "^15.0.0",
+    "eslint-plugin-promise": "^6.0.0",
+    "eslint-plugin-react": "^7.30.0",
+    "eslint-plugin-react-hooks": "^4.3.0",
     "polished": "^4.2.2",
+    "tsconfig-paths": "^4.0.0",
     "typescript": "4.6.4"
   }
 }

@@ -4,20 +4,24 @@ import styled from "styled-components";
 export const Content = styled.div` 
     background: url('/img/background-login.jpg') no-repeat center;
     background-size: cover;
+    background-attachment: fixed;
     width: 100%;
-    height:  100vh;
+    height: 100vh;
     position: relative;
     display: flex;
     flex-direction: column;
     justify-content: space-between;
-
+    overflow-y: auto;
+    
     &::before{
+        overflow-y: auto;
         z-index: 1;
         content: '';
-        position: absolute;
+        position: fixed;
         background-color: ${rgba('#31006F', 0.2)};
-        height: 100vh;
+        height: 100%;
         width: 100%;
+        pointer-events: none;
     }
 
     footer{
@@ -25,7 +29,9 @@ export const Content = styled.div`
         z-index: 1;
         text-align: center;
         margin: 20px;
+        margin-top: 60px;
     }
+ 
 `
 
 export const ContainerLogin = styled.div`
@@ -62,46 +68,26 @@ export const ContainerLogin = styled.div`
         margin-top: 16px;
         height: 44px;
         width: 300px;
-        user-select: none;
-        border-radius: ${({theme})=>theme.shape.borderRadius};
-        cursor: pointer;
-        font-weight: ${({theme})=>theme.typography.fontWeightMedium};
     }
-    
-    & button:nth-child(5){
-        font-size: 1em;
-        background-color: ${({theme})=>theme.pallete.primary.main};
-        transition: .3s background-color;
-        color: ${({theme})=>shade( 0.7, theme.pallete.primary.main)};
-        
-        &:hover{
-            background-color: ${({theme})=>shade( 0.1, theme.pallete.primary.main)};
-            transition: .3s background-color;
-        }
-        
-        &:active{
-            background-color: ${({theme})=>shade( 0.3, theme.pallete.primary.main)};
-            transition: .3s background-color;
-        }
-    }
-
+     
     p{
         margin-top: 12px;
         font-size: 1em;
     }
 
     // MD
-    @media screen and (min-width: ${({theme})=>theme.breakpoints.value.md}) {
+    @media screen and (min-width: ${({theme})=>theme.breakpoints.value.md}) { 
         padding-top: 20vh;
     }
 `
 
-export const Logo = styled.div`
+export const Logo = styled.a`
     display: flex;
     align-items: center;
     justify-content: center;
     margin-bottom: 20px;
     gap: 12px;
+    cursor: pointer;
 
     svg path {
         fill: ${({theme})=>theme.pallete.common.white};

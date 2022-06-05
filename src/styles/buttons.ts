@@ -1,5 +1,5 @@
 import styled, { css } from "styled-components";
-import { rgba } from 'polished'
+import { rgba, shade } from 'polished'
 import { iButton } from "../@types/styles";
 
 export const Container = styled.section`
@@ -94,11 +94,11 @@ export const Button = styled.button<iButton>`
             color: ${selectColor};
 
             &:hover{
-                background-color: ${rgba(selectColor(),0.08)};
+                background-color: ${rgba(selectColor(), 0.08)};
             }
             
             &:active{
-                background-color: ${rgba(selectColor(),0.18)};
+                background-color: ${rgba(selectColor(), 0.18)};
             }
             
         `)
@@ -110,11 +110,11 @@ export const Button = styled.button<iButton>`
             color: ${({theme})=>theme.pallete.background.default};
             
             &:hover{
-                background-color: ${rgba(selectColor(),0.6)};
+                background-color: ${shade(0.1, selectColor())};
             }
             
             &:active{
-                background-color: ${rgba(selectColor(),0.4)};
+                background-color: ${shade(0.3, selectColor())};
             }
         `)
     }

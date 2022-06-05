@@ -11,7 +11,15 @@ export const themeDark: DefaultTheme = {
             constrastText: 'rgba(0, 0, 0, 0.87)'
         },
         secondary: {
-            main: '#ce93d8', light: '#f3e5f5', dark: '#ab47bc', 
+            main: '#F5315D', light: '#ff6d8a', dark: '#bb0034', 
+            constrastText: 'rgba(0, 0, 0, 0.87)'
+        },
+        tertiary: {
+            main: '#009FFF', light: '#69d0ff', dark: '#0071cb', 
+            constrastText: 'rgba(0, 0, 0, 0.87)'
+        },
+        quaternary: {
+            main: '#FF6A00', light: '#ff9b3f', dark: '#c43800', 
             constrastText: 'rgba(0, 0, 0, 0.87)'
         },
         error: {
@@ -168,6 +176,7 @@ export const themeLight: DefaultTheme = {
             main: '#ce93d8', light: '#f3e5f5', dark: '#ab47bc', 
             constrastText: 'rgba(0, 0, 0, 0.87)'
         },
+        
         error: {
             main: '#f44336', light: '#e57373', dark: '#d32f2f', 
             constrastText: '#fff'

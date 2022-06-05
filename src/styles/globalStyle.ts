@@ -22,6 +22,7 @@ export default createGlobalStyle`
         letter-spacing: ${({theme})=>theme.typography.body1.letterSpacing};
         font-weight: ${({theme})=>theme.typography.body1.fontWeight};
         color: ${({theme})=>theme.pallete.text.primary};
+        overflow-x: hidden;
      }
 
    p{
@@ -29,7 +30,7 @@ export default createGlobalStyle`
    }
 
    a{
-     
+     color: ${({theme})=>theme.pallete.text.primary};
    }
 
    // HEADING

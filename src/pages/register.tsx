@@ -1,29 +1,34 @@
-import { NextPage } from 'next'
 import Link from 'next/link'
+import { Button } from '@styles/buttons'
 import HeadPage from '@components/HeadPage'
 import { GoogleIcon, NextFitIcon } from '@components/Icons'
-import { Button } from '@styles/buttons'
-import { ButtonGoogle, ContainerLogin, Content, Divider, Logo } from '@styles/login'
+import {
+  ButtonGoogle, ContainerLogin, Content, Divider, Logo
+} from '@styles/login'
+import { NextPage } from 'next'
 
-const Login: NextPage = () => {
+const Register: NextPage = () => {
   return (
     <>
       <HeadPage titlePage="NextFit - Login" />
       <Content>
-       
-       
         <ContainerLogin>
 
-          <Logo>
-            <h1>NextFit</h1>
-            <NextFitIcon />
-          </Logo> 
+  <Link href="/">
+    <Logo>
+      <h1>NextFit</h1>
+      <NextFitIcon />
+    </Logo>
+  </Link>
 
+          <input type="text" placeholder="Nome" />
+          <input type="text" placeholder="Sobrenome" />
           <input type="email" placeholder="Email" />
+          <input type="text" placeholder="Altura" />
           <input type="password" placeholder="Senha" />
 
           <span>
-            Ao clicar em entrar, ou ao continuar com as outras opções abaixo, você concorda com os Termos de serviço  e confirma que leu a  Política de privacidade
+            Ao clicar em assinar, ou ao continuar com as outras opções abaixo, você concorda com os Termos de serviço  e confirma que leu a  Política de privacidade
             <b>NextFit</b>
             .
           </span>
@@ -37,8 +42,11 @@ const Login: NextPage = () => {
             <GoogleIcon />
             Continuar com o Google
           </ButtonGoogle>
+
           <p>
-            Novo no NextFit? <Link href="/register"><a><u>Crie uma conta!</u></a></Link>
+            <Link href="/login">
+              <a><u>Fezer login em vez disso</u></a>
+            </Link>
           </p>
         </ContainerLogin>
 
@@ -50,4 +58,4 @@ const Login: NextPage = () => {
   )
 }
 
-export default Login
+export default Register
