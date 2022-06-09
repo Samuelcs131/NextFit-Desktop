@@ -5,8 +5,9 @@ import Buttons from '@components/Buttons'
 import HeadPage from '@components/HeadPage'
 import { ContainerMain } from '@styles/container'
 
-const Home: NextPage = () => (
-  <>
+const Home: NextPage = () => {
+
+  return(<>
     <HeadPage titlePage="Default Theme" />
     <ContainerMain>
       <div>
@@ -17,5 +18,6 @@ const Home: NextPage = () => (
     </ContainerMain>
   </>
 )
+}
 
 export default Home

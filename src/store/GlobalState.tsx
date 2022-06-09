@@ -1,5 +1,5 @@
 import { createContext, useReducer} from 'react' 
-import { iContainerProvider, iGlobalState } from '../@types/globalState';
+import { iContainerProvider, iGlobalState } from 'src/@types/globalState';
 import { Reducer } from './Reducer';
 
 const DataContext = createContext<any>({});

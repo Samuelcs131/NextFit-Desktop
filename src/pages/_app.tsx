@@ -23,7 +23,7 @@ function MyApp({ Component, pageProps }: AppProps) {
   <Head>
     <link  type="text/css" href="/loading.css" />
   </Head>
-  <ContainerProvider>
+  <ContainerProvider >
     <Layout>
       <Component {...pageProps} />
     </Layout>
