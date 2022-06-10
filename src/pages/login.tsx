@@ -1,33 +1,46 @@
-import { NextPage } from 'next'
+import { GetServerSideProps, NextPage } from 'next'
 import Link from 'next/link'
 import HeadPage from '@components/HeadPage'
 import { GoogleIcon, NextFitIcon } from '@components/Icons'
 import { Button } from '@styles/buttons'
 import { ButtonGoogle, ContainerLogin, Content, Divider, Logo } from '@styles/login'
+import { useForm } from 'react-hook-form'
+import { DataContext } from '@store/GlobalState'
+import { useContext } from 'react'
+import { parseCookies } from 'nookies'
 
 const Login: NextPage = () => {
+  // FORM
+  const { register, handleSubmit } = useForm();
+  const { signIn } = useContext(DataContext)
+
+  async function handleSignIn(data: any){
+    await signIn(data.email, data.password)
+  }
+
   return (
     <>
       <HeadPage titlePage="NextFit - Login" />
-      <Content>
-       
-       
+      <Content> 
         <ContainerLogin>
 
           <Logo>
             <h1>NextFit</h1>
             <NextFitIcon />
-          </Logo> 
+          </Logo>
 
-          <input type="email" placeholder="Email" />
-          <input type="password" placeholder="Senha" />
+          <form id="form-login" onSubmit={handleSubmit(handleSignIn)}>
+            <input {...register('email')} type="email" placeholder="Email" />
+            <input {...register('password')} type="password" placeholder="Senha" />
+          </form>
+
 
           <span>
             Ao clicar em entrar, ou ao continuar com as outras opções abaixo, você concorda com os Termos de serviço  e confirma que leu a  Política de privacidade
             <b>NextFit</b>
             .
           </span>
-          <Button color="primary" variant="contained">Entrar</Button>
+          <Button form="form-login" color="primary" variant="contained">Entrar</Button>
           <Divider>
             <hr />
             ou
@@ -48,6 +61,23 @@ const Login: NextPage = () => {
       </Content>
     </>
   )
+}
+
+export const getServerSideProps: GetServerSideProps = async (context) => {
+  const { ['nextfit-token']: token } = parseCookies(context)
+
+  if(token){
+      return {
+          redirect: {
+              destination: '/home',
+              permanent: false
+          }
+      }
+  }
+
+  return{
+      props: {}
+  }
 }
 
 export default Login

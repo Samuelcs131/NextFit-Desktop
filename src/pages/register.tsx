@@ -5,8 +5,9 @@ import { GoogleIcon, NextFitIcon } from '@components/Icons'
 import {
   ButtonGoogle, ContainerLogin, Content, Divider, Logo
 } from '@styles/login'
-import { NextPage } from 'next'
+import { GetServerSideProps, NextPage } from 'next'
 import { useForm } from 'react-hook-form'
+import { parseCookies } from 'nookies'
 
 const Register: NextPage = () => {
 
@@ -66,6 +67,23 @@ const Register: NextPage = () => {
       </Content>
     </>
   )
+}
+
+export const getServerSideProps: GetServerSideProps = async (context) => {
+  const { ['nextfit-token']: token } = parseCookies(context)
+
+  if(token){
+      return {
+          redirect: {
+              destination: '/home',
+              permanent: false
+          }
+      }
+  }
+
+  return{
+      props: {}
+  }
 }
 
 export default Register

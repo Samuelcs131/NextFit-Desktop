@@ -6,7 +6,7 @@ export const Reducer = (state: iGlobalState, action: iActions): any => {
 
     // THEME
     case 'theme':
-    return { ...state, theme: action.payload }; 
+    return { ...state, theme: action.payload };
 
     // DEFAULT
     default:

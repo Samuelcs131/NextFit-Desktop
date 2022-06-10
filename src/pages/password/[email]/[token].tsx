@@ -7,22 +7,21 @@ import { Params } from 'next/dist/server/router'
 import { useForm } from 'react-hook-form'
 import { iPassword } from 'src/@types/components'
 import axios from 'axios'
-import { useRouter } from 'next/router'
+import Router from 'next/router'
 import { useEffect } from 'react'
 import { hash } from 'bcrypt'
 
 const Password: NextPage<iPassword> = ({dateNow, token, email, passwordResetExpires, passwordResetToken}) => {
 
-  const { register, handleSubmit } = useForm();
-  const route = useRouter()
+  const { register, handleSubmit } = useForm(); 
 
   useEffect((): any =>{
     if(token !== passwordResetToken){
-      route.push('/')
+      Router.push('/')
     }
     // REDIRECT ROUTE MAIN
     if(dateNow > passwordResetExpires){
-      route.push('/')
+      Router.push('/')
     } 
   })
 
@@ -53,7 +52,7 @@ const Password: NextPage<iPassword> = ({dateNow, token, email, passwordResetExpi
     ).then(
       () => {
         console.log('Senha alterada com sucesso!')
-        return setTimeout(()=>route.push('/'), 5000)
+        return setTimeout(()=>Router.push('/'), 5000)
       }
     )
 
@@ -92,7 +91,7 @@ export async function getServerSideProps({ params }: Params) {
     const { token, email } = params
     const tokenAuth: string = await hash(process.env.NEXTFIT_API_KEY as string, 4)
 
-    const { data: {passwordResetExpires, passwordResetToken} } = await axios.get(`http://localhost:8080/users/${email}`, {
+    const { data: {passwordResetExpires, passwordResetToken} } = await axios.get(`http://localhost:8080/users/email/${email}`, {
       headers: {
         "Authorization": token,
         "AuthClientServer": tokenAuth

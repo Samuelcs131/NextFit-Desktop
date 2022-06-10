@@ -7,11 +7,17 @@ export interface iTheme {
     themeDefault: string
 }
 
-// ACTIONS
-export interface iActions {
-    type: 'theme',
-    payload: iTheme
+export interface iUser {
+    id: string
+    name: srting
+    lastName: string
+    email: string
+    height: number
 }
+
+// ACTIONS
+export type iActions =
+    {type: 'theme', payload: iTheme}
 
 // DATA CONTEXT
 export interface iDataContext {
@@ -23,3 +29,18 @@ export interface iDataContext {
 export interface iContainerProvider {
     children: JSX.Element | JSX.Element[]
 }
+
+// AUTH
+export interface iAuthDataUser {
+    user: iAuthContext
+    token: string
+}
+
+export interface iAuthContext{
+    id: string
+	name: srting
+	lastName: string
+	email: string
+	height: number 
+}
+
