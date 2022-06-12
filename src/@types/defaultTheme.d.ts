@@ -93,7 +93,8 @@ export interface iBackground {
 
 // SHAPE
 export interface iShape {
-    borderRadius: string
+    borderRadiusPrimary: string
+    borderRadiusSecundary: string
 }
 
 // TYPOGRAPHY

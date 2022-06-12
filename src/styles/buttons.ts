@@ -35,7 +35,7 @@ export const Container = styled.section`
 
 export const Button = styled.button<iButton>`
     padding: 8px 22px;
-    border-radius: ${({theme})=>theme.shape.borderRadius};
+    border-radius: ${({theme})=>theme.shape.borderRadiusPrimary};
     display: inline-block;
     transition: .3s;
     cursor: pointer;

@@ -1,8 +1,7 @@
 import styled from "styled-components"
 
 export const ContainerMain = styled.div`
-    
-    & > div{
+
         margin: 0 auto;
         padding: 0 10px;
         width: 100%; 
@@ -31,5 +30,4 @@ export const ContainerMain = styled.div`
         @media screen and (min-width: ${({theme})=>theme.breakpoints.value.xxl}) {
             max-width: ${({theme})=>theme.screen.maxWidth.xxl};
         }
-    }
 `

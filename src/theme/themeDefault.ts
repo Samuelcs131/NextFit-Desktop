@@ -64,7 +64,8 @@ export const themeDark: DefaultTheme = {
     },
     // SHAPE
     shape: {
-        borderRadius: '4px'
+        borderRadiusPrimary: '4px',
+        borderRadiusSecundary: '12px'
     },
     // TYPOGRAPHY
     typography: {
@@ -226,7 +227,8 @@ export const themeLight: DefaultTheme = {
     },
     // SHAPE
     shape: {
-        borderRadius: '4px'
+        borderRadiusPrimary: '4px',
+        borderRadiusSecundary: '12px'
     },
     // TYPOGRAPHY
     typography: {

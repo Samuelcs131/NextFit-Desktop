@@ -54,7 +54,7 @@ export const ContainerLogin = styled.div`
         height: 44px;
         width: 300px;
         margin-bottom: 6px;
-        border-radius: ${({theme})=>theme.shape.borderRadius};
+        border-radius: ${({theme})=>theme.shape.borderRadiusPrimary};
         padding: 11px 13px;
         
         &::placeholder{

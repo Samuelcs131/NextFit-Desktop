@@ -8,7 +8,7 @@ interface iContainerMenu{
 export const ContainerMenu = styled.div<iContainerMenu>`
     position: absolute;
     visibility: hidden; 
-    transition: .3s ease;
+    transition: visibility .3s ease;
     width: 100%;
     
     & > div {
@@ -19,11 +19,12 @@ export const ContainerMenu = styled.div<iContainerMenu>`
         width: 100%;
         height: 100vh;
         background-color: ${({theme})=>rgba(theme.pallete.common.black, 0.3)};
-        transition: .3s ease;
+        transition: opacity .3s ease;
+        z-index: 999;
     }
 
     & > nav {
-        transition: .3s ease;
+        transition: transform .3s ease;
         transform: translateX(-100%);
         background-color: ${({theme})=>theme.pallete.background.paper};
         height: 100vh;
@@ -32,25 +33,23 @@ export const ContainerMenu = styled.div<iContainerMenu>`
         align-items: center;
         flex-direction: column;
         justify-content: space-between;
-        z-index: 10;
+        z-index: 1000;
         position: relative;
     }
     
     // MENU ACTIVE
     ${({show})=>{
         return show === true && (css`
-            visibility: visible;
-            transform: translateX(0%);
-            transition: .3s ease;
-            opacity: 100%;
+            visibility: visible; 
+            transition: visibility .3s ease; 
             
             & > nav {
-                transition: .3s ease;
+                transition: transform .3s ease;
                 transform: translateX(0%);
             }
             
             & > div {
-                transition: .3s ease;
+                transition: opacity .3s ease;
                 opacity: 100%;
             }
         `)
@@ -58,19 +57,13 @@ export const ContainerMenu = styled.div<iContainerMenu>`
 `
 
 export const CloseMenu = styled.div`
-  /*   position: absolute;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100vh;
-    background-color: ${({theme})=>rgba(theme.pallete.common.black, 0.3)}; */
 `
 
 export const Icon = styled.a`
     margin: 0 auto;
     display: flex;
     align-items: center;
-    padding-top: 40px;
+    padding-top: 20px;
     margin-bottom: 25px;
     gap: 10px;
     cursor: pointer;
@@ -120,7 +113,7 @@ export const ItemList = styled.li<iListMenuActive>`
         return active === true && (css`
             width: 150px;
             background-color: ${({theme})=>theme.pallete.text.primary};
-            border-radius: ${({theme})=>theme.shape.borderRadius};
+            border-radius: ${({theme})=>theme.shape.borderRadiusPrimary};
             a{
                 color: ${({theme})=>theme.pallete.background.default};
             }
