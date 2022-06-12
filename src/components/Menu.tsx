@@ -5,7 +5,7 @@ import { useEffect, useState } from "react"
 import { ActivityIcon, DashboardIcon, NextFitIcon, ProfileIcon, SettingsIcon, SignoutIcon } from "./Icons"
 
 interface iMenu {
-    setPropsShowMenu: any
+    setPropsShowMenu: any 
     showMenu: boolean
 }
 
@@ -18,15 +18,13 @@ const Menu = ({ setPropsShowMenu, showMenu }: iMenu): JSX.Element => {
         } else {
             return false
         }
-    } 
-
-    console.log(showMenu)
+    }
 
     return(
     <ContainerMenu show={showMenu}>
         <nav>
             <div>
-                <Link href={'/'}>
+                <Link href={'/dashboard'}>
                     <Icon>
                         <span>NextFit</span>
                         <NextFitIcon/>

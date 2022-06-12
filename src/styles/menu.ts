@@ -6,11 +6,25 @@ interface iContainerMenu{
 }
 
 export const ContainerMenu = styled.div<iContainerMenu>`
-    position: relative;
-    transform: translateX(-700px);
-    transition: translateX .3s ease;
+    position: absolute;
+    visibility: hidden; 
+    transition: .3s ease;
+    width: 100%;
     
+    & > div {
+        opacity: 0%;
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100vh;
+        background-color: ${({theme})=>rgba(theme.pallete.common.black, 0.3)};
+        transition: .3s ease;
+    }
+
     & > nav {
+        transition: .3s ease;
+        transform: translateX(-100%);
         background-color: ${({theme})=>theme.pallete.background.paper};
         height: 100vh;
         width: 190px;
@@ -25,20 +39,31 @@ export const ContainerMenu = styled.div<iContainerMenu>`
     // MENU ACTIVE
     ${({show})=>{
         return show === true && (css`
-            transform: translateX(0px);
-            transition: translateX .3s ease;
- 
+            visibility: visible;
+            transform: translateX(0%);
+            transition: .3s ease;
+            opacity: 100%;
+            
+            & > nav {
+                transition: .3s ease;
+                transform: translateX(0%);
+            }
+            
+            & > div {
+                transition: .3s ease;
+                opacity: 100%;
+            }
         `)
     }}
 `
 
 export const CloseMenu = styled.div`
-    position: absolute;
+  /*   position: absolute;
     top: 0;
     left: 0;
     width: 100%;
     height: 100vh;
-    background-color: ${({theme})=>rgba(theme.pallete.common.black, 0.3)};
+    background-color: ${({theme})=>rgba(theme.pallete.common.black, 0.3)}; */
 `
 
 export const Icon = styled.a`

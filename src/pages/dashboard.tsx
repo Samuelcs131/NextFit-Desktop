@@ -1,10 +1,13 @@
+import { useContext, useState } from "react"
+import { parseCookies } from "nookies"
+import { GetServerSideProps, NextPage } from "next"
 import HeadPage from "@components/HeadPage"
 import Menu from "@components/Menu"
 import { DataContext } from "@store/GlobalState"
-import { GetServerSideProps, NextPage } from "next"
-import { parseCookies } from "nookies"
-import { useContext, useState } from "react"
+import { ContainerMain } from "@styles/container"
+import { Avatar, Content, Profile } from "@styles/dashboard"
 import { iUser } from "src/@types/globalState"
+import { MenuIcon } from "@components/Icons"
 
 const Dashboard: NextPage = () => {
     const userDateGlobal: iUser | null = useContext(DataContext).userDateGlobal
@@ -13,21 +16,33 @@ const Dashboard: NextPage = () => {
     const [showMenu, setShowMenu] = useState<boolean>(false);
   
     return(<>
-    <HeadPage titlePage="Dashboard"></HeadPage>
+    <HeadPage titlePage="Dashboard" />
 
-   
-
+    <Content>
         <Menu showMenu={showMenu} setPropsShowMenu={setShowMenu}/>
-        <h1 onClick={()=>setShowMenu(!showMenu)}>Menu</h1>
-    
-    
+        
+        <ContainerMain>
+            <div>
 
-    {/* <h1>Home</h1>
-    <h1>{userDateGlobal?.id}</h1>
-    <h1>{userDateGlobal?.name}</h1>
-    <h1>{userDateGlobal?.lastName}</h1>
-    <h1>{userDateGlobal?.email}</h1>
-    <h1>{userDateGlobal?.height}</h1> */}
+            <header>
+                <div>
+                    <span onClick={()=>setShowMenu(!showMenu)}>
+                        <MenuIcon />
+                    </span>
+                    <h1>Dashboard</h1>
+                </div>
+
+                <Profile>
+                    <Avatar/>
+                    <span>{userDateGlobal?.name+' '+userDateGlobal?.lastName}</span>
+                    <p>{userDateGlobal?.email}</p>
+                </Profile>
+            </header>
+            </div>
+
+        </ContainerMain>
+    </Content>
+
     </>)
 }
 
