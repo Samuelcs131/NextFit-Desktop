@@ -72,7 +72,7 @@ export const ContainerLogin = styled.div`
      
     p{
         margin-top: 12px;
-        font-size: 1em;
+        font-size: 1rem;
     }
 
     // MD

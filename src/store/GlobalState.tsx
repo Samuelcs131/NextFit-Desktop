@@ -1,5 +1,5 @@
 import axios from 'axios';
-import { createContext, useEffect, useReducer, useState} from 'react' 
+import { createContext, useEffect, useReducer, useState} from 'react'
 import { setCookie, parseCookies } from 'nookies'
 import Router from 'next/router';
 
@@ -32,14 +32,14 @@ const ContainerProvider = ({children}: iContainerProvider) => {
             })
             // RESPONSE
             .then(
-                ({data})=> { setUserDateGlobal(data) }
+                ({data})=>{ setUserDateGlobal(data) }
             )
             // ERROR
             .catch( (error) => {
                 console.log('Erro ao atualizar perfil: ', error)
             })
         }
-    }) 
+    }, [])
 
     async function signIn(email: string, password: string) {
         try{

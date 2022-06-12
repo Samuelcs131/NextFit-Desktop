@@ -42,11 +42,11 @@ export const themeDark: DefaultTheme = {
             g900: '#212121', A100: '#f5f5f5', A200: '#eeeeee', A400: '#bdbdbd', A700: '#616161'
         },
         text: {
-            primary: '#fff', secondary: 'rgba(255, 255, 255, 0.7)', disabled: 'rgba(255, 255, 255, 0.5)', icon: 'rgba(255, 255, 255, 0.5)'
+            primary: '#fff', secondary: 'rgba(255, 255, 255, 0.7)', disabled: 'rgba(255, 255, 255, 0.5)', icon: '#fff'
         }, 
         divider: 'rgba(255, 255, 255, 0.12)',
         background: {
-            paper: '#121212', default: '#121212'
+            paper: '#3E3A66', default: '#2F2B54'
         },
         action: {
             active: '#fff', 

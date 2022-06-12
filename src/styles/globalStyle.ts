@@ -9,6 +9,7 @@ export default createGlobalStyle`
         outline: none;
         background: none;
         font-family: ${({theme})=>theme.typography.body1.fontFamily};
+        -webkit-tap-highlight-color: rgba(0, 0, 0, 0);
      }
      
      html{

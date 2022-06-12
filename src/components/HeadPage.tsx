@@ -4,7 +4,7 @@ import { iHeadPage } from "../@types/components";
 const HeadPage = ({titlePage}: iHeadPage): JSX.Element => {
     return(<>
     <Head>
-        <title>{titlePage}</title>
+        <title>{titlePage + ' | NextFit'}</title>
     </Head>
     </>)
 }
