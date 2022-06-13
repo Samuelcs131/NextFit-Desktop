@@ -23,7 +23,7 @@ const ContainerProvider = ({children}: iContainerProvider) => {
         const { 'nextfit-token': token } = parseCookies()
 
         if(token){
-            axios.get(`http://localhost:8080/users/token`, {
+            axios.get(`https://nextfit-api.herokuapp.com/users/token`, {
                 headers: { "Authorization": token }
             })
             // RESPONSE
@@ -40,7 +40,7 @@ const ContainerProvider = ({children}: iContainerProvider) => {
     // SIGN IN
     async function signIn(email: string, password: string) {
         try{
-            const { data: {token, user} } = await axios.post('http://localhost:8080/auth', {
+            const { data: {token, user} } = await axios.post('https://nextfit-api.herokuapp.com/auth', {
                 body: { "email": email, "password": password },
                 headers: { "Content-Type": "application/json" }
             })  
