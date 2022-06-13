@@ -31,16 +31,17 @@ const Register: NextPage = () => {
           </Link>
 
           <form id='form-register' onSubmit={handleSubmit(handleSignIn)}>
-            <input {...register('name')} type="text" placeholder="Nome" />
-            <input {...register('lastName')} type="text" placeholder="Sobrenome" />
-            <input {...register('email')} type="email" placeholder="Email" />
-            <input {...register('height')} type="text" placeholder="Altura" />
-            <input {...register('password')} type="password" placeholder="Senha" />
+            <input {...register('name')} type="text" placeholder="Nome"/>
+            <input {...register('lastName')} type="text" placeholder="Sobrenome"/>
+            <input {...register('email')} type="email" placeholder="Email"/>
+            <input {...register('sexo')} type="texto" placeholder="Sexo"/>
+            <input {...register('height')} type="text" placeholder="Altura"/>
+            <input {...register('password')} type="password" placeholder="Senha"/>
+            <input {...register('passwordRepeat')} type="password" placeholder="Repita a senha"/>
           </form>
 
           <span>
-            Ao clicar em assinar, ou ao continuar com as outras opções abaixo, você concorda com os Termos de serviço  e confirma que leu a  Política de privacidade
-            <b>NextFit</b>
+            Ao clicar em assinar, ou ao continuar com as outras opções abaixo, você concorda com os Termos de serviço  e confirma que leu a  Política de privacidade <b>NextFit</b>
             .
           </span>
           <Button form='form-register' color="primary" variant="contained">Entrar</Button>

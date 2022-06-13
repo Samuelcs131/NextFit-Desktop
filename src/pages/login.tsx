@@ -36,8 +36,7 @@ const Login: NextPage = () => {
 
 
           <span>
-            Ao clicar em entrar, ou ao continuar com as outras opções abaixo, você concorda com os Termos de serviço  e confirma que leu a  Política de privacidade
-            <b>NextFit</b>
+            Ao clicar em entrar, ou ao continuar com as outras opções abaixo, você concorda com os Termos de serviço  e confirma que leu a  Política de privacidade <b>NextFit</b>
             .
           </span>
           <Button form="form-login" color="primary" variant="contained">Entrar</Button>

@@ -9,3 +9,11 @@ export interface iButton {
     color?: string,
     variant?: string
 }
+
+export interface iContainerMenu{
+    show: boolean
+}
+
+export interface iListMenuActive {
+    active: boolean
+}

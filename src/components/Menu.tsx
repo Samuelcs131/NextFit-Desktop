@@ -1,15 +1,21 @@
-import { CloseMenu, ContainerMenu, ItemList, ListMenu, LogoMenu, Signout } from "@styles/menu"
-import Link from "next/link"
+/* MODULES */
 import { useRouter } from "next/router"
-import { useEffect, useState } from "react"
-import { ActivityIcon, DashboardIcon, NextFitIcon, ProfileIcon, SettingsIcon, SignoutIcon } from "./Icons"
+import Link from "next/link"
+import { useContext } from "react"
 
-interface iMenu {
-    setPropsShowMenu: any 
-    showMenu: boolean
-}
+/* INTERAL MODULES */
+import { CloseMenu, ContainerMenu, ItemList, ListMenu, LogoMenu, Signout } from "@styles/menu"
+import { ActivityIcon, DashboardIcon, NextFitIcon, ProfileIcon, SettingsIcon, SignoutIcon } from "./Icons"
+import { DataContext } from "@store/GlobalState"
+import { iMenu } from "src/@types/components"
+
+ 
 
 const Menu = ({ setPropsShowMenu, showMenu }: iMenu): JSX.Element => {
+    // GLOBAL STATE
+    const { logOut } = useContext(DataContext)
+
+    // ROUTER
     const { pathname } = useRouter()
 
     function activeMenuList(item: string){
@@ -61,7 +67,7 @@ const Menu = ({ setPropsShowMenu, showMenu }: iMenu): JSX.Element => {
             </div>
 
             <Signout>
-                <a>
+                <a onClick={()=>logOut()}>
                     <SignoutIcon/>
                     <span>Sair</span>
                 </a>

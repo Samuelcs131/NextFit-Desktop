@@ -13,3 +13,8 @@ export interface iPassword{
     passwordResetToken: string
     dateNow: Date
 }
+
+export interface iMenu {
+    setPropsShowMenu: any 
+    showMenu: boolean
+}

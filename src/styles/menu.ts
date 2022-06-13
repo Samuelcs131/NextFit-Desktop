@@ -1,14 +1,9 @@
-import { rgba } from "polished";
 import styled, { css } from "styled-components";
 
-interface iContainerMenu{
-    show: boolean
-}
+import { rgba } from "polished";
+import { iContainerMenu, iListMenuActive } from "src/@types/styles";
 
-interface iListMenuActive {
-    active: boolean
-}
-
+/* CONTAINER MENU */
 export const ContainerMenu = styled.div<iContainerMenu>`
     position: absolute;
     visibility: hidden; 
@@ -88,10 +83,6 @@ export const ContainerMenu = styled.div<iContainerMenu>`
         transition: visibility .3s ease; 
         max-width: 190px;
     }
-`
-
-/*  */
-export const CloseMenu = styled.div`
 `
 
 /* LOGO MENU */
@@ -286,4 +277,9 @@ export const Signout = styled.nav`
             }
         }
     }
+`
+
+
+/*  */
+export const CloseMenu = styled.div`
 `

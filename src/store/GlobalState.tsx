@@ -1,12 +1,11 @@
 import axios from 'axios';
 import { createContext, useEffect, useReducer, useState} from 'react'
-import { setCookie, parseCookies } from 'nookies'
+import { setCookie, parseCookies, destroyCookie } from 'nookies'
 import Router from 'next/router';
  
 import {  iContainerProvider, iUser } from 'src/@types/globalState';
 
 const DataContext = createContext<any>({});
- 
 
 const ContainerProvider = ({children}: iContainerProvider) => { 
     
@@ -38,6 +37,7 @@ const ContainerProvider = ({children}: iContainerProvider) => {
         }
     }, [])
 
+    // SIGN IN
     async function signIn(email: string, password: string) {
         try{
             const { data: {token, user} } = await axios.post('http://localhost:8080/auth', {
@@ -59,8 +59,23 @@ const ContainerProvider = ({children}: iContainerProvider) => {
         }
     }
 
+    // LOGOUT
+    async function logOut(email: string, password: string) {
+        try{
+
+            destroyCookie(undefined, 'nextfit-token')
+
+            setUserDateGlobal(null)
+
+            Router.push('/login')
+
+        } catch(error){
+            console.log(error)
+        }
+    }
+
     return (
-        <DataContext.Provider value={{isAuthenticated, signIn, userDateGlobal, themeStyledGlobal, setThemeStyledGlobal}}>
+        <DataContext.Provider value={{isAuthenticated, signIn, logOut, userDateGlobal, themeStyledGlobal, setThemeStyledGlobal}}>
             {children}
         </DataContext.Provider>
     )
