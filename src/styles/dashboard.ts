@@ -6,14 +6,21 @@ export const Content = styled.main`
     overflow-x: hidden;
     width: 100%;
     height: 100vh;
+    display: flex;
     
     & > div {
-        display: grid;
+        overflow-y: auto; 
+        width: 100%;
+        height: 100vh;
+
+        & > div {
+            display: grid;
         gap: 30px;
+        }
     }
 
     header {
-        margin-top: 20px;
+        margin-top: 15px;
         display: flex;
         justify-content: space-between;
     }
@@ -28,6 +35,13 @@ export const TitleAndMenu = styled.div`
         display: flex;
         align-items: center;
         cursor: pointer;
+    }
+
+    // LG
+    @media screen and (min-width: ${({theme})=>theme.breakpoints.value.lg}) {
+        span{
+            display: none;
+        }
     }
 `
 
@@ -62,16 +76,16 @@ export const ContainerInfoUser = styled.div`
     display: flex;
     justify-content: space-between;
     flex-wrap: wrap;
-    gap: 5px;
+    gap: 10px;
     position: relative;
     z-index: -1;
 
     & > div::before {
         content: '';
         position: absolute;
-        width: 100%;
-        height: 100%;
-        right: -60px;
+        width: 80px;
+        height: 80px;
+        right: -10px;
         top: 0;
     }
     & > div:nth-child(1)::before {
@@ -87,12 +101,10 @@ export const ContainerInfoUser = styled.div`
 
 export const Info = styled.div`
 
-    
-
     position: relative;
     overflow: hidden;
     height: 60px;
-    width: 120px;
+    width: 100%;
     background-color: ${({theme})=>theme.pallete.background.paper};
     border-radius: ${({theme})=>theme.shape.borderRadiusSecundary};
     user-select: none;

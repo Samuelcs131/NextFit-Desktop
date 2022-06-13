@@ -3,13 +3,12 @@ import { DefaultTheme } from "styled-components"
 import { DataContext } from "../store/GlobalState"
 import { Container, Pallete } from "@styles/colors"
 import { themeDark, themeLight } from "../theme/themeDefault"
-import { iDataContext } from "../@types/globalState"
 
 const Colors = (): JSX.Element => {
 
-    const { state } = useContext<iDataContext>(DataContext)
+    const { state, themeStyledGlobal } = useContext(DataContext)
 
-    let theme: DefaultTheme = state.theme.themeDefault === 'dark' ? themeDark : themeLight
+    let theme: DefaultTheme = themeStyledGlobal === 'dark' ? themeDark : themeLight
    
     return(<>
     <Container>

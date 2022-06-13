@@ -5,6 +5,10 @@ interface iContainerMenu{
     show: boolean
 }
 
+interface iListMenuActive {
+    active: boolean
+}
+
 export const ContainerMenu = styled.div<iContainerMenu>`
     position: absolute;
     visibility: hidden; 
@@ -13,6 +17,7 @@ export const ContainerMenu = styled.div<iContainerMenu>`
     
     & > div {
         opacity: 0%;
+        visibility: hidden;
         position: absolute;
         top: 0;
         left: 0;
@@ -24,7 +29,7 @@ export const ContainerMenu = styled.div<iContainerMenu>`
     }
 
     & > nav {
-        transition: transform .3s ease;
+        transition: transform .3s;
         transform: translateX(-100%);
         background-color: ${({theme})=>theme.pallete.background.paper};
         height: 100vh;
@@ -46,20 +51,51 @@ export const ContainerMenu = styled.div<iContainerMenu>`
             & > nav {
                 transition: transform .3s ease;
                 transform: translateX(0%);
+                visibility: visible;
             }
             
             & > div {
                 transition: opacity .3s ease;
                 opacity: 100%;
+                visibility: visible;
             }
         `)
     }}
+
+
+    // LG
+    @media screen and (min-width: ${({theme})=>theme.breakpoints.value.lg}) {
+        visibility: visible; 
+        transition: visibility .3s ease; 
+        position: relative;
+        // max-width: 190px;
+        max-width: 80px;
+        
+        & > nav {
+            transition: transform .3s ease;
+            transform: translateX(0%);
+            visibility: visible;
+            width: 100%;
+
+        }
+        & > div {
+            display: none;
+        }
+    }
+    // XXL
+    @media screen and (min-width: ${({theme})=>theme.breakpoints.value.xxl}) {
+        visibility: visible; 
+        transition: visibility .3s ease; 
+        max-width: 190px;
+    }
 `
 
+/*  */
 export const CloseMenu = styled.div`
 `
 
-export const Icon = styled.a`
+/* LOGO MENU */
+export const LogoMenu = styled.a`
     margin: 0 auto;
     display: flex;
     align-items: center;
@@ -80,21 +116,57 @@ export const Icon = styled.a`
             fill: ${({theme})=>theme.pallete.text.icon}
         }
     }
+
+    // LG
+    @media screen and (min-width: ${({theme})=>theme.breakpoints.value.lg}) {
+        justify-content: center;
+        & > span {
+            display: none;
+        } 
+    }
+    // XXL
+    @media screen and (min-width: ${({theme})=>theme.breakpoints.value.xxl}) {
+        & > span {
+            display: initial;
+        }
+    }
 `
 
+/* LIST MENU */
 export const ListMenu = styled.nav`
     & > ul{
         width: 100%;
         display: grid;
         gap: 20px; 
     }
-`
-interface iListMenuActive {
-    active: boolean
-}
 
+    // LG
+    @media screen and (min-width: ${({theme})=>theme.breakpoints.value.lg}) {
+ 
+        ul li:nth-child(1){
+            svg{ 
+                path{
+                    fill: ${({theme})=>theme.pallete.text.icon};
+                }
+            }
+        }
+    }
+    // XXL
+    @media screen and (min-width: ${({theme})=>theme.breakpoints.value.xxl}) {
+        ul li:nth-child(1){
+            svg{ 
+                path{
+                    fill: initial;
+                }
+            }
+        }
+    }
+`
+
+/* ITEM MENU */
 export const ItemList = styled.li<iListMenuActive>`
     list-style: none;
+    position: relative;
 
     a{
         width: 100%;
@@ -114,19 +186,63 @@ export const ItemList = styled.li<iListMenuActive>`
             width: 150px;
             background-color: ${({theme})=>theme.pallete.text.primary};
             border-radius: ${({theme})=>theme.shape.borderRadiusPrimary};
+            
             a{
                 color: ${({theme})=>theme.pallete.background.default};
             }
 
-            svg{
-                path{
-                    fill: ${({theme})=>theme.pallete.background.default}
-                }
+            svg path{
+                fill: ${({theme})=>theme.pallete.background.default}
             }
-        `)
-    }}
+    `)}}
+
+    // LG
+    @media screen and (min-width: ${({theme})=>theme.breakpoints.value.lg}) {
+        width: 100%;
+        background-color: initial;
+
+        a {
+            span {
+                display: none;
+            }
+        }
+
+        ${ ({active}) => {
+        return active === true && (css`
+            &::before{
+                content: '';
+                position: absolute;
+                height: 36px;
+                width: 3px;
+                right: -19px;
+                top: 0;
+                border-radius: 5px;
+                background-color: ${({theme})=>theme.pallete.text.primary};
+            }
+        `)}}
+    
+    }
+
+    // XXL
+    @media screen and (min-width: ${({theme})=>theme.breakpoints.value.xxl}) {
+        ${ ({active}) => {
+        return active === true && (css`
+            width: 150px;
+            background-color: ${({theme})=>theme.pallete.text.primary};
+            
+            &::before{ 
+                display: none; 
+            }
+        `)}}
+        a {
+            span {
+                display: initial;
+            }
+        }
+    }
 `
 
+/* SINGOUT */
 export const Signout = styled.nav`
     width: 150px;
     margin: 0 auto;
@@ -142,5 +258,32 @@ export const Signout = styled.nav`
         font-size: 0.875rem;
         font-weight: ${({theme})=>theme.typography.fontWeightMedium};
         padding: 0 12px;
+    }
+
+    // LG
+    @media screen and (min-width: ${({theme})=>theme.breakpoints.value.lg}) {
+        width: 100%;
+        display: flex;
+        justify-content: center;
+
+        a{
+            display: block;
+            width: initial;
+            span {
+                display: none;
+            }
+        }
+    }
+    // XXL
+    @media screen and (min-width: ${({theme})=>theme.breakpoints.value.xxl}) {
+        width: 150px;
+        margin-bottom: 10px;
+        a{
+            display: flex;
+            width: 100%;
+            span {
+                display: initial;
+            }
+        }
     }
 `

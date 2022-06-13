@@ -2,20 +2,17 @@ import axios from 'axios';
 import { createContext, useEffect, useReducer, useState} from 'react'
 import { setCookie, parseCookies } from 'nookies'
 import Router from 'next/router';
-
-import { Reducer } from './Reducer';
-import { iAuthDataUser, iContainerProvider, iDataContext, iGlobalState, iUser } from 'src/@types/globalState';
+ 
+import {  iContainerProvider, iUser } from 'src/@types/globalState';
 
 const DataContext = createContext<any>({});
+ 
 
-const INITIAL_STATE: iGlobalState = {
-    theme: { themeDefault: 'dark' },
-}
+const ContainerProvider = ({children}: iContainerProvider) => { 
+    
+    // THEME
+    const [themeStyledGlobal, setThemeStyledGlobal] = useState<string>('dark')
 
-const ContainerProvider = ({children}: iContainerProvider) => {
-    
-    const [state, dispatch] = useReducer(Reducer, INITIAL_STATE)
-    
     // USER
     const [userDateGlobal, setUserDateGlobal] = useState<iUser | null>(null);
 
@@ -55,7 +52,7 @@ const ContainerProvider = ({children}: iContainerProvider) => {
 
             setUserDateGlobal(user)
 
-            Router.push('/home')
+            Router.push('/dashboard')
 
         } catch(error){
             console.log(error)
@@ -63,7 +60,7 @@ const ContainerProvider = ({children}: iContainerProvider) => {
     }
 
     return (
-        <DataContext.Provider value={{state, dispatch, isAuthenticated, signIn, userDateGlobal}}>
+        <DataContext.Provider value={{isAuthenticated, signIn, userDateGlobal, themeStyledGlobal, setThemeStyledGlobal}}>
             {children}
         </DataContext.Provider>
     )

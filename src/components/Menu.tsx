@@ -1,4 +1,4 @@
-import { CloseMenu, ContainerMenu, Icon, ItemList, ListMenu, Signout } from "@styles/menu"
+import { CloseMenu, ContainerMenu, ItemList, ListMenu, LogoMenu, Signout } from "@styles/menu"
 import Link from "next/link"
 import { useRouter } from "next/router"
 import { useEffect, useState } from "react"
@@ -25,10 +25,10 @@ const Menu = ({ setPropsShowMenu, showMenu }: iMenu): JSX.Element => {
         <nav>
             <div>
                 <Link href={'/dashboard'}>
-                    <Icon>
+                    <LogoMenu>
                         <span>NextFit</span>
                         <NextFitIcon/>
-                    </Icon>
+                    </LogoMenu>
                 </Link>
                 <ListMenu>
                     <ul>
