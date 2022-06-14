@@ -11,6 +11,43 @@ export const Container = styled.section`
         margin-bottom: 15px;
     }
  
+    // MD
+    @media screen and (min-width: ${({theme})=>theme.breakpoints.value.md}) {
+        padding: 20px 30px;
+        
+        h5 {
+            margin-bottom: 0px;
+        }
+    }
+
+    // MENU DOWNLOAD DASHBOARD 
+    .apexcharts-theme-light .apexcharts-selection-icon:not(.apexcharts-selected):hover svg, .apexcharts-theme-light .apexcharts-zoom-icon:not(.apexcharts-selected):hover svg, .apexcharts-theme-light .apexcharts-zoomin-icon:hover svg, .apexcharts-theme-light .apexcharts-zoomout-icon:hover svg, .apexcharts-theme-light .apexcharts-reset-icon:hover svg, .apexcharts-theme-light .apexcharts-menu-icon:hover svg {
+        path{
+            fill: none;
+            stroke: ${({theme})=>theme.pallete.primary.main};
+        }
+    } 
+    .apexcharts-menu-icon {
+        width: 36px;
+        height: 36px;
+        
+        svg {
+            width: 36px;
+            height: 36px;
+            fill: none;
+        }
+    }
+
+    .apexcharts-menu.apexcharts-menu-open{
+        background-color: ${({theme})=>theme.pallete.primary.main};
+        padding: 0;
+        overflow: hidden;
+        border: none;
+        
+        .apexcharts-menu-item:hover{
+            background-color: ${({theme})=>theme.pallete.primary.light};
+        }
+    }
 
     // DATA PICKER 
     .rdtPicker {
@@ -43,14 +80,32 @@ export const Container = styled.section`
 
 `
 
-export const GroupInput = styled.div`
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    max-width: 500px;
-    gap: 20px;
-    margin: 0 auto;
-    flex-wrap: wrap;
+export const GroupTitleAndInput = styled.div`
+
+    & > div {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        max-width: 500px;
+        gap: 20px;
+        margin: 0 auto;
+        flex-wrap: wrap;
+        margin-bottom: 16px;
+    }
+
+    // MD
+    @media screen and (min-width: ${({theme})=>theme.breakpoints.value.md}) {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        margin-bottom: 20px;
+        
+        & > div {
+            flex-wrap: nowrap;
+            margin-bottom: 0px;
+            margin: 0px;
+        }
+    }
 `
 
 export const SelectActivity = styled.div`

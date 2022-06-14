@@ -43,9 +43,8 @@ const ContainerProvider = ({children}: iContainerProvider) => {
             const { data: {token, user} } = await axios.post('https://nextfit-api.herokuapp.com/auth', {
                 body: { "email": email, "password": password },
                 headers: { "Content-Type": "application/json" }
-            })  
+            })
 
- 
             setCookie(undefined, 'nextfit-token', token,{
                 maxAge: 86400 // 24 hours
             }) 

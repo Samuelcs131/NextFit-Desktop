@@ -47,7 +47,10 @@ export const TitleAndMenu = styled.div`
 
 export const Profile = styled.div`
     display: flex;
+`
 
+export const NameAndEmail = styled.div`
+    
     & > span {
         display: none;
     }
@@ -55,6 +58,20 @@ export const Profile = styled.div`
     & > p {
         display: none;
         font-size: 0.625rem;
+    }
+    // LG
+    @media screen and (min-width: ${({theme})=>theme.breakpoints.value.lg}) {
+        margin: auto 10px;
+
+         & > span {
+            display: block;
+            font-size: 0.875rem;
+            line-height: 15px;
+        }
+        & > p {
+            display: block;
+            font-size: 0.625rem;
+        }
     }
 `
 
@@ -64,11 +81,13 @@ export const Avatar = styled.div`
     border-radius: 50%;
     overflow: hidden;
     cursor: pointer;
+    background-color: ${({theme})=>theme.pallete.background.paper};
 
     span {
+        img { user-select: none; }
         width: 100%;
         height: 100%;
-        z-index: -1;
+        z-index: 1;
     }
 `
 

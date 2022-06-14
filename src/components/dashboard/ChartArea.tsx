@@ -9,10 +9,11 @@ import { ThemeContext } from 'styled-components'
 import Datetime from 'react-datetime';
 
 /* INTERNAL MODULES */
-import { Container, GroupInput, SelectActivity, SelectDate } from '@styles/dashboard/chartarea'
+import { Container, GroupTitleAndInput, SelectActivity, SelectDate } from '@styles/dashboard/chartarea'
 import { ActivityIcon, CalendarIcon } from '../Icons';
 import { themeSelect } from './config/select';
 import { themeApexChartArea } from './config/apexChart'; 
+import { DataContext } from "@store/GlobalState";
 
 
 
@@ -20,6 +21,7 @@ import { themeApexChartArea } from './config/apexChart';
 const ChartArea = (): JSX.Element => {
     // GLOBAL STATE
     const themeContext = useContext(ThemeContext)
+    const {themeStyledGlobal } = useContext(DataContext)
     
     // DATE
     const [selectdDate, setSelectdDate] = useState<Date>(new Date());
@@ -49,23 +51,25 @@ const ChartArea = (): JSX.Element => {
 
     return(<>
     <Container>
-        <h5>Análise de atividades</h5> 
+        <GroupTitleAndInput>
+            <h5>Análise de atividades</h5> 
 
-        <GroupInput>
-            <SelectDate>
-                <CalendarIcon/>
-                <Datetime dateFormat="MM-YYYY" value={selectdDate} timeFormat={false} 
-                onChange={({_d}: any)=>setSelectdDate(_d)} />
-            </SelectDate>
-            
-            <SelectActivity>
-                <ActivityIcon/>
-                <Select options={optionsSelect} id="selectbox" instanceId="selectbox" styles={themeSelect(themeContext)} defaultValue={optionsSelect[0]} />
-            </SelectActivity>
-        </GroupInput>
+            <div>
+                <SelectDate>
+                    <CalendarIcon/>
+                    <Datetime dateFormat="MM-YYYY" value={selectdDate} timeFormat={false} 
+                    onChange={({_d}: any)=>setSelectdDate(_d)} />
+                </SelectDate>
+                
+                <SelectActivity>
+                    <ActivityIcon/>
+                    <Select options={optionsSelect} id="selectbox" instanceId="selectbox" styles={themeSelect(themeContext)} defaultValue={optionsSelect[0]} />
+                </SelectActivity>
+            </div>
+        </GroupTitleAndInput>
 
 
-        <ReactApexChart options={themeApexChartArea(themeContext)} series={series} type="area" width="100%" height={320} />
+        <ReactApexChart options={themeApexChartArea(themeContext, themeStyledGlobal)} series={series} type="area" width="100%" height={320} />
     </Container>
     </>)
 }
