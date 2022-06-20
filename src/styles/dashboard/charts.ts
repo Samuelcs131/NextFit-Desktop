@@ -8,6 +8,7 @@ export const Container = styled.section`
     overflow: hidden;
     display: flex;
     flex-direction: column;
+    width: 100%;
 
     h5 {
         text-align: center;
@@ -108,7 +109,7 @@ export const LegendChart = styled.span`
     text-align: center;
     justify-content: center;
     margin: 0 auto;
-    gap: 30px;
+    gap: 10px;
 
     p {
         display: block;
@@ -117,6 +118,7 @@ export const LegendChart = styled.span`
         display: flex;
         gap: 3px;
         align-items: center;
+        user-select: none;
     
         span {
             display: block;

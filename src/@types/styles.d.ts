@@ -10,10 +10,11 @@ export interface iButton {
     variant?: string
 }
 
-export interface iContainerMenu{
+export interface iContainerMenu {
     show: boolean
 }
 
 export interface iListMenuActive {
     active: boolean
 }
+

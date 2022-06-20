@@ -58,7 +58,7 @@ export const ContainerLogin = styled.div`
         padding: 11px 13px;
         
         &::placeholder{
-            color: ${({theme})=>theme.pallete.grey.g600};
+            color: ${({theme})=>theme.pallete.grey.A200};
             font-weight: ${({theme})=>theme.typography.fontWeightRegular};
             font-size: 1em;
         }

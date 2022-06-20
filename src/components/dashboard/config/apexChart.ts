@@ -122,155 +122,236 @@ export function themeApexChartArea(themeContext: DefaultTheme, themeStyledGlobal
     })
 }
 
-export function themeApexChartGradient(themeContext: DefaultTheme, themeStyledGlobal: string){ return({
+export function themeApexChartGradient(themeContext: DefaultTheme){ return({
  
-        chart: {
-          type: 'radialBar',
-          toolbar: {
-            show: false,
-          },
+    /* CHART */
+    chart: {
+        type: 'radialBar',
+        toolbar: {
+        show: false,
         },
-        plotOptions: {
-          radialBar: {
-            startAngle: -135,
-            endAngle: 225,
-                hollow: {
-                    margin: 0,
-                    size: '70%',
-                    background: themeContext.pallete.background.default, 
-                    imageOffsetX: 0,
-                    imageOffsetY: 0,
-                    position: 'front',
-                        dropShadow: {
-                            enabled: false,
-                            top: 3,
-                            left: 0,
-                            blur: 4,
-                            opacity: 0.24
-                        }
-                },
-            track: {
-              background:  themeContext.pallete.background.default,
-              strokeWidth: '67%',
-              margin: 0, // margin is in pixels
-              dropShadow: {
-                enabled: false,
-                top: -3,
-                left: 0,
-                blur: 4,
-                opacity: 0.35
-              }
+    },
+
+    /* PLOT OPTIONS */
+    plotOptions: {
+        radialBar: {
+        startAngle: -135,
+        endAngle: 225,
+            hollow: {
+                margin: 0,
+                size: '70%',
+                background: themeContext.pallete.background.default, 
+                imageOffsetX: 0,
+                imageOffsetY: 0,
+                position: 'front',
+                    dropShadow: {
+                        enabled: false,
+                        top: 3,
+                        left: 0,
+                        blur: 4,
+                        opacity: 0.24
+                    }
             },
-        
-            dataLabels: {
-              show: true,
-              name: {
-                offsetY: -10,
-                show: true,
-                color: themeContext.pallete.text.primary,
-                fontSize: '17px'
-              },
-              value: {
-                formatter: function(val: string) {
-                  return parseInt(val);
-                },
-                color: themeContext.pallete.text.primary,
-                fontSize: '36px',
-                show: true,
-              }
+        track: {
+            background:  themeContext.pallete.background.default,
+            strokeWidth: '67%',
+            margin: 0, // margin is in pixels
+            dropShadow: {
+            enabled: false,
+            top: -3,
+            left: 0,
+            blur: 4,
+            opacity: 0.35
             }
-          }
         },
-        fill: {
-            colors: [function({ value }: any) {
-                if (value < 18.5) {
-                  return themeContext.pallete.quaternary.main
-                } else if (value >= 18.5 && value < 24.99) {
-                  return themeContext.pallete.primary.main
-                } else {
-                  return themeContext.pallete.secondary.main
-                }
-              }]
-          },
-        stroke: {
-          lineCap: 'round'
+    
+        dataLabels: {
+            show: true,
+            name: {
+            offsetY: -10,
+            show: true,
+            color: themeContext.pallete.text.primary,
+            fontSize: '17px'
+            },
+            value: {
+            formatter: function(val: string) {
+                return parseInt(val);
+            },
+            color: themeContext.pallete.text.primary,
+            fontSize: '36px',
+            show: true,
+            }
+        }
+        }
+    },
+
+    /* FILL */
+    fill: {
+        colors: [function({ value }: any) {
+            if (value < 18.5) {
+                return themeContext.pallete.quaternary.main
+            } else if (value >= 18.5 && value < 24.99) {
+                return themeContext.pallete.primary.main
+            } else {
+                return themeContext.pallete.secondary.main
+            }
+            }]
         },
-        labels: ['IMC'],
-        states: {
-          normal: {
-              filter: {
-                  type: 'none',
-                  value: 0,
-              }
-          },
-          hover: {
-              filter: {
-                  type: 'none', 
-              }
-          },
-          active: {
-              allowMultipleDataPointsSelection: false,
-              filter: {
-                  type: 'none',
-              }
-          },
-      }
+    
+    /* STROKE */
+    stroke: {
+        lineCap: 'round'
+    },
+
+    /* LABELS */
+    labels: ['IMC'],
+
+    /* STATES */
+    states: {
+        normal: {
+            filter: {
+                type: 'none',
+                value: 0,
+            }
+        },
+        hover: {
+            filter: {
+                type: 'none', 
+            }
+        },
+        active: {
+            allowMultipleDataPointsSelection: false,
+            filter: {
+                type: 'none',
+            }
+        },
+    }
 })
 }
 
-export function themeApexChartRadar(themeContext: DefaultTheme, themeStyledGlobal: string){ return({
+export function themeApexChartRadar(themeContext: DefaultTheme, themeStyledGlobal: string, nameCategories: Array<string>){ return({
 
-      options: {
-        chart: {
-          height: 350,
-          type: 'radar', 
+    /* CHARTS */
+    chart: {
+        height: 350,
+        type: 'radar',
+        zoom: {
+        enabled: false
         },
-        dataLabels: {
-          enabled: true
-        },
-        plotOptions: {
-          radar: {
-            size: 140,
-            polygons: {
-              strokeColors: '#e9e9e9',
-              fill: {
-                colors: ['#f8f8f8', '#fff']
-              }
-            }
-          }
-        },
-        title: {
-          text: 'Radar with Polygon Fill'
-        },
-        colors: ['#FF4560'],
-        markers: {
-          size: 4,
-          colors: ['#fff'],
-          strokeColor: '#FF4560',
-          strokeWidth: 2,
-        },
-        tooltip: {
-          y: {
-            formatter: function(val: any) {
-              return val
-            }
-          }
-        },
-        xaxis: {
-          categories: ['deltóide/ombros', 'braço esquerdo', 'braço direito', 'antebraço esquerdo', 'antebraço direito', 'peitoral e dorsal']
-        },
-        yaxis: {
-          tickAmount: 7,
-          labels: {
-            formatter: function(val: any, i: any) {
-              if (i % 2 === 0) {
-                return val
-              } else {
-                return ''
-              }
-            }
-          }
+        toolbar: {
+            show: false,
         }
-      },
+    },
+
+    /* DATA LABELS */
+    dataLabels: {
+        enabled: false
+    }, 
+
+    /* PLOT OPTIONS */
+    plotOptions: {
+        radar: {
+        size: 140,
+        polygons: {
+            strokeColors: themeContext.pallete.background.paper,
+            connectorColors: themeContext.pallete.background.paper,
+            fill: {
+            colors: [themeContext.pallete.background.default, themeContext.pallete.background.default]
+            },
+             
+        }
+        }
+    },
+
+    /* STROKE */
+    stroke: {
+        curve: 'smooth'
+    },
+
+    /* COLORS */
+    colors: [themeContext.pallete.secondary.main,themeContext.pallete.tertiary.main, themeContext.pallete.quaternary.main],
+    
+    /* MARKERS */
+    markers: {
+        size: 1,
+        colors: [themeContext.pallete.secondary.main,themeContext.pallete.tertiary.main, themeContext.pallete.quaternary.main],
+        strokeColor: 'white',
+        strokeWidth: 2,
+    },
+
+    /* LEGEND */
+    legend: {
+        fontSize: '14px',
+        fontFamily: 'Helvetica, Arial',
+        fontWeight: 400,
+        labels: {
+            colors: themeContext.pallete.text.primary,
+        },
+        itemMargin: {
+            horizontal: 10,
+            vertical: 0
+        },
+    },
+
+    /* TOOL TIP */
+    tooltip: {
+        theme: themeStyledGlobal,
+        y: {
+        formatter: function(val: any) {
+            return val
+        }
+        }
+    },
+  
+    /* X AXIS */
+    xaxis: {
+        categories: nameCategories,
+        labels: {
+            show: true,
+            rotate: -45,
+            rotateAlways: false,
+            hideOverlappingLabels: true,
+            showDuplicates: false,
+            trim: false,
+            minHeight: undefined,
+            maxHeight: 120,
+            style: {
+                colors: [themeContext.pallete.grey.A200,themeContext.pallete.grey.A200,themeContext.pallete.grey.A200,themeContext.pallete.grey.A200,themeContext.pallete.grey.A200,themeContext.pallete.grey.A200],
+                fontSize: '12px',
+                fontFamily: 'Helvetica, Arial, sans-serif',
+                fontWeight: 400,
+                cssClass: 'apexcharts-xaxis-label',
+            }, 
+        },
+    },
+
+    /* Y AXIS */
+    yaxis: {
+        tickAmount: 7,
+        labels: {
+            formatter: function(val: any, i: any) {
+                if (i % 2 === 0) {
+                return val
+                } else {
+                return ''
+                }
+            },
+            show: true,
+            rotate: -45,
+            rotateAlways: false,
+            hideOverlappingLabels: true,
+            showDuplicates: false,
+            trim: false,
+            minHeight: undefined,
+            maxHeight: 120,
+            style: {
+                colors: [themeContext.pallete.grey.A200,themeContext.pallete.grey.A200,themeContext.pallete.grey.A200,themeContext.pallete.grey.A200,themeContext.pallete.grey.A200,themeContext.pallete.grey.A200],
+                fontSize: '12px',
+                fontFamily: 'Poppins, sans-serif',
+                fontWeight: 400,
+                cssClass: 'apexcharts-xaxis-label',
+            }, 
+        } 
+    }
 
 })}

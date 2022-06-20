@@ -10,18 +10,12 @@ import Datetime from 'react-datetime';
 import { Container, GroupTitleAndInput, SelectActivity, SelectDate } from '@styles/dashboard/charts'
 import { CalendarIcon, SizeIcon } from '../Icons';
 import { themeSelect } from './config/select';
+import { iChartRadar } from "src/@types/components";
 
 
-interface iChartRadar{
-    children:  JSX.Element | JSX.Element[]
-}
-
-const ChartRadar = ({children}: iChartRadar): JSX.Element => {
+const ChartRadar = ({children, dateMeasurements, setDateMeasurements}: iChartRadar): JSX.Element => {
     // GLOBAL STATE
-    const themeContext = useContext(ThemeContext)
-    
-    // DATE
-    const [selectdDate, setSelectdDate] = useState<Date>(new Date()); 
+    const themeContext = useContext(ThemeContext) 
 
     const optionsSelect = [
         { value: 'Superiores', label: 'Superiores' },
@@ -36,8 +30,8 @@ const ChartRadar = ({children}: iChartRadar): JSX.Element => {
             <div>
                 <SelectDate>
                     <CalendarIcon/>
-                    <Datetime dateFormat="MM-YYYY" value={selectdDate} timeFormat={false} 
-                    onChange={({_d}: any)=>setSelectdDate(_d)} />
+                    <Datetime dateFormat="MM-YYYY" value={dateMeasurements} timeFormat={false} 
+                    onChange={({_d}: any)=>setDateMeasurements(_d)} />
                 </SelectDate>
 
                 <SelectActivity>

@@ -15,7 +15,8 @@ export const Content = styled.main`
 
         & > div {
             display: grid;
-        gap: 30px;
+            gap: 30px;
+            padding-bottom: 50px;
         }
     }
 
@@ -173,6 +174,12 @@ export const ContainerInfoUser = styled.div`
     & > div:nth-child(3)::before {
         background: url('/img/abstract-red.svg') no-repeat;
     }
+
+    // MD
+    @media screen and (min-width: ${({theme})=>theme.breakpoints.value.md}) {
+        flex-wrap: nowrap;
+        gap: 50px;
+    }
 `
 
 export const Info = styled.div`
@@ -198,5 +205,18 @@ export const Info = styled.div`
         padding-left: 10px;
         font-size: 1rem;
         font-weight: ${({theme})=>theme.typography.fontWeightMedium};
+    }
+`
+
+export const WrapperCharts = styled.div`
+    overflow: hidden;
+    flex-direction: column;
+    display: flex;
+    gap: 30px;
+    
+    // XL
+    @media screen and (min-width: ${({theme})=>theme.breakpoints.value.xl}) {
+        justify-content: space-between;
+        flex-direction: row;
     }
 `

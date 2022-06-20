@@ -5,16 +5,10 @@ import { useState } from "react"
 /* INTERNAL MODULES */
 import { CalendarIcon } from "@components/Icons" 
 import { Container, GroupTitleAndInput, LegendChart, SelectDate } from "@styles/dashboard/charts" 
+import { iChartGradient } from 'src/@types/components';
 
-interface iChartGradient{
-    children: JSX.Element | JSX.Element[]
-}
 
-const ChartGradient = ({children}: iChartGradient): JSX.Element => {
-    // GLOBAL STATE 
-
-    // DATE
-    const [selectdDate, setSelectdDate] = useState<Date>(new Date());
+const ChartGradient = ({children, dateIMC, setdDateIMC}: iChartGradient): JSX.Element => {
 
     return(<>
       <Container>
@@ -24,8 +18,8 @@ const ChartGradient = ({children}: iChartGradient): JSX.Element => {
 
             <SelectDate style={{width: '180px'}}>
                 <CalendarIcon/>
-                <Datetime dateFormat="MM-YYYY" value={selectdDate} timeFormat={false} 
-                onChange={({_d}: any)=>setSelectdDate(_d)} /> 
+                <Datetime dateFormat="MM-YYYY" value={dateIMC} timeFormat={false} 
+                onChange={({_d}: any)=>setdDateIMC(_d)} /> 
             </SelectDate>
         </GroupTitleAndInput>
         

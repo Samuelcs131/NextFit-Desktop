@@ -34,6 +34,20 @@ export default createGlobalStyle`
      color: ${({theme})=>theme.pallete.text.primary};
    }
 
+     /* SCROLL */
+     ::-webkit-scrollbar{
+          width: 10px;
+     }
+     ::-webkit-scrollbar-track{
+          background-color: ${({theme})=>theme.pallete.background.paper};
+          border-radius: 1px;
+     }
+
+     ::-webkit-scrollbar-thumb{
+          background-color: ${({theme})=>theme.pallete.text.primary};
+          border-radius: 2px;
+     }
+
    // HEADING
    h1{
         font-family: ${({theme})=>theme.typography.h1.fontFamily};

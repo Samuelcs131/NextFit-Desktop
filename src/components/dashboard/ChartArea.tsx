@@ -2,7 +2,6 @@
 import "react-datetime/css/react-datetime.css";
 import Select from 'react-select'
 import { useContext } from 'react'
-import { useState } from 'react'; 
 import { ThemeContext } from 'styled-components'
 import Datetime from 'react-datetime';
 
@@ -10,29 +9,12 @@ import Datetime from 'react-datetime';
 import { Container, GroupTitleAndInput, SelectActivity, SelectDate } from '@styles/dashboard/charts'
 import { ActivityIcon, CalendarIcon } from '../Icons';
 import { themeSelect } from './config/select';
+import { iChartArea } from "src/@types/components";
 
-
-interface iChartArea{
-    children:  JSX.Element | JSX.Element[]
-}
-
-const ChartArea = ({children}: iChartArea): JSX.Element => {
+const ChartArea = ({children,exerciseList,dateActivity,setDateActivity,setChosenExercise}: iChartArea): JSX.Element => {
     // GLOBAL STATE
-    const themeContext = useContext(ThemeContext)
-    
-    // DATE
-    const [selectdDate, setSelectdDate] = useState<Date>(new Date()); 
-
-    const optionsSelect = [
-        { value: 'Supino', label: 'Supino' },
-        { value: 'Rosca direta', label: 'Rosca direta' },
-        { value: 'Voador', label: 'Voador' },
-        { value: 'Desenvolvimento', label: 'Desenvolvimento' },
-        { value: 'Remada unilateral', label: 'Remada unilateral' },
-        { value: 'Costas', label: 'Costas' },
-        { value: 'Triceps puxador', label: 'Triceps puxador' },
-    ] 
-
+    const themeContext = useContext(ThemeContext) 
+ 
     return(<>
     <Container>
         <GroupTitleAndInput>
@@ -41,13 +23,13 @@ const ChartArea = ({children}: iChartArea): JSX.Element => {
             <div>
                 <SelectDate>
                     <CalendarIcon/>
-                    <Datetime dateFormat="MM-YYYY" value={selectdDate} timeFormat={false} 
-                    onChange={({_d}: any)=>setSelectdDate(_d)} />
+                    <Datetime dateFormat="MM-YYYY" value={dateActivity} timeFormat={false} 
+                    onChange={({_d}: any)=>setDateActivity(_d)} />
                 </SelectDate>
                 
                 <SelectActivity>
                     <ActivityIcon/>
-                    <Select options={optionsSelect} menuPosition={'fixed'}  id="selectbox" instanceId="selectbox" styles={themeSelect(themeContext)} defaultValue={optionsSelect[0]} />
+                    <Select options={exerciseList} menuPosition={'fixed'}  id="selectbox" instanceId="selectbox" styles={themeSelect(themeContext)} defaultValue={exerciseList[0]} onChange={(exercise)=>setChosenExercise(exercise?.label)} />
                 </SelectActivity>
             </div>
         </GroupTitleAndInput>
