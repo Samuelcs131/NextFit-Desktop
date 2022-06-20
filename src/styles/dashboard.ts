@@ -24,6 +24,63 @@ export const Content = styled.main`
         display: flex;
         justify-content: space-between;
     }
+
+    // MENU DOWNLOAD DASHBOARD 
+    .apexcharts-theme-light .apexcharts-selection-icon:not(.apexcharts-selected):hover svg, .apexcharts-theme-light .apexcharts-zoom-icon:not(.apexcharts-selected):hover svg, .apexcharts-theme-light .apexcharts-zoomin-icon:hover svg, .apexcharts-theme-light .apexcharts-zoomout-icon:hover svg, .apexcharts-theme-light .apexcharts-reset-icon:hover svg, .apexcharts-theme-light .apexcharts-menu-icon:hover svg {
+    path{
+        fill: none;
+        stroke: ${({theme})=>theme.pallete.primary.main};
+    }
+    }
+    .apexcharts-menu-icon {
+        width: 36px;
+        height: 36px;
+        
+        svg {
+            width: 36px;
+            height: 36px;
+            fill: none;
+        }
+    }
+    .apexcharts-menu.apexcharts-menu-open{
+        background-color: ${({theme})=>theme.pallete.primary.main};
+        padding: 0;
+        overflow: hidden;
+        border: none;
+        
+        .apexcharts-menu-item:hover{
+            background-color: ${({theme})=>theme.pallete.primary.light};
+        }
+    }
+
+    // DATA PICKER 
+    .rdtPicker {
+        background: ${({theme})=>theme.pallete.primary.main};
+        box-shadow: 0 1px 3px rgba(0,0,0,.1);
+        border-radius: ${({theme})=>theme.shape.borderRadiusSecundary};
+        border: none;
+        margin: auto;
+        left: calc(50% - 130px);
+        top: 40px; 
+    }
+    .rdtPicker td.rdtActive,
+    .rdtPicker td.rdtActive:hover {
+        background-color: ${({theme})=>theme.pallete.common.white};
+        color: ${({theme})=>theme.pallete.primary.main};
+        text-shadow: 0 -1px 0 rgba(0, 0, 0, 0.25);
+        border-radius: ${({theme})=>theme.shape.borderRadiusSecundary}; 
+    }
+    .rdtPicker td.rdtActive.rdtToday:before {
+        border-bottom-color: ${({theme})=>theme.pallete.primary.main};
+    } 
+    td.rdtMonth:hover,
+    td.rdtYear:hover {
+        background: ${({theme})=>theme.pallete.primary.light};
+        border-radius: ${({theme})=>theme.shape.borderRadiusSecundary};
+    }
+    .rdtPicker thead tr:first-of-type th:hover {
+        background: none;
+    }
 `
 
 export const TitleAndMenu = styled.div`

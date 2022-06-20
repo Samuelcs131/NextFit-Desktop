@@ -50,13 +50,8 @@ export interface iCommon {
 }
 
 export interface iGrey {
-    g50: string, g100: string,
-    g200: string, g300: string,
-    g400: string, g500: string,
-    g600: string, g700: string,
-    g800: string, g900: string,
     A100: string, A200: string,
-    A400: string, A700: string
+    A300: string
 }
 
 export interface iText {

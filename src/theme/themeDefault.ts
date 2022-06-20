@@ -38,8 +38,7 @@ export const themeDark: DefaultTheme = {
             main: '#66bb6a', light: '#81c784', dark: '#388e3c', constrastText: 'rgba(0, 0, 0, 0.87)'
         },
         grey: {
-            g50: '#fafafa', g100: '#f5f5f5', g200: '#eeeeee', g300: '#e0e0e0', g400: '#bdbdbd', g500: '#9e9e9e', g600: '#757575', g700: '#616161', g800: '#616161',
-            g900: '#212121', A100: '#f5f5f5', A200: '#eeeeee', A400: '#bdbdbd', A700: '#616161'
+            A100: '#A7A4C5', A200: '#837FA3', A300: '#3E3A66'
         },
         text: {
             primary: '#fff', secondary: 'rgba(255, 255, 255, 0.7)', disabled: 'rgba(255, 255, 255, 0.5)', icon: '#fff'
@@ -201,8 +200,7 @@ export const themeLight: DefaultTheme = {
             main: '#66bb6a', light: '#81c784', dark: '#388e3c', constrastText: 'rgba(0, 0, 0, 0.87)'
         },
         grey: {
-            g50: '#fafafa', g100: '#f5f5f5', g200: '#eeeeee', g300: '#e0e0e0', g400: '#bdbdbd', g500: '#9e9e9e', g600: '#757575', g700: '#616161', g800: '#616161',
-            g900: '#212121', A100: '#f5f5f5', A200: '#eeeeee', A400: '#bdbdbd', A700: '#616161'
+            A100: '#A7A4C5', A200: '#837FA3', A300: '#3E3A66'
         },
         text: {
             primary: 'rgba(0, 0, 0, 0.87)', secondary: 'rgba(0, 0, 0, 0.6)', disabled: 'rgba(0, 0, 0, 0.38)', icon: 'rgba(255, 255, 255, 0.5)'

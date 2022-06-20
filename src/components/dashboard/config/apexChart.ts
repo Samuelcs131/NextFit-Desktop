@@ -1,11 +1,9 @@
-import { DownloadCloudIcon } from "@components/Icons";
 import { DefaultTheme } from "styled-components";
 
 export function themeApexChartArea(themeContext: DefaultTheme, themeStyledGlobal: string){
     return({ 
         /* CHART */
-        chart: {
-            height: 350,
+        chart: { 
             type: 'area',
             zoom: {
                 enabled: false
@@ -19,7 +17,7 @@ export function themeApexChartArea(themeContext: DefaultTheme, themeStyledGlobal
                   pan: true, 
                 } 
               },
-        },
+        }, 
 
         /* DATA LABELS */
         dataLabels: {
@@ -90,19 +88,15 @@ export function themeApexChartArea(themeContext: DefaultTheme, themeStyledGlobal
         /* X AXIS */
         xaxis: {
             type: 'datetime',
-            categories: ["2022-06-01", "2022-06-08", "2022-06-15", "2022-06-23", "2022-06-29", "2022-07-07", "2022-07-19"],
+            categories: ["2022-06-02", "2022-06-08", "2022-06-15", "2022-06-19", "2022-06-23", "2022-06-025", "2022-06-29"],
             labels: {
                 style: {
-                    colors: '#ffffff',
+                    colors: themeContext.pallete.grey.A200,
                 }, 
             },
             axisBorder: {
                 show: true,
-                color: '#fff',
-                height: 1,
-                width: '100%',
-                offsetX: 0,
-                offsetY: 0
+                color: themeContext.pallete.grey.A200, 
             },
             axisTicks: {
                 show: false
@@ -114,11 +108,12 @@ export function themeApexChartArea(themeContext: DefaultTheme, themeStyledGlobal
         yaxis: {
             labels: {
                 style: {
-                    colors: '#ffffff',
+                    colors: themeContext.pallete.grey.A200,
                 }, 
             },
             axisBorder: {
                 show: true,
+                color: themeContext.pallete.grey.A200,
             },
             axisTicks: {
                 show: false
@@ -130,11 +125,10 @@ export function themeApexChartArea(themeContext: DefaultTheme, themeStyledGlobal
 export function themeApexChartGradient(themeContext: DefaultTheme, themeStyledGlobal: string){ return({
  
         chart: {
-          height: 350,
           type: 'radialBar',
           toolbar: {
-            show: true
-          }
+            show: false,
+          },
         },
         plotOptions: {
           radialBar: {
@@ -160,7 +154,7 @@ export function themeApexChartGradient(themeContext: DefaultTheme, themeStyledGl
               strokeWidth: '67%',
               margin: 0, // margin is in pixels
               dropShadow: {
-                enabled: true,
+                enabled: false,
                 top: -3,
                 left: 0,
                 blur: 4,
@@ -189,9 +183,9 @@ export function themeApexChartGradient(themeContext: DefaultTheme, themeStyledGl
         },
         fill: {
             colors: [function({ value }: any) {
-                if (value < 30) {
-                  return themeContext.pallete.tertiary.main
-                } else if (value >= 30 && value < 60) {
+                if (value < 18.5) {
+                  return themeContext.pallete.quaternary.main
+                } else if (value >= 18.5 && value < 24.99) {
                   return themeContext.pallete.primary.main
                 } else {
                   return themeContext.pallete.secondary.main
@@ -202,6 +196,81 @@ export function themeApexChartGradient(themeContext: DefaultTheme, themeStyledGl
           lineCap: 'round'
         },
         labels: ['IMC'],
- 
+        states: {
+          normal: {
+              filter: {
+                  type: 'none',
+                  value: 0,
+              }
+          },
+          hover: {
+              filter: {
+                  type: 'none', 
+              }
+          },
+          active: {
+              allowMultipleDataPointsSelection: false,
+              filter: {
+                  type: 'none',
+              }
+          },
+      }
 })
 }
+
+export function themeApexChartRadar(themeContext: DefaultTheme, themeStyledGlobal: string){ return({
+
+      options: {
+        chart: {
+          height: 350,
+          type: 'radar', 
+        },
+        dataLabels: {
+          enabled: true
+        },
+        plotOptions: {
+          radar: {
+            size: 140,
+            polygons: {
+              strokeColors: '#e9e9e9',
+              fill: {
+                colors: ['#f8f8f8', '#fff']
+              }
+            }
+          }
+        },
+        title: {
+          text: 'Radar with Polygon Fill'
+        },
+        colors: ['#FF4560'],
+        markers: {
+          size: 4,
+          colors: ['#fff'],
+          strokeColor: '#FF4560',
+          strokeWidth: 2,
+        },
+        tooltip: {
+          y: {
+            formatter: function(val: any) {
+              return val
+            }
+          }
+        },
+        xaxis: {
+          categories: ['deltóide/ombros', 'braço esquerdo', 'braço direito', 'antebraço esquerdo', 'antebraço direito', 'peitoral e dorsal']
+        },
+        yaxis: {
+          tickAmount: 7,
+          labels: {
+            formatter: function(val: any, i: any) {
+              if (i % 2 === 0) {
+                return val
+              } else {
+                return ''
+              }
+            }
+          }
+        }
+      },
+
+})}

@@ -1,14 +1,16 @@
+/* MODULES */
 import axios from 'axios';
-import { createContext, useEffect, useReducer, useState} from 'react'
+import { createContext, useEffect, useState} from 'react'
 import { setCookie, parseCookies, destroyCookie } from 'nookies'
 import Router from 'next/router';
- 
-import {  iContainerProvider, iUser } from 'src/@types/globalState';
+
+/* INTERNAL MODULES */
+import { iContainerProvider, iUser } from 'src/@types/globalState';
+import { api } from 'src/services/api';
 
 const DataContext = createContext<any>({});
 
 const ContainerProvider = ({children}: iContainerProvider) => { 
-    
     // THEME
     const [themeStyledGlobal, setThemeStyledGlobal] = useState<string>('dark')
 
@@ -17,25 +19,6 @@ const ContainerProvider = ({children}: iContainerProvider) => {
 
     // AUTH
     const isAuthenticated = !!userDateGlobal
-
-    // UPDATE INFORMATION USER
-    useEffect( () => {
-        const { 'nextfit-token': token } = parseCookies()
-
-        if(token){
-            axios.get(`https://nextfit-api.herokuapp.com/users/token`, {
-                headers: { "Authorization": token }
-            })
-            // RESPONSE
-            .then(
-                ({data})=>{ setUserDateGlobal(data) }
-            )
-            // ERROR
-            .catch( (error) => {
-                console.log('Erro ao atualizar perfil: ', error)
-            })
-        }
-    }, [])
 
     // SIGN IN
     async function signIn(email: string, password: string) {
@@ -59,19 +42,32 @@ const ContainerProvider = ({children}: iContainerProvider) => {
     }
 
     // LOGOUT
-    async function logOut(email: string, password: string) {
+    async function logOut() {
         try{
-
             destroyCookie(undefined, 'nextfit-token')
-
             setUserDateGlobal(null)
-
             Router.push('/login')
-
         } catch(error){
             console.log(error)
         }
     }
+ 
+    // UPDATE INFORMATION USER
+    useEffect( () => {
+        const { 'nextfit-token': token } = parseCookies()
+
+        if(token){
+            api.get(`/users/token`)
+            // RESPONSE
+            .then(
+                ({data})=>{ setUserDateGlobal(data) }
+            )
+            // ERROR
+            .catch( (error) => {
+                console.log('Erro ao atualizar perfil: ', error)
+            })
+        }
+    }, [])
 
     return (
         <DataContext.Provider value={{isAuthenticated, signIn, logOut, userDateGlobal, themeStyledGlobal, setThemeStyledGlobal}}>

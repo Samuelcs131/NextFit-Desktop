@@ -8,15 +8,15 @@ import Datetime from 'react-datetime';
 
 /* INTERNAL MODULES */
 import { Container, GroupTitleAndInput, SelectActivity, SelectDate } from '@styles/dashboard/charts'
-import { ActivityIcon, CalendarIcon } from '../Icons';
+import { CalendarIcon, SizeIcon } from '../Icons';
 import { themeSelect } from './config/select';
 
 
-interface iChartArea{
+interface iChartRadar{
     children:  JSX.Element | JSX.Element[]
 }
 
-const ChartArea = ({children}: iChartArea): JSX.Element => {
+const ChartRadar = ({children}: iChartRadar): JSX.Element => {
     // GLOBAL STATE
     const themeContext = useContext(ThemeContext)
     
@@ -24,19 +24,14 @@ const ChartArea = ({children}: iChartArea): JSX.Element => {
     const [selectdDate, setSelectdDate] = useState<Date>(new Date()); 
 
     const optionsSelect = [
-        { value: 'Supino', label: 'Supino' },
-        { value: 'Rosca direta', label: 'Rosca direta' },
-        { value: 'Voador', label: 'Voador' },
-        { value: 'Desenvolvimento', label: 'Desenvolvimento' },
-        { value: 'Remada unilateral', label: 'Remada unilateral' },
-        { value: 'Costas', label: 'Costas' },
-        { value: 'Triceps puxador', label: 'Triceps puxador' },
+        { value: 'Superiores', label: 'Superiores' },
+        { value: 'Inferiores', label: 'Inferiores' },
     ] 
 
     return(<>
     <Container>
         <GroupTitleAndInput>
-            <h5>Análise de atividades</h5> 
+            <h5>Medidas</h5> 
 
             <div>
                 <SelectDate>
@@ -44,9 +39,9 @@ const ChartArea = ({children}: iChartArea): JSX.Element => {
                     <Datetime dateFormat="MM-YYYY" value={selectdDate} timeFormat={false} 
                     onChange={({_d}: any)=>setSelectdDate(_d)} />
                 </SelectDate>
-                
+
                 <SelectActivity>
-                    <ActivityIcon/>
+                    <SizeIcon/>
                     <Select options={optionsSelect} menuPosition={'fixed'}  id="selectbox" instanceId="selectbox" styles={themeSelect(themeContext)} defaultValue={optionsSelect[0]} />
                 </SelectActivity>
             </div>
@@ -58,4 +53,4 @@ const ChartArea = ({children}: iChartArea): JSX.Element => {
     </>)
 }
 
-export default ChartArea
+export default ChartRadar
