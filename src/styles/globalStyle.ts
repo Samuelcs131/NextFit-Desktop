@@ -24,6 +24,7 @@ export default createGlobalStyle`
         font-weight: ${({theme})=>theme.typography.body1.fontWeight};
         color: ${({theme})=>theme.pallete.text.primary};
         overflow-x: hidden;
+        position: relative;
      }
 
    p{
@@ -32,21 +33,7 @@ export default createGlobalStyle`
 
    a{
      color: ${({theme})=>theme.pallete.text.primary};
-   }
-
-     /* SCROLL */
-     ::-webkit-scrollbar{
-          width: 10px;
-     }
-     ::-webkit-scrollbar-track{
-          background-color: ${({theme})=>theme.pallete.background.paper};
-          border-radius: 1px;
-     }
-
-     ::-webkit-scrollbar-thumb{
-          background-color: ${({theme})=>theme.pallete.text.primary};
-          border-radius: 2px;
-     }
+   } 
 
    // HEADING
    h1{
@@ -112,7 +99,21 @@ export default createGlobalStyle`
           h1{ font-size: ${({theme})=>theme.typography.h1.fontSize}; }
           h2{ font-size: ${({theme})=>theme.typography.h2.fontSize}; }
           h3{ font-size: ${({theme})=>theme.typography.h3.fontSize}; }
-          h4{ font-size: ${({theme})=>theme.typography.h4.fontSize}; } 
+          h4{ font-size: ${({theme})=>theme.typography.h4.fontSize}; }
+
+          /* SCROLL */
+          ::-webkit-scrollbar{
+               width: 10px;
+          }
+          ::-webkit-scrollbar-track{
+               background-color: ${({theme})=>theme.pallete.background.paper};
+               border-radius: 1px;
+          }
+
+          ::-webkit-scrollbar-thumb{
+               background-color: ${({theme})=>theme.pallete.text.primary};
+               border-radius: 2px;
+          }
      }
      
      // XXL

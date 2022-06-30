@@ -21,23 +21,36 @@ const ContainerProvider = ({children}: iContainerProvider) => {
     const isAuthenticated = !!userDateGlobal
 
     // SIGN IN
-    async function signIn(email: string, password: string) {
+    async function signIn(email: string, password: string, setLoadingPage: any) {
         try{
-            const { data: {token, user} } = await axios.post('https://nextfit-api.herokuapp.com/auth', {
+            // LOADING
+            setLoadingPage(true)
+
+            await axios.post('https://nextfit-api.herokuapp.com/auth', {
                 body: { "email": email, "password": password },
                 headers: { "Content-Type": "application/json" }
-            })
+            }).then(
+                ({ data: {token, user} }) => {
+                    // COOKIE
+                    setCookie(undefined, 'nextfit-token', token,{
+                        maxAge: 86400 // 24 hours
+                    }) 
 
-            setCookie(undefined, 'nextfit-token', token,{
-                maxAge: 86400 // 24 hours
-            }) 
+                    setUserDateGlobal(user)
 
-            setUserDateGlobal(user)
-
-            Router.push('/dashboard')
+                    // REDIRECT
+                    Router.push('/dashboard') 
+                }
+            ).catch(
+                (error) => {
+                    // LOADING
+                    setLoadingPage(false)
+                }
+            )
 
         } catch(error){
-            console.log(error)
+            setLoadingPage(false)
+            console.log('Error ao tentar logar')
         }
     }
 

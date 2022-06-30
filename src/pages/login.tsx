@@ -1,27 +1,51 @@
 import { GetServerSideProps, NextPage } from 'next'
 import Link from 'next/link'
-import HeadPage from '@components/HeadPage'
-import { GoogleIcon, NextFitIcon } from '@components/Icons'
+import { useForm } from 'react-hook-form'
+import { useContext, useState } from 'react'
+import { parseCookies } from 'nookies'
+// STYLES
 import { Button } from '@styles/buttons'
 import { ButtonGoogle, ContainerLogin, Content, Divider, Logo } from '@styles/login'
-import { useForm } from 'react-hook-form'
+// COMPONENTS
+import HeadPage from '@components/HeadPage'
+import LoadingPage from '@components/Loading'
+import { GoogleIcon, NextFitIcon } from '@components/Icons'
+// STORE
 import { DataContext } from '@store/GlobalState'
-import { useContext } from 'react'
-import { parseCookies } from 'nookies'
 
 const Login: NextPage = () => {
   // FORM
   const { register, handleSubmit } = useForm();
   const { signIn } = useContext(DataContext)
+  const [loadingPage, setLoadingPage] = useState<boolean>(false);
+
+  interface iData {
+    email: string | undefined
+    password: string | undefined
+  }
 
   async function handleSignIn(data: any){
-    await signIn(data.email, data.password)
+    const verify = [data.email, data.password]
+
+    if(verify.includes('') || verify.includes(undefined) ){
+      console.log('Preencha todos os campos')
+      return
+    }
+
+    if(data.email === undefined || data.password === undefined){
+        console.log('Preencha todos os campos')
+      }
+      console.log(data.email)
+      console.log(data.password)
+      
+    await signIn(data.email, data.password, setLoadingPage)
   }
 
   return (
     <>
       <HeadPage titlePage="NextFit - Login" />
-      <Content> 
+      <Content>
+          {loadingPage === true && <LoadingPage/>}
         <ContainerLogin>
 
           <Logo>
@@ -63,8 +87,8 @@ const Login: NextPage = () => {
 }
 
 export const getServerSideProps: GetServerSideProps = async (context) => {
+  // REDIRECT IF AUTH
   const { ['nextfit-token']: token } = parseCookies(context)
-
   if(token){
       return {
           redirect: {

@@ -19,16 +19,21 @@ export interface iMenu {
     showMenu: boolean
 }
 
-export interface iExerciseList {
+export interface iActivityListSelected {
     value: string,
     label: string
+}
+
+export interface iMeasurementData {
+    name: string,
+    data: Array<number>
 }
 
 export interface iChartArea {
     children:  JSX.Element | JSX.Element[]
     setDateActivity: (dateActivity: Date)=> void
     dateActivity: Date
-    exerciseList: Array<iExerciseList>
+    exerciseList: Array<iActivityData>
     setChosenExercise: (exercise: string | undefined)=>void
 }
 

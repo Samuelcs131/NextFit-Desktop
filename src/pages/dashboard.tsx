@@ -20,13 +20,13 @@ import ChartGradient from "@components/dashboard/ChartGradient"
 import { themeApexChartArea, themeApexChartGradient, themeApexChartRadar } from "@components/dashboard/config/apexChart"
 import { ThemeContext } from "styled-components"
 import ChartRadar from "@components/dashboard/ChartRadar"
-import { iExerciseList } from "src/@types/components"
+import { iActivityListSelected, iMeasurementData } from "src/@types/components"
 
 
 const Dashboard: NextPage = () => {
 
     // DATE
-    const exerciseList1: Array<iExerciseList> = [
+    const exerciseList1: Array<iActivityListSelected> = [
         { value: 'Supino', label: 'Supino' },
         { value: 'Rosca direta', label: 'Rosca direta' },
         { value: 'Voador', label: 'Voador' },
@@ -35,28 +35,6 @@ const Dashboard: NextPage = () => {
         { value: 'Costas', label: 'Costas' },
         { value: 'Triceps puxador', label: 'Triceps puxador' },
     ]
-
-    // DATE USER
-    const userDateGlobal: iUser | null = useContext(DataContext).userDateGlobal
-    
-    // SHOW MENU
-    const [showMenu, setShowMenu] = useState<boolean>(false);
-  
-    // VARIABLES GLOBAL
-    const {themeStyledGlobal } = useContext(DataContext)
-    const themeContext = useContext(ThemeContext)
- 
-    // DATE SELECT
-    const [selectdDateActivity, setSelectdDateActivity] = useState<Date>(new Date());
-    const [selectdDateIMC, setSelectdDateIMC] = useState<Date>(new Date());
-    const [selectdDateMeasurements, setSelectdDateMeasurements] = useState<Date>(new Date());
-
-    // SELECT ACTIVITY
-    const [exerciseList, setExerciseList] = useState<Array<iExerciseList>>(exerciseList1);
-    const [chosenExercise, setChosenExercise] = useState<string>();
-
-    // DADOS
-    const seriesGradient = [18.1]
     const seriesArea = [
         {
             name: 'Series',
@@ -84,6 +62,30 @@ const Dashboard: NextPage = () => {
         }
     ]
     const nameCategories = ['deltóide/ombros', 'braço direito', 'antebraço direito', 'peitoral e dorsal', 'antebraço esquerdo ', 'braço esquerdo']
+
+    // DATE USER
+    const userDateGlobal: iUser | null = useContext(DataContext).userDateGlobal
+    
+    // SHOW MENU
+    const [showMenu, setShowMenu] = useState<boolean>(false);
+  
+    // VARIABLES GLOBAL
+    const {themeStyledGlobal } = useContext(DataContext)
+    const themeContext = useContext(ThemeContext)
+
+    // ACTIVITY
+    const [selectdDateActivity, setSelectdDateActivity] = useState<Date>(new Date());
+    const [activityListSelected, setActivityListSelected] = useState<Array<iActivityListSelected>>(exerciseList1);
+    const [chosenExercise, setChosenExercise] = useState<string>();
+    
+    // IMC
+    const [selectdDateIMC, setSelectdDateIMC] = useState<Date>(new Date());
+    const IMCdata: number = userDateGlobal?.height ? Number((50 / (((userDateGlobal?.height)/100) * 2)).toFixed(2)) : 0
+
+    // MEASUREMENTS
+    const [selectdDateMeasurements, setSelectdDateMeasurements] = useState<Date>(new Date());
+    const [measurementData, setMeasurementData] = useState<Array<iMeasurementData>>(seriesRadar);
+ 
 
     return(<>
     <HeadPage titlePage="Dashboard" />
@@ -120,17 +122,17 @@ const Dashboard: NextPage = () => {
                     <Info><span>IMC</span><p>0</p></Info>
                 </ContainerInfoUser>
 
-                <ChartArea exerciseList={exerciseList} dateActivity={selectdDateActivity} setDateActivity={setSelectdDateActivity} setChosenExercise={setChosenExercise} >
+                <ChartArea exerciseList={activityListSelected} dateActivity={selectdDateActivity} setDateActivity={setSelectdDateActivity} setChosenExercise={setChosenExercise} >
                     <ReactApexChart options={themeApexChartArea(themeContext, themeStyledGlobal)} series={seriesArea} type="area" width="100%" height="400px" />
                 </ChartArea>
 
                 <WrapperCharts>
                     <ChartGradient dateIMC={selectdDateIMC} setdDateIMC={setSelectdDateIMC}>
-                        <ReactApexChart options={themeApexChartGradient(themeContext)} series={seriesGradient} type="radialBar" width="100%" height="400px"/>
+                        <ReactApexChart options={themeApexChartGradient(themeContext)} series={[IMCdata]} type="radialBar" width="100%" height="400px"/>
                     </ChartGradient>
 
                     <ChartRadar dateMeasurements={selectdDateMeasurements} setDateMeasurements={setSelectdDateMeasurements}>
-                        <ReactApexChart options={themeApexChartRadar(themeContext,themeStyledGlobal, nameCategories)} series={seriesRadar} type="radar" width="100%" height="400px"/>
+                        <ReactApexChart options={themeApexChartRadar(themeContext,themeStyledGlobal, nameCategories)} series={measurementData} type="radar" width="100%" height="400px"/>
                     </ChartRadar>
                 </WrapperCharts>
 
