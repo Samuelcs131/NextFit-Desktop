@@ -1,61 +1,91 @@
 import { GetServerSideProps, NextPage } from 'next'
 import Link from 'next/link'
 import { useForm } from 'react-hook-form'
-import { useContext, useState } from 'react'
+import { useContext, useEffect, useState } from 'react'
 import { parseCookies } from 'nookies'
+import { ToastContainer } from 'react-toastify'
+import * as yup from 'yup'
 // STYLES
 import { Button } from '@styles/buttons'
-import { ButtonGoogle, ContainerLogin, Content, Divider, Logo } from '@styles/login'
+import { ButtonGoogle, ContainerLogin, Content, Divider, InputError, Logo } from '@styles/login'
+import 'react-toastify/dist/ReactToastify.min.css';
+import { yupResolver } from '@hookform/resolvers/yup'
 // COMPONENTS
 import HeadPage from '@components/HeadPage'
 import LoadingPage from '@components/Loading'
 import { GoogleIcon, NextFitIcon } from '@components/Icons'
 // STORE
 import { DataContext } from '@store/GlobalState'
+// SERVICES
+import { typeNotify } from '@services/notify'
 
 const Login: NextPage = () => {
-  // FORM
-  const { register, handleSubmit } = useForm();
-  const { signIn } = useContext(DataContext)
+    
+  // GLOBAL STATE
+  const { signIn, notify, setNotify } = useContext(DataContext)
   const [loadingPage, setLoadingPage] = useState<boolean>(false);
-
-  interface iData {
-    email: string | undefined
-    password: string | undefined
+  
+  // VALIDATION FORM
+  const validationForm = yup.object({
+    email: yup.string().email().required(),
+    password: yup.string().min(6).required()
+  })
+  
+  // FORM
+  const { register, handleSubmit, formState: { errors } } = useForm({resolver: yupResolver(validationForm)});
+  
+  
+  // SUBMIT FORM
+  async function onSubmit(data: any){
+      await signIn(data.email, data.password, setLoadingPage)
   }
 
-  async function handleSignIn(data: any){
-    const verify = [data.email, data.password]
-
-    if(verify.includes('') || verify.includes(undefined) ){
-      console.log('Preencha todos os campos')
-      return
+  // CUSTOM ERROS
+  const errosInput = {
+    email: {
+        required: "Email é um campo obrigatório",
+        email: "O email informado é invalido"
+    },
+    password: {
+        min: "a senha deve ter pelo menos 6 caracteres",
+        password: "Senha é um campo obrigatório"
     }
-
-    if(data.email === undefined || data.password === undefined){
-        console.log('Preencha todos os campos')
-      }
-      console.log(data.email)
-      console.log(data.password)
-      
-    await signIn(data.email, data.password, setLoadingPage)
   }
-
-  return (
-    <>
+  
+  useEffect(()=>{
+    // NOTIFY
+    if(notify !== undefined){
+      typeNotify(notify)
+      setNotify(undefined)
+    }
+  }) 
+/*   console.log(errors?.password?.type) */
+  return (<>
+      {/* NOTIFY */}
+      <ToastContainer/>
+      {/* LOADING */}
+      {loadingPage === true && <LoadingPage/>}
+      {/* HEAD */}
       <HeadPage titlePage="NextFit - Login" />
-      <Content>
-          {loadingPage === true && <LoadingPage/>}
-        <ContainerLogin>
 
+      {/* CONTENT */}
+      <Content>
+        <ContainerLogin>
           <Logo>
             <h1>NextFit</h1>
             <NextFitIcon />
           </Logo>
 
-          <form id="form-login" onSubmit={handleSubmit(handleSignIn)}>
+          <form id="form-login" onSubmit={handleSubmit(onSubmit)}>
+            {/* EMAIL */}
             <input {...register('email')} type="email" placeholder="Email" />
+            {/* @ts-expect-error */}
+            {errors?.email?.type &&(<InputError>{errosInput['email'][errors.email.type]}</InputError>)}
+            
+            {/* PASSWORD */}
             <input {...register('password')} type="password" placeholder="Senha" />
+            {/* @ts-expect-error */}
+            {errors?.password?.type &&(<InputError>{errosInput['password'][errors.password.type]}</InputError>)}
           </form>
 
 

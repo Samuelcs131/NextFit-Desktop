@@ -1,20 +1,15 @@
-import Colors from '@components/Colors'
 import type { NextPage } from 'next'
-import Link from 'next/link'
-import Buttons from '@components/Buttons'
 import HeadPage from '@components/HeadPage'
-import { ContainerMain } from '@styles/container'
+import { ContainerMain } from '@styles/container' 
+
 
 const Home: NextPage = () => { 
 
   return(<>
-    <HeadPage titlePage="Default Theme" />
+    <HeadPage titlePage="Home" />
+
     <ContainerMain>
-      <div>
-          <Link href="/login"><a style={{padding: '40px'}}>Login</a></Link>
-          <Colors />
-          <Buttons /> 
-      </div>
+      <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Consectetur quo alias nesciunt accusamus ullam quos corrupti velit pariatur culpa, distinctio odit fuga, corporis maxime iure error. Dolorem ad animi ratione.</p>
     </ContainerMain>
   </>
 )

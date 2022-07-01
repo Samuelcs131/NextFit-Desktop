@@ -1,6 +1,7 @@
 import { darken, rgba, shade } from "polished";
 import styled from "styled-components";
 
+// CONTENT
 export const Content = styled.div` 
     background: url('/img/background-login.jpg') no-repeat center;
     background-size: cover;
@@ -24,7 +25,7 @@ export const Content = styled.div`
         pointer-events: none;
     }
 
-    footer{
+    & > footer{
         position: relative;
         z-index: 1;
         text-align: center;
@@ -34,53 +35,59 @@ export const Content = styled.div`
  
 `
 
+// CONTAINER
 export const ContainerLogin = styled.div`
     position: relative;
     z-index: 1;
     max-width: 300px;
     margin: 0 auto;
-    padding-top: 15vh;
-    text-align: center;
-
-    span{
+    padding-top: 5vh;
+    
+    & > span{
+        text-align: center;
         display: block;
         padding-top: 10px;
         font-size: 0.7em;
         line-height: 20px;
     }
-
-    input{
-        background-color: ${({theme})=>theme.pallete.common.white};
-        height: 44px;
-        width: 300px;
-        margin-bottom: 6px;
-        border-radius: ${({theme})=>theme.shape.borderRadiusPrimary};
-        padding: 11px 13px;
+    
+    & > form{
         
-        &::placeholder{
-            color: ${({theme})=>theme.pallete.grey.A200};
-            font-weight: ${({theme})=>theme.typography.fontWeightRegular};
-            font-size: 1em;
+        input{
+            background-color: ${({theme})=>theme.pallete.common.white};
+            height: 44px;
+            width: 300px;
+            margin-top: 6px;
+            border-radius: ${({theme})=>theme.shape.borderRadiusPrimary};
+            padding: 11px 13px;
+            
+            &::placeholder{
+                color: ${({theme})=>theme.pallete.grey.A200};
+                font-weight: ${({theme})=>theme.typography.fontWeightRegular};
+                font-size: 1em;
+            }
         }
     }
-
-    button{
+    
+    & > button{
         margin-top: 16px;
         height: 44px;
         width: 300px;
     }
-     
-    p{
+    
+    & > p{
+        text-align: center;
         margin-top: 12px;
         font-size: 1rem;
     }
-
+    
     // MD
     @media screen and (min-width: ${({theme})=>theme.breakpoints.value.md}) { 
-        padding-top: 20vh;
+        padding-top: 10vh;
     }
-`
+    `
 
+// LOGO
 export const Logo = styled.a`
     display: flex;
     align-items: center;
@@ -89,15 +96,20 @@ export const Logo = styled.a`
     gap: 12px;
     cursor: pointer;
 
-    svg path {
+   
+    & > svg path {
         fill: ${({theme})=>theme.pallete.common.white};
     }
-
-    h1{
+    
+    & > h1{
         font-family: 'Prosto One', cursive;
     }
+   
+
+
 `
 
+// DIVIDER
 export const Divider = styled.div`
     width: 100%;
     margin-top: 10px;
@@ -106,13 +118,14 @@ export const Divider = styled.div`
     align-items:center;
     gap: 10px;
     
-    & hr{
+    & > hr{
         background-color: ${({theme})=>theme.pallete.common.white};
         height: 1px;
         width: 100%;
     }
     `
 
+// BUTTON GOOGLE
 export const ButtonGoogle = styled.button`
     background-color: ${({theme})=>theme.pallete.common.white};
     display: flex;
@@ -120,4 +133,11 @@ export const ButtonGoogle = styled.button`
     justify-content: center;
     font-size: 1em;
     gap: 5px;
+`
+
+// INPUT ERROR
+export const InputError = styled.span`
+    color: ${({theme})=>theme.pallete.error.main};
+    font-size: 0.875rem;
+    font-weight: ${({theme})=>theme.typography.fontWeightMedium};
 `

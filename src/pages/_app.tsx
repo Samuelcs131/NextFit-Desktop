@@ -3,7 +3,7 @@ import { Router } from 'next/router'
 import Layout from '@components/Layout'
 import { ContainerProvider } from '@store/GlobalState' 
 import NProgress from 'nprogress' 
-import Head from 'next/head' 
+import Head from 'next/head'
 
 // LOADING PAGE
 Router.events.on('routeChangeStart', ()=>{ 

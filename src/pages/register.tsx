@@ -34,8 +34,9 @@ const Register: NextPage = () => {
             <input {...register('name')} type="text" placeholder="Nome"/>
             <input {...register('lastName')} type="text" placeholder="Sobrenome"/>
             <input {...register('email')} type="email" placeholder="Email"/>
-            <input {...register('sexo')} type="texto" placeholder="Sexo"/>
+            <input {...register('sex')} type="text" placeholder="Sexo"/>
             <input {...register('height')} type="text" placeholder="Altura"/>
+            <input {...register('weight')} type="text" placeholder="Peso"/>
             <input {...register('password')} type="password" placeholder="Senha"/>
             <input {...register('passwordRepeat')} type="password" placeholder="Repita a senha"/>
           </form>
@@ -71,8 +72,9 @@ const Register: NextPage = () => {
 }
 
 export const getServerSideProps: GetServerSideProps = async (context) => {
+  
+  // REDIRECT IF AUTH
   const { ['nextfit-token']: token } = parseCookies(context)
-
   if(token){
       return {
           redirect: {

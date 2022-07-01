@@ -1,11 +1,10 @@
 /* MODULES */
-import axios from 'axios';
 import { createContext, useEffect, useState} from 'react'
-import { setCookie, parseCookies, destroyCookie } from 'nookies'
 import Router from 'next/router';
-
-/* INTERNAL MODULES */
-import { iContainerProvider, iUser } from 'src/@types/globalState';
+import { setCookie, parseCookies, destroyCookie } from 'nookies'
+// TYPES
+import { iContainerProvider, iNotify, iUser } from 'src/@types/globalState';
+// SERVICES
 import { api } from 'src/services/api';
 
 const DataContext = createContext<any>({});
@@ -13,6 +12,9 @@ const DataContext = createContext<any>({});
 const ContainerProvider = ({children}: iContainerProvider) => { 
     // THEME
     const [themeStyledGlobal, setThemeStyledGlobal] = useState<string>('dark')
+
+    // ERROR
+    const [notify, setNotify] = useState<iNotify | undefined>(undefined);
 
     // USER
     const [userDateGlobal, setUserDateGlobal] = useState<iUser | null>(null);
@@ -26,7 +28,7 @@ const ContainerProvider = ({children}: iContainerProvider) => {
             // LOADING
             setLoadingPage(true)
 
-            await axios.post('https://nextfit-api.herokuapp.com/auth', {
+            await api.post('/auth', {
                 body: { "email": email, "password": password },
                 headers: { "Content-Type": "application/json" }
             }).then(
@@ -34,23 +36,22 @@ const ContainerProvider = ({children}: iContainerProvider) => {
                     // COOKIE
                     setCookie(undefined, 'nextfit-token', token,{
                         maxAge: 86400 // 24 hours
-                    }) 
-
+                    })
                     setUserDateGlobal(user)
-
                     // REDIRECT
-                    Router.push('/dashboard') 
+                    Router.push('/dashboard')
                 }
             ).catch(
-                (error) => {
+                ({response: {data}}) => {
                     // LOADING
+                    setNotify({type: data.status, message: data.message})
                     setLoadingPage(false)
                 }
             )
 
         } catch(error){
             setLoadingPage(false)
-            console.log('Error ao tentar logar')
+            setNotify({type: 500, message: 'Erro ao se conectar com servidor'})
         }
     }
 
@@ -64,7 +65,7 @@ const ContainerProvider = ({children}: iContainerProvider) => {
             console.log(error)
         }
     }
- 
+
     // UPDATE INFORMATION USER
     useEffect( () => {
         const { 'nextfit-token': token } = parseCookies()
@@ -83,7 +84,9 @@ const ContainerProvider = ({children}: iContainerProvider) => {
     }, [])
 
     return (
-        <DataContext.Provider value={{isAuthenticated, signIn, logOut, userDateGlobal, themeStyledGlobal, setThemeStyledGlobal}}>
+        <DataContext.Provider value={
+            {isAuthenticated, notify, userDateGlobal, themeStyledGlobal, setThemeStyledGlobal, signIn, logOut, setNotify}}
+        >
             {children}
         </DataContext.Provider>
     )

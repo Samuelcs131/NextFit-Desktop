@@ -26,3 +26,8 @@ export interface iAuthContext{
     height: number 
 }
 
+// NOTIFY
+interface iNotify {
+    type: number
+    message: string
+}
