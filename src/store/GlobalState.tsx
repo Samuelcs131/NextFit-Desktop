@@ -66,6 +66,47 @@ const ContainerProvider = ({children}: iContainerProvider) => {
         }
     }
 
+    // REGISTER USER
+    async function registerUser(user: iUser,password: string, setLoadingPage: any) {
+        try{
+            // LOADING
+            setLoadingPage(true)
+
+            await api.post('/users', {
+                body: {
+                    "name": user.name,
+                    "lastName": user.lastName,
+                    "email": user.email,
+                    "height": user.height,
+                    "weight": user.weight,
+                    "sex": user.sex,
+                    "password": password
+                },
+                headers: { "Content-Type": "application/json" }
+            }).then(
+                ({ data: {token, user} }) => {
+                    // COOKIE
+                    setCookie(undefined, 'nextfit-token', token,{
+                        maxAge: 86400 // 24 hours
+                    })
+                    setUserDateGlobal(user)
+                    // REDIRECT
+                    Router.push('/dashboard')
+                }
+            ).catch(
+                ({response: {data}}) => {
+                    // LOADING
+                    setNotify({type: data.status, message: data.message})
+                    setLoadingPage(false)
+                }
+            )
+
+        } catch(error){
+            setLoadingPage(false)
+            setNotify({type: 500, message: 'Erro ao se conectar com servidor'})
+        }
+    }
+
     // UPDATE INFORMATION USER
     useEffect( () => {
         const { 'nextfit-token': token } = parseCookies()
@@ -85,7 +126,7 @@ const ContainerProvider = ({children}: iContainerProvider) => {
 
     return (
         <DataContext.Provider value={
-            {isAuthenticated, notify, userDateGlobal, themeStyledGlobal, setThemeStyledGlobal, signIn, logOut, setNotify}}
+            {isAuthenticated, notify, userDateGlobal, themeStyledGlobal, setThemeStyledGlobal, signIn, logOut, setNotify, registerUser}}
         >
             {children}
         </DataContext.Provider>

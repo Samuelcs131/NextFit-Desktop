@@ -102,3 +102,9 @@ export const SizeIcon = (): JSX.Element => {
     <path d="M2.25 15.75L7.5 10.5" stroke="white" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"/>
     </svg>)
 }
+
+export const ChevronIcon = (): JSX.Element => {
+    return(
+        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"><polyline points="6 9 12 15 18 9" stroke="black"></polyline></svg>
+    )
+}

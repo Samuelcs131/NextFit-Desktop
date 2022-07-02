@@ -5,6 +5,8 @@ export interface iUser {
     lastName: string
     email: string
     height: number
+    weight: number
+    sex: string
 }
  
 // CONTAINER PROVIDER

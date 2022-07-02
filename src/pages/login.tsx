@@ -18,38 +18,31 @@ import { GoogleIcon, NextFitIcon } from '@components/Icons'
 import { DataContext } from '@store/GlobalState'
 // SERVICES
 import { typeNotify } from '@services/notify'
+// UTILS
+import { yupErrosPtBr } from '@utils/yupErrosPtBr'
 
 const Login: NextPage = () => {
-    
   // GLOBAL STATE
   const { signIn, notify, setNotify } = useContext(DataContext)
+  
+  // LOADING
   const [loadingPage, setLoadingPage] = useState<boolean>(false);
   
   // VALIDATION FORM
   const validationForm = yup.object({
     email: yup.string().email().required(),
-    password: yup.string().min(6).required()
+    password: yup.string().required()
   })
   
+  // CUSTOM ERROR
+  yup.setLocale(yupErrosPtBr)
+
   // FORM
   const { register, handleSubmit, formState: { errors } } = useForm({resolver: yupResolver(validationForm)});
-  
-  
+
   // SUBMIT FORM
   async function onSubmit(data: any){
       await signIn(data.email, data.password, setLoadingPage)
-  }
-
-  // CUSTOM ERROS
-  const errosInput = {
-    email: {
-        required: "Email é um campo obrigatório",
-        email: "O email informado é invalido"
-    },
-    password: {
-        min: "a senha deve ter pelo menos 6 caracteres",
-        password: "Senha é um campo obrigatório"
-    }
   }
   
   useEffect(()=>{
@@ -58,8 +51,8 @@ const Login: NextPage = () => {
       typeNotify(notify)
       setNotify(undefined)
     }
-  }) 
-/*   console.log(errors?.password?.type) */
+  })
+
   return (<>
       {/* NOTIFY */}
       <ToastContainer/>
@@ -79,13 +72,11 @@ const Login: NextPage = () => {
           <form id="form-login" onSubmit={handleSubmit(onSubmit)}>
             {/* EMAIL */}
             <input {...register('email')} type="email" placeholder="Email" />
-            {/* @ts-expect-error */}
-            {errors?.email?.type &&(<InputError>{errosInput['email'][errors.email.type]}</InputError>)}
+            {errors?.email?.type &&(<InputError>{errors?.email?.message}</InputError>)}
             
             {/* PASSWORD */}
             <input {...register('password')} type="password" placeholder="Senha" />
-            {/* @ts-expect-error */}
-            {errors?.password?.type &&(<InputError>{errosInput['password'][errors.password.type]}</InputError>)}
+            {errors?.password?.type &&(<InputError>{errors.password.message}</InputError>)}
           </form>
 
 

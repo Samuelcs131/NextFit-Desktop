@@ -8,19 +8,13 @@ import { Container, GroupTitleAndInput, LegendChart, SelectDate } from "@styles/
 import { iChartGradient } from 'src/@types/components';
 
 
-const ChartGradient = ({children, dateIMC, setdDateIMC}: iChartGradient): JSX.Element => {
+const ChartGradient = ({children}: iChartGradient): JSX.Element => {
 
     return(<>
       <Container>
 
         <GroupTitleAndInput>
-            <h5>Indice de massa corporal</h5> 
-
-            <SelectDate style={{width: '180px'}}>
-                <CalendarIcon/>
-                <Datetime dateFormat="MM-YYYY" value={dateIMC} timeFormat={false} 
-                onChange={({_d}: any)=>setdDateIMC(_d)} /> 
-            </SelectDate>
+            <h5>Indice de massa corporal</h5>
         </GroupTitleAndInput>
         
         {/* DASHBOARD */} 

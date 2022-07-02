@@ -1,6 +1,7 @@
 import type { NextPage } from 'next'
 import HeadPage from '@components/HeadPage'
 import { ContainerMain } from '@styles/container' 
+import Link from 'next/link'
 
 
 const Home: NextPage = () => { 
@@ -9,7 +10,9 @@ const Home: NextPage = () => {
     <HeadPage titlePage="Home" />
 
     <ContainerMain>
-      <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Consectetur quo alias nesciunt accusamus ullam quos corrupti velit pariatur culpa, distinctio odit fuga, corporis maxime iure error. Dolorem ad animi ratione.</p>
+      <h1>Calmai boy ainda to desenvolvendo o App</h1>
+      <p>da uma conferida na pagina login</p>
+      <Link href="/login"><a>Login</a></Link>
     </ContainerMain>
   </>
 )

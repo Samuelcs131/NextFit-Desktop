@@ -47,12 +47,35 @@ export const ContainerLogin = styled.div`
         text-align: center;
         display: block;
         padding-top: 10px;
-        font-size: 0.7em;
+        font-size: 0.75em;
         line-height: 20px;
     }
     
     & > form{
-        
+        div{
+            position: relative;
+            
+            select{
+                height: 44px;
+                width: 300px;
+                cursor: pointer;
+                background-color: ${({theme})=>theme.pallete.common.white};
+                margin-top: 6px;
+                border-radius: ${({theme})=>theme.shape.borderRadiusPrimary};
+                padding: 11px 13px;
+                color: ${({theme})=>theme.pallete.common.black};
+                font-weight: ${({theme})=>theme.typography.fontWeightRegular};
+                font-size: 0.875em;
+                -webkit-appearance: none;
+                
+            }
+            svg{
+                pointer-events: none;
+                position: absolute;
+                top: 16px;
+                right: 10px;
+            }
+        }
         input{
             background-color: ${({theme})=>theme.pallete.common.white};
             height: 44px;
@@ -60,11 +83,14 @@ export const ContainerLogin = styled.div`
             margin-top: 6px;
             border-radius: ${({theme})=>theme.shape.borderRadiusPrimary};
             padding: 11px 13px;
+            font-size: 0.875em;
+            font-weight: ${({theme})=>theme.typography.fontWeightRegular};
+            color: ${({theme})=>theme.pallete.common.black};
             
             &::placeholder{
                 color: ${({theme})=>theme.pallete.grey.A200};
                 font-weight: ${({theme})=>theme.typography.fontWeightRegular};
-                font-size: 1em;
+                font-size: 0.875em;
             }
         }
     }

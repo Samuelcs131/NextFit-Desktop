@@ -66,6 +66,9 @@ const Dashboard: NextPage = () => {
     // DATE USER
     const userDateGlobal: iUser | null = useContext(DataContext).userDateGlobal
     
+    // PHOTO USER
+    const photoUser = userDateGlobal?.sex === 'm' ? 'profile-men.svg' : 'profile-women.svg'
+
     // SHOW MENU
     const [showMenu, setShowMenu] = useState<boolean>(false);
   
@@ -78,9 +81,8 @@ const Dashboard: NextPage = () => {
     const [activityListSelected, setActivityListSelected] = useState<Array<iActivityListSelected>>(exerciseList1);
     const [chosenExercise, setChosenExercise] = useState<string>();
     
-    // IMC
-    const [selectdDateIMC, setSelectdDateIMC] = useState<Date>(new Date());
-    const IMCdata: number = userDateGlobal?.height ? Number((50 / (((userDateGlobal?.height)/100) * 2)).toFixed(2)) : 0
+    // IMC 
+    const IMCdata: number = userDateGlobal?.height ? Number((userDateGlobal?.weight / (((userDateGlobal?.height)/100) * 2)).toFixed(2)) : 0
 
     // MEASUREMENTS
     const [selectdDateMeasurements, setSelectdDateMeasurements] = useState<Date>(new Date());
@@ -105,7 +107,7 @@ const Dashboard: NextPage = () => {
 
                     <Profile>
                         <Avatar>
-                            <Image src="/img/profile/profile-men.svg" alt='foto de perfil ilustrativa' height={30} width={30} layout="responsive" /> 
+                            <Image src={`/img/profile/${photoUser}`} alt='foto de perfil ilustrativa' height={30} width={30} layout="responsive" /> 
                         </Avatar>
 
                         <NameAndEmail>
@@ -118,8 +120,8 @@ const Dashboard: NextPage = () => {
                 
                 <ContainerInfoUser>
                     <Info><span>Altura</span><p>{userDateGlobal?.height}</p></Info>
-                    <Info><span>Peso</span><p>0</p></Info>
-                    <Info><span>IMC</span><p>0</p></Info>
+                    <Info><span>Peso</span><p>{userDateGlobal?.weight}</p></Info>
+                    <Info><span>IMC</span><p>{IMCdata}</p></Info>
                 </ContainerInfoUser>
 
                 <ChartArea exerciseList={activityListSelected} dateActivity={selectdDateActivity} setDateActivity={setSelectdDateActivity} setChosenExercise={setChosenExercise} >
@@ -127,7 +129,7 @@ const Dashboard: NextPage = () => {
                 </ChartArea>
 
                 <WrapperCharts>
-                    <ChartGradient dateIMC={selectdDateIMC} setdDateIMC={setSelectdDateIMC}>
+                    <ChartGradient>
                         <ReactApexChart options={themeApexChartGradient(themeContext)} series={[IMCdata]} type="radialBar" width="100%" height="400px"/>
                     </ChartGradient>
 

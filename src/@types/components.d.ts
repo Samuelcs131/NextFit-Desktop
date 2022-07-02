@@ -39,8 +39,6 @@ export interface iChartArea {
 
 export interface iChartGradient {
     children: JSX.Element | JSX.Element[]
-    dateIMC: Date
-    setdDateIMC: (dateIMC: Date)=> void
 }
 
 export interface iChartRadar {
