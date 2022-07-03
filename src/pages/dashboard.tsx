@@ -1,29 +1,33 @@
-/* MODULES */
-import { useContext, useState } from "react"
+import { useContext, useEffect, useState } from "react"
 import Image from "next/image"
 import { parseCookies } from "nookies"
 import { GetServerSideProps, NextPage } from "next"
 import dynamic from 'next/dynamic'  
+import { ThemeContext } from "styled-components"
+// COMPONENTS
 const ReactApexChart: any = dynamic( () => import('react-apexcharts'),{ ssr: false })
-
-
-/* INTERNAL MODULES */
-import { iUser } from "src/@types/globalState"
 import HeadPage from "@components/HeadPage"
 import Menu from "@components/Menu"
-import { DataContext } from "@store/GlobalState"
-import { ContainerMain } from "@styles/container"
-import { Avatar, ContainerInfoUser, Content, Info, NameAndEmail, Profile, TitleAndMenu, WrapperCharts } from "@styles/dashboard"
 import { MenuIcon } from "@components/Icons"
 import ChartArea from "@components/dashboard/ChartArea"
 import ChartGradient from "@components/dashboard/ChartGradient"
-import { themeApexChartArea, themeApexChartGradient, themeApexChartRadar } from "@components/dashboard/config/apexChart"
-import { ThemeContext } from "styled-components"
 import ChartRadar from "@components/dashboard/ChartRadar"
+import { themeApexChartArea, themeApexChartGradient, themeApexChartRadar } from "@components/dashboard/config/apexChart"
+// STYLES
+import { ContainerMain } from "@styles/container"
+import { Avatar, ContainerInfoUser, Content, Info, NameAndEmail, Profile, TitleAndMenu, WrapperCharts } from "@styles/dashboard"
+// TYPES
+import { iUser } from "src/@types/globalState"
 import { iActivityListSelected, iMeasurementData } from "src/@types/components"
+// GLOBAL STATE
+import { DataContext } from "@store/GlobalState"
+import LoadingPage from "@components/Loading"
+import Link from "next/link"
 
 
 const Dashboard: NextPage = () => {
+    // LOADING
+    const [loading, setLoading] = useState<boolean>(false);
 
     // DATE
     const exerciseList1: Array<iActivityListSelected> = [
@@ -47,6 +51,7 @@ const Dashboard: NextPage = () => {
             data: [71, 82, 65, 72, 84, 62, 71]
         }
     ]
+
     const seriesRadar = [
         {
             name: '7 - fev',
@@ -61,6 +66,7 @@ const Dashboard: NextPage = () => {
             data: [20, 70, 40, 20, 90, 50],
         }
     ]
+    
     const nameCategories = ['deltóide/ombros', 'braço direito', 'antebraço direito', 'peitoral e dorsal', 'antebraço esquerdo ', 'braço esquerdo']
 
     // DATE USER
@@ -73,7 +79,7 @@ const Dashboard: NextPage = () => {
     const [showMenu, setShowMenu] = useState<boolean>(false);
   
     // VARIABLES GLOBAL
-    const {themeStyledGlobal } = useContext(DataContext)
+    const { themeStyledGlobal } = useContext(DataContext)
     const themeContext = useContext(ThemeContext)
 
     // ACTIVITY
@@ -87,9 +93,18 @@ const Dashboard: NextPage = () => {
     // MEASUREMENTS
     const [selectdDateMeasurements, setSelectdDateMeasurements] = useState<Date>(new Date());
     const [measurementData, setMeasurementData] = useState<Array<iMeasurementData>>(seriesRadar);
- 
+
+    useEffect(()=>{
+        setLoading(true)
+        if(userDateGlobal){
+            setLoading(false)
+        }
+    },[userDateGlobal])
 
     return(<>
+    {/* LOADING */}
+    {loading === true && <LoadingPage/>}
+    {/* HEAD PAGE */}
     <HeadPage titlePage="Dashboard" />
 
     <Content>
@@ -107,7 +122,10 @@ const Dashboard: NextPage = () => {
 
                     <Profile>
                         <Avatar>
-                            <Image src={`/img/profile/${photoUser}`} alt='foto de perfil ilustrativa' height={30} width={30} layout="responsive" /> 
+                            <Link href={'/profile'}>
+                                <a>
+                                <Image src={`/img/profile/${photoUser}`} alt='foto de perfil ilustrativa' height={30} width={30} layout="responsive" /></a>
+                            </Link>
                         </Avatar>
 
                         <NameAndEmail>

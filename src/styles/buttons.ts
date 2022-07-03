@@ -37,7 +37,7 @@ export const Button = styled.button<iButton>`
     padding: 8px 22px;
     border-radius: ${({theme})=>theme.shape.borderRadiusPrimary};
     display: inline-block;
-    transition: .3s;
+    transition: background-color .3s;
     cursor: pointer;
     place-items: center;
     user-select: none;

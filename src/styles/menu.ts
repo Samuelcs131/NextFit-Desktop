@@ -130,28 +130,6 @@ export const ListMenu = styled.nav`
         display: grid;
         gap: 20px; 
     }
-
-    // LG
-    @media screen and (min-width: ${({theme})=>theme.breakpoints.value.lg}) {
- 
-        ul li:nth-child(1){
-            svg{ 
-                path{
-                    fill: ${({theme})=>theme.pallete.text.icon};
-                }
-            }
-        }
-    }
-    // XXL
-    @media screen and (min-width: ${({theme})=>theme.breakpoints.value.xxl}) {
-        ul li:nth-child(1){
-            svg{ 
-                path{
-                    fill: initial;
-                }
-            }
-        }
-    }
 `
 
 /* ITEM MENU */
@@ -160,6 +138,7 @@ export const ItemList = styled.li<iListMenuActive>`
     position: relative;
 
     a{
+        text-decoration: none;
         width: 100%;
         height: 36px;
         display: flex;
@@ -183,7 +162,43 @@ export const ItemList = styled.li<iListMenuActive>`
             }
 
             svg path{
-                fill: ${({theme})=>theme.pallete.background.default}
+                fill: ${({theme})=>theme.pallete.background.default};
+            }
+            
+            .activity-icon path{
+                fill: ${({theme})=>theme.pallete.text.primary};
+                stroke: ${({theme})=>theme.pallete.background.default};
+            }
+            
+            // LG - 992px
+            @media screen and (min-width: ${({theme})=>theme.breakpoints.value.lg}) {
+                svg path{
+                    fill: ${({theme})=>theme.pallete.text.icon};
+                }
+                .activity-icon path{
+                    fill: ${({theme})=>theme.pallete.background.default};
+                    stroke: ${({theme})=>theme.pallete.text.icon};
+                }
+                &::before{
+                    content: '';
+                    position: absolute;
+                    height: 36px;
+                    width: 3px;
+                    right: -19px;
+                    top: 0;
+                    border-radius: 5px;
+                    background-color: ${({theme})=>theme.pallete.text.primary};
+                }
+            }
+            // XXL - 1320px
+            @media screen and (min-width: ${({theme})=>theme.breakpoints.value.xxl}) {
+                svg path{
+                    fill: ${({theme})=>theme.pallete.background.default};
+                }
+                .activity-icon path{
+                    fill: ${({theme})=>theme.pallete.text.primary};
+                    stroke: ${({theme})=>theme.pallete.background.default};
+                }
             }
     `)}}
 
@@ -196,22 +211,7 @@ export const ItemList = styled.li<iListMenuActive>`
             span {
                 display: none;
             }
-        }
-
-        ${ ({active}) => {
-        return active === true && (css`
-            &::before{
-                content: '';
-                position: absolute;
-                height: 36px;
-                width: 3px;
-                right: -19px;
-                top: 0;
-                border-radius: 5px;
-                background-color: ${({theme})=>theme.pallete.text.primary};
-            }
-        `)}}
-    
+        } 
     }
 
     // XXL

@@ -23,7 +23,7 @@ export const DashboardIcon = (): JSX.Element => {
 
 export const ActivityIcon = (): JSX.Element => {
     return(<>
-    <svg width="18" height="18" viewBox="0 0 18 18" fill="none" xmlns="http://www.w3.org/2000/svg">
+    <svg width="18" height="18" className="activity-icon" viewBox="0 0 18 18" fill="none" xmlns="http://www.w3.org/2000/svg">
     <path d="M16.5 9H13.5L11.25 15.75L6.75 2.25L4.5 9H1.5" stroke="white" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"/>
     </svg> 
     </>)

@@ -108,7 +108,7 @@ const Register: NextPage = () => {
             Ao clicar em assinar, ou ao continuar com as outras opções abaixo, você concorda com os Termos de serviço  e confirma que leu a  Política de privacidade <b>NextFit</b>
             .
           </span>
-          <Button form='form-register' color='primary' variant='contained'>Entrar</Button>
+          <Button form='form-register' color='primary' variant='contained'>Cadastrar</Button>
           <Divider>
             <hr />
             ou

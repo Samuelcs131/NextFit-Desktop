@@ -39,28 +39,36 @@ const Menu = ({ setPropsShowMenu, showMenu }: iMenu): JSX.Element => {
                 <ListMenu>
                     <ul>
                         <ItemList active={activeMenuList('/dashboard')}>
+                            <Link href={'/dashboard'}>
                             <a>
                                 <DashboardIcon/>
                                 <span>Dashboard</span>
                             </a>
+                            </Link>
                         </ItemList>
                         <ItemList active={activeMenuList('/activity')}>
+                            <Link href={'/activity'}>
                             <a>
                                 <ActivityIcon/>
                                 <span>Atividades</span>
                             </a>
+                            </Link>
                         </ItemList>
                         <ItemList active={activeMenuList('/profile')}>
+                            <Link href={'/profile'}>
                             <a>
                                 <ProfileIcon/>
                                 <span>Perfil</span>
                             </a>
+                            </Link>
                         </ItemList>
                         <ItemList active={activeMenuList('/settings')}>
+                            <Link href={'/settings'}>
                             <a>
                                 <SettingsIcon/>
                                 <span>Definições</span>
                             </a>
+                            </Link>
                         </ItemList> 
                     </ul>
                 </ListMenu>

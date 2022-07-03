@@ -79,22 +79,22 @@ export default createGlobalStyle`
         font-weight: ${({theme})=>theme.typography.h6.fontWeight};
    }
 
-     // SM
+     // SM - 576px
      @media screen and (min-width: ${({theme})=>theme.breakpoints.value.sm}) {
           
      }
 
-     // MD
+     // MD - 768px
      @media screen and (min-width: ${({theme})=>theme.breakpoints.value.md}) {
           
      }
      
-     // LG
+     // LG - 992px
      @media screen and (min-width: ${({theme})=>theme.breakpoints.value.lg}) {
           
      }
      
-     // XL
+     // XL - 1200px
      @media screen and (min-width: ${({theme})=>theme.breakpoints.value.xl}) {
           h1{ font-size: ${({theme})=>theme.typography.h1.fontSize}; }
           h2{ font-size: ${({theme})=>theme.typography.h2.fontSize}; }
@@ -116,7 +116,7 @@ export default createGlobalStyle`
           }
      }
      
-     // XXL
+     // XXL - 1320px
      @media screen and (min-width: ${({theme})=>theme.breakpoints.value.xxl}) {
      }
 
