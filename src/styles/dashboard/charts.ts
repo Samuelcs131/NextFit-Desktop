@@ -56,6 +56,7 @@ export const GroupTitleAndInput = styled.div`
 
 /* SELECT ACTIVITY */
 export const SelectActivity = styled.div`
+    z-index: 1000;
     width: 100%;
     max-width: 220px;
     position: relative;

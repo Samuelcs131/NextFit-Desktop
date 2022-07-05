@@ -7,6 +7,8 @@ export const Content = styled.main`
     width: 100%;
     height: 100vh;
     display: flex;
+
+    
     
     & > div {
         overflow-y: auto; 

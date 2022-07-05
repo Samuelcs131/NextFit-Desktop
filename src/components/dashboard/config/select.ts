@@ -3,8 +3,7 @@ import { DefaultTheme } from "styled-components";
 export function themeSelect(themeContext: DefaultTheme) {
     return({
         menuPortal: (styles: any, state: any) => ({
-            ...styles,
-            zIndex: 9999,
+            ...styles, 
         }), 
         menuList: (styles: any, state: any) => ({
             ...styles,

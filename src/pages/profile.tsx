@@ -1,3 +1,5 @@
+import { yupResolver } from "@hookform/resolvers/yup";
+import { useForm } from "react-hook-form";
 import { NextPage } from "next";
 import { useContext, useEffect, useState } from "react"
 import * as yup from 'yup'
@@ -5,19 +7,19 @@ import * as yup from 'yup'
 import HeadPage from "@components/HeadPage"
 import { MenuIcon } from "@components/Icons"
 import Menu from "@components/Menu"
+import LoadingPage from "@components/Loading"
 // STYLES
 import { ContainerMain } from "@styles/container"
 import { Button } from "@styles/buttons"
 import { Content, TitleAndMenu } from "@styles/layout"
 import { ProfileForm } from "@styles/profile"
-import { iUser } from "src/@types/globalState"
-import { DataContext } from "@store/GlobalState"
-import LoadingPage from "@components/Loading"
-import { yupErrosPtBr } from "@utils/yupErrosPtBr"
-import { yupResolver } from "@hookform/resolvers/yup";
-import { useForm } from "react-hook-form";
 import { InputError } from "@styles/login";
+// GLOBAL STATE
+import { DataContext } from "@store/GlobalState"
 // TYPES
+import { iUser } from "src/@types/globalState"
+// UTILS
+import { yupErrosPtBr } from "@utils/yupErrosPtBr"
 
 const Profile: NextPage = () => {
     // LOADING

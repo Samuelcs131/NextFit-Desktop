@@ -1,5 +1,5 @@
 import styled, { css } from "styled-components";
-import { rgba, shade } from 'polished'
+import { darken, rgba, shade } from 'polished'
 import { iButton } from "../@types/styles";
 
 export const Container = styled.section`
@@ -107,7 +107,7 @@ export const Button = styled.button<iButton>`
     else if (variant === 'contained'){
         return( css`
             background-color: ${selectColor};
-            color: ${({theme})=>theme.pallete.background.default};
+            color: ${darken(0.4, selectColor())};
             
             &:hover{
                 background-color: ${shade(0.1, selectColor())};

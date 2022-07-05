@@ -32,7 +32,6 @@ export const ProfileForm = styled.form`
         font-size: 1rem;
         font-weight: ${({theme})=>theme.typography.fontWeightRegular};
         display: block;
-        // width: 240px;
         width: 100%;
         height: 44px;
         background-color: ${({theme})=>theme.pallete.grey.A300};

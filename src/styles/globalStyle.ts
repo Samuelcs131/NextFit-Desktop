@@ -16,6 +16,11 @@ export default createGlobalStyle`
         font-size: ${({theme})=>theme.typography.htmlFontSize};
      }
      
+     input[type=number]::-webkit-inner-spin-button,
+     input[type=number]::-webkit-outer-spin-button {
+          -webkit-appearance: none; 
+     }
+
      body{
         background: ${({theme})=>theme.pallete.background.default};
         font-size: ${({theme})=>theme.typography.body1.fontSize};
@@ -27,13 +32,13 @@ export default createGlobalStyle`
         position: relative;
      }
 
-   p{
-        font-size: ${({theme})=>theme.typography.fontSize};
-   }
+     p{
+          font-size: ${({theme})=>theme.typography.fontSize};
+     }
 
-   a{
+     a{
      color: ${({theme})=>theme.pallete.text.primary};
-   } 
+     } 
 
    // HEADING
    h1{
