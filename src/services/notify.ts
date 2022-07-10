@@ -1,4 +1,4 @@
-import { ToastContainer, toast } from 'react-toastify';
+import { toast } from 'react-toastify';
 import { iNotify } from 'src/@types/globalState';
 
 export function typeNotify(notify: iNotify){

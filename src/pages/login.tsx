@@ -8,7 +8,7 @@ import * as yup from 'yup'
 // STYLES
 import { Button } from '@styles/buttons'
 import { ButtonGoogle, ContainerLogin, Content, Divider, InputError, Logo } from '@styles/login'
-import 'react-toastify/dist/ReactToastify.min.css';
+import 'react-toastify/dist/ReactToastify.min.css'
 import { yupResolver } from '@hookform/resolvers/yup'
 // COMPONENTS
 import HeadPage from '@components/HeadPage'
