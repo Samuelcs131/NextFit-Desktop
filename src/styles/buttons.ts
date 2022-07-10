@@ -73,6 +73,12 @@ export const Button = styled.button<iButton>`
             case 'secondary': 
             return theme.pallete.secondary.main
             
+            case 'tertiary': 
+            return theme.pallete.tertiary.main
+            
+            case 'quaternary': 
+            return theme.pallete.quaternary.main
+            
             case 'success': 
             return theme.pallete.success.main
             

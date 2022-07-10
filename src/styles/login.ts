@@ -42,7 +42,7 @@ export const ContainerLogin = styled.div`
     max-width: 300px;
     margin: 0 auto;
     padding-top: 5vh;
-    
+ 
     & > span{
         text-align: center;
         display: block;

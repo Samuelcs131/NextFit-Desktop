@@ -85,6 +85,7 @@ const Login: NextPage = () => {
             .
           </span>
           <Button form="form-login" color="primary" variant="contained">Entrar</Button>
+          <span><Link href={'/forgotPassword'}><a>Esqueceu a senha?</a></Link></span>
           <Divider>
             <hr />
             ou

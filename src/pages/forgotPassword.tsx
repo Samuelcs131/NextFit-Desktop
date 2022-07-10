@@ -78,7 +78,7 @@ return(<>
             <input {...register('email')} type="email" placeholder="Email" />
             {errors?.email?.type &&(<InputError>{errors?.email?.message}</InputError>)}
         </form>
-        <Button form="form-forgot-password" color="primary" variant="contained">Redefinir senha</Button>
+        <Button form="form-forgot-password" variant="contained">Redefinir senha</Button>
         </ContainerLogin>
         
         <footer>
