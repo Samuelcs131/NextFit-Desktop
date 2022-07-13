@@ -1,4 +1,18 @@
+import { iInputFormRegister } from "./pages"
+
 // VARIABLE GLOBAL
+interface iDataContext {
+    isAuthenticated: boolean
+    notify: iNotify | undefined
+    userDateGlobal: iUser| null
+    themeStyledGlobal: string
+    setThemeStyledGlobal: (theme: string) => void
+    signIn: (email: string, password: string, setLoadingPage: any) => void
+    logOut: () => void
+    setNotify: (notify: iNotify | undefined) => void
+    registerUser: (user: iInputFormRegister ,password?: string, setLoadingPage: any) => void
+}
+
 export interface iUser {
     id: string
     name: srting

@@ -87,6 +87,9 @@ export const Button = styled.button<iButton>`
             
             case 'info': 
             return theme.pallete.info.main
+            
+            case 'white': 
+            return 'white'
 
             default: 
             return theme.pallete.primary.main

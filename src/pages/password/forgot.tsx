@@ -6,7 +6,7 @@ import { api } from "@services/api"
 import { typeNotify } from "@services/notify"
 import { DataContext } from "@store/GlobalState"
 import { Button } from "@styles/buttons"
-import { ContainerLogin, Content, InputError, Logo } from "@styles/login"
+import { Container, Content, InputError, Logo } from "@styles/layoutPageInitial"
 import { yupErrosPtBr } from "@utils/yupErrosPtBr"
 import { NextPage } from "next"
 import Link from "next/link"
@@ -36,11 +36,9 @@ const ForgotPassword: NextPage = () => {
         await api.post('/users/forgot_password', {
             body: { "email": data.email },
             headers: { "Content-Type": "application/json" }
-        }).then( (res: any) => { 
-            setNotify({type: res.status, message: 'Enviado com sucesso!'})
-        }).catch( (error)=>{
-            const { data } = error.response
-            console.log(error)
+        }).then( () => {
+            setNotify({type: 200, message: 'Enviado com sucesso!'})
+        }).catch( ({ response: { data }})=>{
             setNotify({type: data.status, message: data.message})
         })
     }
@@ -59,7 +57,7 @@ return(<>
     {/* HEAD */}
     <HeadPage titlePage="NextFit - Login" />
     <Content>
-        <ContainerLogin>
+        <Container>
         <Link href={'/'}>
           <Logo>
             <h1>NextFit</h1>
@@ -75,8 +73,9 @@ return(<>
             {errors?.email?.type &&(<InputError>{errors?.email?.message}</InputError>)}
         </form>
         <Button form="form-forgot-password" variant="contained">Redefinir senha</Button>
-        </ContainerLogin>
         
+        <p><Link href="/login"><a>Voltar</a></Link></p>
+        </Container>
         <footer>
           Copyright © 2022 NextFit - Todos os direitos reservados
         </footer>

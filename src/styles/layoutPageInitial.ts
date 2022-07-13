@@ -19,7 +19,7 @@ export const Content = styled.div`
         z-index: 1;
         content: '';
         position: fixed;
-        background-color: ${rgba('#31006F', 0.2)};
+        background-color: ${rgba('#31006F', 0.45)};
         height: 100%;
         width: 100%;
         pointer-events: none;
@@ -36,7 +36,7 @@ export const Content = styled.div`
 `
 
 // CONTAINER
-export const ContainerLogin = styled.div`
+export const Container = styled.div`
     position: relative;
     z-index: 1;
     max-width: 300px;
@@ -154,11 +154,13 @@ export const Divider = styled.div`
 // BUTTON GOOGLE
 export const ButtonGoogle = styled.button`
     background-color: ${({theme})=>theme.pallete.common.white};
+    border-radius: ${({theme})=>theme.shape.borderRadiusPrimary};
     display: flex;
     align-items: center;
     justify-content: center;
     font-size: 1em;
     gap: 5px;
+    cursor: pointer;
 `
 
 // INPUT ERROR

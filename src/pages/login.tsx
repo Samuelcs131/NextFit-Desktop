@@ -7,7 +7,7 @@ import { ToastContainer } from 'react-toastify'
 import * as yup from 'yup'
 // STYLES
 import { Button } from '@styles/buttons'
-import { ButtonGoogle, ContainerLogin, Content, Divider, InputError, Logo } from '@styles/login'
+import { ButtonGoogle, Container, Content, Divider, InputError, Logo } from '@styles/layoutPageInitial'
 import 'react-toastify/dist/ReactToastify.min.css'
 import { yupResolver } from '@hookform/resolvers/yup'
 // COMPONENTS
@@ -20,6 +20,8 @@ import { DataContext } from '@store/GlobalState'
 import { typeNotify } from '@services/notify'
 // UTILS
 import { yupErrosPtBr } from '@utils/yupErrosPtBr'
+// TYPES
+import { iInputFormLogin } from 'src/@types/pages'
 
 const Login: NextPage = () => {
   // GLOBAL STATE
@@ -41,8 +43,8 @@ const Login: NextPage = () => {
   const { register, handleSubmit, formState: { errors } } = useForm({resolver: yupResolver(validationForm)});
 
   // SUBMIT FORM
-  async function onSubmit(data: any){
-      await signIn(data.email, data.password, setLoadingPage)
+  async function onSubmit(data: iInputFormLogin){
+    signIn(data.email || '', data.password || '', setLoadingPage)
   }
   
   useEffect(()=>{
@@ -63,11 +65,13 @@ const Login: NextPage = () => {
 
       {/* CONTENT */}
       <Content>
-        <ContainerLogin>
-          <Logo>
-            <h1>NextFit</h1>
-            <NextFitIcon />
-          </Logo>
+        <Container>
+          <Link href={'/'}>
+            <Logo>
+              <h1>NextFit</h1>
+              <NextFitIcon />
+            </Logo>
+          </Link>
 
           <form id="form-login" onSubmit={handleSubmit(onSubmit)}>
             {/* EMAIL */}
@@ -85,7 +89,7 @@ const Login: NextPage = () => {
             .
           </span>
           <Button form="form-login" color="primary" variant="contained">Entrar</Button>
-          <span><Link href={'/forgotPassword'}><a>Esqueceu a senha?</a></Link></span>
+          <span><Link href={'/password/forgot'}><a>Esqueceu a senha?</a></Link></span>
           <Divider>
             <hr />
             ou
@@ -98,7 +102,7 @@ const Login: NextPage = () => {
           <p>
             Novo no NextFit? <Link href="/register"><a><u>Crie uma conta!</u></a></Link>
           </p>
-        </ContainerLogin>
+        </Container>
 
         <footer>
           Copyright © 2022 NextFit - Todos os direitos reservados

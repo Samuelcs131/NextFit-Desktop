@@ -1,23 +1,24 @@
-/* MODULES */
 import { createContext, useEffect, useState} from 'react'
-import Router from 'next/router';
+import Router from 'next/router'
 import { setCookie, parseCookies, destroyCookie } from 'nookies'
 // TYPES
-import { iContainerProvider, iNotify, iUser } from 'src/@types/globalState';
+import { iContainerProvider, iDataContext, iNotify, iUser } from 'src/@types/globalState'
 // SERVICES
-import { api } from 'src/services/api';
+import { api } from '@services/api'
+import { iInputFormRegister } from 'src/@types/pages'
 
-const DataContext = createContext<any>({});
+
+const DataContext = createContext<iDataContext>({} as iDataContext)
 
 const ContainerProvider = ({children}: iContainerProvider) => { 
     // THEME
     const [themeStyledGlobal, setThemeStyledGlobal] = useState<string>('dark')
 
     // ERROR
-    const [notify, setNotify] = useState<iNotify | undefined>(undefined);
+    const [notify, setNotify] = useState<iNotify | undefined>(undefined)
 
     // USER
-    const [userDateGlobal, setUserDateGlobal] = useState<iUser | null>(null);
+    const [userDateGlobal, setUserDateGlobal] = useState<iUser | null>(null)
 
     // AUTH
     const isAuthenticated = !!userDateGlobal
@@ -67,7 +68,7 @@ const ContainerProvider = ({children}: iContainerProvider) => {
     }
 
     // REGISTER USER
-    async function registerUser(user: iUser,password: string, setLoadingPage: any) {
+    async function registerUser(user: iInputFormRegister, password: string | undefined, setLoadingPage: any) {
         try{
             // LOADING
             setLoadingPage(true)
@@ -133,4 +134,4 @@ const ContainerProvider = ({children}: iContainerProvider) => {
     )
 }
 
-export {ContainerProvider, DataContext};
+export {ContainerProvider, DataContext}

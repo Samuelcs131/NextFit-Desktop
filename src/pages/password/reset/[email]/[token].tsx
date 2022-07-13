@@ -11,7 +11,7 @@ import HeadPage from '@components/HeadPage'
 import { NextFitIcon } from '@components/Icons'
 // STYLES
 import { Button } from '@styles/buttons'
-import { ContainerLogin, Content, InputError, Logo } from '@styles/login'
+import { Container, Content, InputError, Logo } from '@styles/layoutPageInitial'
 import 'react-toastify/dist/ReactToastify.min.css'
 // TYPES
 import { iPassword } from 'src/@types/components'
@@ -21,6 +21,7 @@ import { DataContext } from '@store/GlobalState'
 import { typeNotify } from '@services/notify'
 import { yupErrosPtBr } from '@utils/yupErrosPtBr'
 import { yupResolver } from '@hookform/resolvers/yup'
+import { api } from '@services/api'
 
 const Password: NextPage<iPassword> = ({dateNow, token, email, passwordResetExpires, passwordResetToken}) => {
   // GLOBAL STATE
@@ -52,7 +53,7 @@ const Password: NextPage<iPassword> = ({dateNow, token, email, passwordResetExpi
       return console.log('A senha deve contar mais de 6 caracteres e no máximo 16!')
     }
 
-    await axios.post('http://localhost:8080/users/reset_password', {
+    await api.post('/users/reset_password', {
       body: {
         "email": email,
         "resetToken": passwordResetToken,
@@ -94,7 +95,7 @@ const Password: NextPage<iPassword> = ({dateNow, token, email, passwordResetExpi
   {/* HEAD PAGE */}
   <HeadPage titlePage="NextFit - Nova senha" />
     <Content>
-      <ContainerLogin>
+      <Container>
 
         <Logo>
           <h1>NextFit</h1>
@@ -108,7 +109,7 @@ const Password: NextPage<iPassword> = ({dateNow, token, email, passwordResetExpi
         </form>
 
         <Button form='form-forget-password' color="primary" variant="contained">Atualizar senha</Button>
-      </ContainerLogin>
+      </Container>
       
       <footer>
         Copyright © 2022 NextFit - Todos os direitos reservados
@@ -120,12 +121,11 @@ const Password: NextPage<iPassword> = ({dateNow, token, email, passwordResetExpi
 
 // GET SERVER SIDE PROPS
 export async function getServerSideProps({ params }: Params) {
-  try {
     // PARAMS
     const { token, email } = params
     const tokenAuth: string = await hash(process.env.NEXTFIT_API_KEY as string, 4)
 
-    const { data: {passwordResetExpires, passwordResetToken} } = await axios.get(`http://localhost:8080/users/email/${email}`, {
+    const { data: {passwordResetExpires, passwordResetToken} } = await api.get(`/users/email/${email}`, {
       headers: {
         "Authorization": token,
         "AuthClientServer": tokenAuth
@@ -140,9 +140,6 @@ export async function getServerSideProps({ params }: Params) {
     return {
       props: {dateNow, token, email, passwordResetExpires, passwordResetToken},
     }
-  } catch(error){
-    console.log(error)
-  }
 }
 
 export default Password

@@ -13,7 +13,7 @@ import { ContainerMain } from "@styles/container"
 import { Button } from "@styles/buttons"
 import { Content, TitleAndMenu } from "@styles/layout"
 import { ProfileForm } from "@styles/profile"
-import { InputError } from "@styles/login";
+import { InputError } from "@styles/layoutPageInitial";
 // GLOBAL STATE
 import { DataContext } from "@store/GlobalState"
 // TYPES

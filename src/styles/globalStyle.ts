@@ -37,7 +37,7 @@ export default createGlobalStyle`
      }
 
      a{
-     color: ${({theme})=>theme.pallete.text.primary};
+          color: ${({theme})=>theme.pallete.text.primary};
      } 
 
    // HEADING

@@ -11,7 +11,7 @@ import { ToastContainer } from 'react-toastify'
 import HeadPage from '@components/HeadPage'
 import { ChevronIcon, GoogleIcon, NextFitIcon } from '@components/Icons'
 // STYLES
-import { ButtonGoogle, ContainerLogin, Content, Divider, InputError, Logo } from '@styles/login'
+import { ButtonGoogle, Container, Content, Divider, InputError, Logo } from '@styles/layoutPageInitial'
 import { Button } from '@styles/buttons'
 import 'react-toastify/dist/ReactToastify.min.css'
 // UTILS
@@ -19,6 +19,8 @@ import { yupErrosPtBr } from '@utils/yupErrosPtBr'
 import LoadingPage from '@components/Loading'
 import { typeNotify } from '@services/notify'
 import { DataContext } from '@store/GlobalState'
+// TYPES
+import { iInputFormRegister } from 'src/@types/pages'
 
 const Register: NextPage = () => {
   // GLOBAL STATE
@@ -46,7 +48,7 @@ const Register: NextPage = () => {
   const { control, register ,handleSubmit, formState: { errors } } = useForm({resolver: yupResolver(validationForm)})
 
   // SUBMIT FORM
-  function onSubmit(data: any){
+  function onSubmit(data: iInputFormRegister){
     const {email, height, lastName, name, password, sex, weight} = data
     const user = {email, height, lastName, name, password, sex, weight}
     registerUser(user,password,setLoadingPage)
@@ -69,7 +71,7 @@ const Register: NextPage = () => {
       {loadingPage === true && <LoadingPage/>}
 
       <Content>
-        <ContainerLogin>
+        <Container>
 
           <Link href='/'>
           <Logo>
@@ -132,7 +134,7 @@ const Register: NextPage = () => {
               <a><u>Fezer login em vez disso</u></a>
             </Link>
           </p>
-        </ContainerLogin>
+        </Container>
 
         <footer>
           Copyright © 2022 NextFit - Todos os direitos reservados
