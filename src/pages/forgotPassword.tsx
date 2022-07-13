@@ -36,13 +36,9 @@ const ForgotPassword: NextPage = () => {
         await api.post('/users/forgot_password', {
             body: { "email": data.email },
             headers: { "Content-Type": "application/json" }
-        }).then(
-            (response: any) => {
-                if(response.status === 204){
-                    setNotify({type: response.status, message: 'Enviado com sucesso!'})
-                }
-            }
-        ).catch( (error)=>{
+        }).then( (res: any) => { 
+            setNotify({type: res.status, message: 'Enviado com sucesso!'})
+        }).catch( (error)=>{
             const { data } = error.response
             console.log(error)
             setNotify({type: data.status, message: data.message})

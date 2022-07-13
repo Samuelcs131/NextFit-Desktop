@@ -26,7 +26,7 @@ const Login: NextPage = () => {
   const { signIn, notify, setNotify } = useContext(DataContext)
   
   // LOADING
-  const [loadingPage, setLoadingPage] = useState<boolean>(false);
+  const [loadingPage, setLoadingPage] = useState<boolean>(false)
   
   // VALIDATION FORM
   const validationForm = yup.object({

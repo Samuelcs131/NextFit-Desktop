@@ -13,9 +13,9 @@ import { ChevronIcon, GoogleIcon, NextFitIcon } from '@components/Icons'
 // STYLES
 import { ButtonGoogle, ContainerLogin, Content, Divider, InputError, Logo } from '@styles/login'
 import { Button } from '@styles/buttons'
-import 'react-toastify/dist/ReactToastify.min.css';
+import 'react-toastify/dist/ReactToastify.min.css'
 // UTILS
-import { yupErrosPtBr } from '@utils/yupErrosPtBr';
+import { yupErrosPtBr } from '@utils/yupErrosPtBr'
 import LoadingPage from '@components/Loading'
 import { typeNotify } from '@services/notify'
 import { DataContext } from '@store/GlobalState'
@@ -25,7 +25,7 @@ const Register: NextPage = () => {
   const { notify, setNotify, registerUser } = useContext(DataContext)
 
   // LOADING PAGE
-  const [loadingPage, setLoadingPage] = useState<boolean>(false);
+  const [loadingPage, setLoadingPage] = useState<boolean>(false)
 
   // VALIDATION FORM
   const validationForm = yup.object({
@@ -43,13 +43,13 @@ const Register: NextPage = () => {
   yup.setLocale(yupErrosPtBr)
   
   // FORM
-  const { control, register ,handleSubmit, formState: { errors } } = useForm({resolver: yupResolver(validationForm)});
+  const { control, register ,handleSubmit, formState: { errors } } = useForm({resolver: yupResolver(validationForm)})
 
   // SUBMIT FORM
   function onSubmit(data: any){
-  const {email, height, lastName, name, password, sex, weight} = data
-  const user = {email, height, lastName, name, password, sex, weight}
-  registerUser(user,password,setLoadingPage)
+    const {email, height, lastName, name, password, sex, weight} = data
+    const user = {email, height, lastName, name, password, sex, weight}
+    registerUser(user,password,setLoadingPage)
   }
 
   useEffect(()=>{
@@ -79,27 +79,35 @@ const Register: NextPage = () => {
           </Link>
 
           <form id='form-register' onSubmit={handleSubmit(onSubmit)}>
+            {/* NAME */}
             <input {...register('name')} type='text' placeholder='Nome'/>
             {errors?.name?.type &&(<InputError>{errors.name.message}</InputError>)}
+            {/* LASTNAME */}
             <input {...register('lastName')} type='text' placeholder='Sobrenome'/>
             {errors?.lastName?.type &&(<InputError>{errors.lastName.message}</InputError>)}
+            {/* EMAIL */}
             <input {...register('email')} type='email' placeholder='Email'/>
             {errors?.email?.type &&(<InputError>{errors.email.message}</InputError>)}
+            {/* SEX */}
             <div><select {...register('sex')} defaultValue={''}>
                 <option value='' disabled>Selecionar</option>
                 <option value='m'>Masculino</option>
                 <option value='f'>Feminino</option>
             </select><ChevronIcon/></div>
             {errors?.sex?.type &&(<InputError>{errors.sex.message}</InputError>)}
+            {/* HEIGHT */}
             <Controller control={control} name='height' render={({field})=>{
               return <NumberFormat {...field} format="###" mask="_" placeholder='Altura (centimetros)' />
             }}
             /> 
             {errors?.height?.type &&(<InputError>{errors.height.message}</InputError>)}
+            {/* WEIGHT */}
             <input {...register('weight')} type="number" placeholder='Peso (kilo)' />
             {errors?.weight?.type &&(<InputError>{errors.weight.message}</InputError>)}
+            {/* PASSWORD */}
             <input {...register('password')} type='password' placeholder='Senha'/>
             {errors?.password?.type &&(<InputError>{errors.password.message}</InputError>)}
+            {/* PASSWORD REPEAT */}
             <input {...register('passwordRepeat')} type='password' placeholder='Repita a senha'/>
             {errors?.passwordRepeat?.type &&(<InputError>{errors.passwordRepeat.message}</InputError>)}
           </form>
