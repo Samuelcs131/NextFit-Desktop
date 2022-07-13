@@ -6,7 +6,7 @@ import { themeDark, themeLight } from "../theme/themeDefault"
 
 const Colors = (): JSX.Element => {
 
-    const { state, themeStyledGlobal } = useContext(DataContext)
+    const { themeStyledGlobal } = useContext(DataContext)
 
     let theme: DefaultTheme = themeStyledGlobal === 'dark' ? themeDark : themeLight
    
