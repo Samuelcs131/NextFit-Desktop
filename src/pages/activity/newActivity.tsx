@@ -81,7 +81,7 @@ const NewActivity: NextPage = () => {
     {/* HEAD PAGE */}
     <HeadPage titlePage="Atividade"/>
     
-    {false && <ModalActivity/>}
+    {true && <ModalActivity/>}
 
     <Content>
         <Menu showMenu={showMenu} setPropsShowMenu={setShowMenu}/>
@@ -133,7 +133,7 @@ const NewActivity: NextPage = () => {
 
                 </ActivityForm>
                     <GroupButtons>
-                        <Button variant="contained" color="info">Iniciar treino</Button>
+                        <Button variant="contained" color="quaternary">Iniciar treino</Button>
                         <Button form="form-activity" variant="contained">Salvar treino</Button>
                     </GroupButtons>
             </ContainerMain>

@@ -1,27 +1,29 @@
+import { yupResolver } from '@hookform/resolvers/yup'
 import { useForm } from 'react-hook-form'
 import { Params } from 'next/dist/server/router'
 import { NextPage } from 'next'
-import axios from 'axios'
 import Router from 'next/router'
 import { useContext, useEffect, useState } from 'react'
 import * as yup from 'yup'
 import { hash } from 'bcrypt'
+import { ToastContainer } from 'react-toastify'
 // COMPONENTS
 import HeadPage from '@components/HeadPage'
 import { NextFitIcon } from '@components/Icons'
+import LoadingPage from '@components/Loading'
 // STYLES
 import { Button } from '@styles/buttons'
 import { Container, Content, InputError, Logo } from '@styles/layoutPageInitial'
 import 'react-toastify/dist/ReactToastify.min.css'
-// TYPES
-import { iPassword } from 'src/@types/components'
-import { ToastContainer } from 'react-toastify'
-import LoadingPage from '@components/Loading'
+// GLOBAL STATE
 import { DataContext } from '@store/GlobalState'
+// TYPES
+import { iInputFormResetPassword, iPassword } from 'src/@types/pages'
+// SERVICES
 import { typeNotify } from '@services/notify'
-import { yupErrosPtBr } from '@utils/yupErrosPtBr'
-import { yupResolver } from '@hookform/resolvers/yup'
 import { api } from '@services/api'
+// UTILS
+import { yupErrosPtBr } from '@utils/yupErrosPtBr'
 
 const Password: NextPage<iPassword> = ({dateNow, token, email, passwordResetExpires, passwordResetToken}) => {
   // GLOBAL STATE
@@ -43,16 +45,8 @@ const Password: NextPage<iPassword> = ({dateNow, token, email, passwordResetExpi
   const { register, handleSubmit, formState: { errors } } = useForm({resolver: yupResolver(validationForm)});
 
   // SUBMIT FORM
-  async function onSubmit({ password, passwordRepeat }: any){
+  async function onSubmit({ password }: iInputFormResetPassword){
     setLoadingPage(true)
-    if(password !== passwordRepeat){
-      return console.log('As senhas não coincidem')
-    }
-
-    if(password.length < 6 || password.length > 16){
-      return console.log('A senha deve contar mais de 6 caracteres e no máximo 16!')
-    }
-
     await api.post('/users/reset_password', {
       body: {
         "email": email,
@@ -66,12 +60,11 @@ const Password: NextPage<iPassword> = ({dateNow, token, email, passwordResetExpi
     }
     ).then( () => {
       setLoadingPage(false)
-      console.log('Senha alterada com sucesso!')
-      return setTimeout(()=>Router.push('/'), 5000)
+      setNotify({type: 200, message: 'Senha alterada com sucesso!'})
+      setTimeout(()=>Router.push('/login'), 5000)
     }).catch( ({response: {data}}) => {
       setLoadingPage(false)
       setNotify({type: data.status, message: data.message})
-      console.log(data)
     })
   }
 
@@ -93,7 +86,7 @@ const Password: NextPage<iPassword> = ({dateNow, token, email, passwordResetExpi
   {/* LOADING */}
   {loadingPage === true && <LoadingPage/>}
   {/* HEAD PAGE */}
-  <HeadPage titlePage="NextFit - Nova senha" />
+  <HeadPage titlePage="Redefinir senha"/>
     <Content>
       <Container>
 

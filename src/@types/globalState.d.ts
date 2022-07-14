@@ -1,6 +1,6 @@
 import { iInputFormRegister } from "./pages"
 
-// VARIABLE GLOBAL
+// DATA CONTEXT
 interface iDataContext {
     isAuthenticated: boolean
     notify: iNotify | undefined
@@ -13,6 +13,7 @@ interface iDataContext {
     registerUser: (user: iInputFormRegister ,password?: string, setLoadingPage: any) => void
 }
 
+// USER
 export interface iUser {
     id: string
     name: srting
@@ -22,24 +23,10 @@ export interface iUser {
     weight: number
     sex: string
 }
- 
+
 // CONTAINER PROVIDER
 export interface iContainerProvider {
     children: JSX.Element | JSX.Element[]
-}
-
-// AUTH
-export interface iAuthDataUser {
-    user: iAuthContext
-    token: string
-}
-
-export interface iAuthContext{
-    id: string
-    name: srting
-    lastName: string
-    email: string
-    height: number 
 }
 
 // NOTIFY

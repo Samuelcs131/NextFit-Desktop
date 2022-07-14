@@ -1,34 +1,28 @@
+// LAYOUT
 export interface iLayout {
     children: JSX.Element | JSX.Element[]
 }
- 
+
+// HEAD PAGE
 export interface iHeadPage {
     titlePage: string
 }
 
-export interface iPassword{
-    email: string
-    token: string
-    passwordResetExpires: Date
-    passwordResetToken: string
-    dateNow: Date
-}
-
+// MENU
 export interface iMenu {
     setPropsShowMenu: any 
     showMenu: boolean
 }
 
+// PAGE DASHBOARD
 export interface iActivityListSelected {
     value: string,
     label: string
 }
-
 export interface iMeasurementData {
     name: string,
     data: Array<number>
 }
-
 export interface iChartArea {
     children:  JSX.Element | JSX.Element[]
     setDateActivity: (dateActivity: Date)=> void
@@ -36,11 +30,9 @@ export interface iChartArea {
     exerciseList: Array<iActivityData>
     setChosenExercise: (exercise: string | undefined)=>void
 }
-
 export interface iChartGradient {
     children: JSX.Element | JSX.Element[]
 }
-
 export interface iChartRadar {
     children:  JSX.Element | JSX.Element[]
     dateMeasurements: Date
