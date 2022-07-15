@@ -10,6 +10,7 @@ export interface iButton {
     size?: string,
     color?: string,
     variant?: string
+    disabled?: boolean
 }
 
 // MENU

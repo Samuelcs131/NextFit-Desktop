@@ -1,7 +1,7 @@
 import { Button } from "@styles/buttons";
 import { Container, ImageContainer, CircleTime, GroupButtons } from "@styles/new-activity/modalActivity"
 import Image from "next/image"
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { CountdownCircleTimer } from 'react-countdown-circle-timer'
 
 interface iModalActivity {
@@ -16,10 +16,12 @@ interface exemple {
 }
 
 const ModalActivity = ({maxSeries, repetitions, secondsInterval, activeModal}: iModalActivity): JSX.Element => {
- 
     const [isPlayingInterval, setIsPlayingInterval] = useState<boolean>(false)
     const [seriesDone, setSeries] = useState<number>(0)
 
+    // BUTTON START INTERVAL
+    const [activeButtonStartInterval, setActiveButtonStartInterval] = useState<boolean>(false)
+    const buttonStartInterval = useRef<HTMLButtonElement>(null)
 
     // CIRCLE TIMER INTERVAL
     function renderTime ({ remainingTime }: exemple) {
@@ -37,6 +39,20 @@ const ModalActivity = ({maxSeries, repetitions, secondsInterval, activeModal}: i
             </div>
         )
     }
+
+    // PLAYING
+    function playing(){
+        if(activeButtonStartInterval){
+            setIsPlayingInterval(true)
+        } 
+    }
+
+    useEffect(()=>{
+        const inputs = [maxSeries, repetitions, secondsInterval]
+        if(!inputs.includes(0)){
+            setActiveButtonStartInterval(true)
+        }
+    },[maxSeries, repetitions, secondsInterval])
 
     return(<>
     <Container>
@@ -66,10 +82,12 @@ const ModalActivity = ({maxSeries, repetitions, secondsInterval, activeModal}: i
                             colors={'#009FFF'} 
                             size={80} 
                             strokeWidth={4}
-                            onComplete={() => ({ shouldRepeat: true, delay: 0.5 })}
+                            onComplete={() => ({ shouldRepeat: true, delay: 0 })}
                             onUpdate={(time: number)=>{
                                 time == secondsInterval && (setIsPlayingInterval(false))
-                                time == 0 && (setSeries(seriesDone + 1))
+                                if(activeButtonStartInterval){
+                                    time == 0 && (setSeries(seriesDone + 1))
+                                }
                             }}>
                             {renderTime}
                         </CountdownCircleTimer>
@@ -91,7 +109,7 @@ const ModalActivity = ({maxSeries, repetitions, secondsInterval, activeModal}: i
 
             {/* GROUP BUTTONS */}
             <GroupButtons>
-                <Button variant="contained" color="tertiary" onClick={()=>setIsPlayingInterval(true)}>Iniciar intervalo</Button>
+                <Button variant="contained" color="tertiary" onClick={()=>playing()} disabled={!activeButtonStartInterval}>Iniciar intervalo</Button>
                 <Button onClick={()=>activeModal(false)} variant="contained" color="secondary">Finalizar</Button>
             </GroupButtons>
         </div>

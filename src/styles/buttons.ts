@@ -65,7 +65,7 @@ export const Button = styled.button<iButton>`
     }}
     
     // VARIANT & COLOR
-    ${({variant,color,theme})=>{
+    ${({variant,color,theme,disabled})=>{
 
     // CHANGE PALLETE
     function selectColor() {
@@ -109,7 +109,20 @@ export const Button = styled.button<iButton>`
             &:active{
                 background-color: ${rgba(selectColor(), 0.18)};
             }
-            
+            // DISABLED
+            ${disabled === true && (`
+                border: 1px solid ${rgba(selectColor(), 0.12)};
+                color: ${rgba(selectColor(), 0.3)};
+                cursor: default;
+
+                &:hover{
+                    background-color: transparent;
+                }
+                
+                &:active{
+                    background-color: transparent;
+                }
+            `)}
         `)
     }
     
@@ -125,6 +138,21 @@ export const Button = styled.button<iButton>`
             &:active{
                 background-color: ${shade(0.3, selectColor())};
             }
+
+            // DISABLED
+            ${disabled === true && (`
+                background-color: ${rgba(selectColor(), 0.12)};
+                color: ${rgba(selectColor(), 0.3)};
+                cursor: default;
+
+                &:hover{
+                    background-color: ${rgba(selectColor(), 0.12)};
+                }
+                
+                &:active{
+                    background-color: ${rgba(selectColor(), 0.12)};
+                }
+            `)}
         `)
     }
 
@@ -139,6 +167,20 @@ export const Button = styled.button<iButton>`
             &:active{
                 background-color: ${rgba(selectColor(),0.18)};
             }
+
+            // DISABLED
+            ${disabled === true && (`
+                color: ${rgba(selectColor(), 0.3)};
+                cursor: default;
+
+                &:hover{
+                    background-color: transparent;
+                }
+                
+                &:active{
+                    background-color: transparent;
+                }
+            `)}
         `)
     }
 
