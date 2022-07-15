@@ -1,5 +1,5 @@
 import { rgba } from "polished"
-import styled from "styled-components"
+import styled, { css } from "styled-components"
 
 export const Container = styled.div`
     position: absolute;
@@ -15,41 +15,82 @@ export const Container = styled.div`
         width: 100%;
         height: 480px;
         background-color: ${({theme})=>theme.pallete.background.default};
-
+        display: flex;
+        flex-direction: column;
+        
         span{
             display: flex;
             justify-content: space-evenly;
             align-items: center;
+
+            & > div {
+                display: flex;
+                flex-direction: column;
+                align-items: center;
+                gap: 10px;
+            }
         }
     }
 `
 
-export const CircleTime = styled.div`
+export const GroupButtons = styled.div`
+    margin: 80px auto;
+    display: flex;
+    flex-direction: column;
+    gap: 40px;
+
+    button{
+        width: 250px;
+    }
+`
+
+interface iCircleTime {
+    size: string 
+    color: string
+}
+
+export const CircleTime = styled.div<iCircleTime>`
     position: relative;
     display: flex;
     align-items: center;
     justify-content: center;
-    
-    svg{
-        position: absolute;
-        left: 0;
-        right: 0;
-        margin-left: auto;
-        margin-right: auto;
-        fill: transparent;
-        stroke: black;
-        transform: rotate(270deg);
-        stroke-width: 4px;
+    width: ${({size})=>size};
+    height: ${({size})=>size};
 
-        circle:nth-child(2){
-            stroke: green;
-            stroke-dasharray: 210;
+    ${({color, theme})=>{
+        // CHANGE PALLETE
+        function selectColor() {
+            switch(color){
+                case 'secondary': 
+                return theme.pallete.secondary.main
+                
+                case 'tertiary': 
+                return theme.pallete.tertiary.main
+                
+                case 'quaternary': 
+                return theme.pallete.quaternary.main
+
+                default:
+                return theme.pallete.secondary.main
+            }
         }
-    }
-    
-    p{
-        position: relative;
-    }
+
+    return css`
+        svg{
+            position: absolute;
+            left: 0;
+            right: 0;
+            margin-left: auto;
+            margin-right: auto;
+
+            path:nth-child(1){
+                stroke: ${rgba(selectColor(),0.2)};
+            }
+            path:nth-child(2){
+                stroke: ${selectColor()};
+            }
+        }
+    `}}
 `
 
 // IMAGE CONTAINER

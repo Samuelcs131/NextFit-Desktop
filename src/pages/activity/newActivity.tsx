@@ -14,8 +14,6 @@ import Menu from "@components/Menu"
 import "react-datetime/css/react-datetime.css"
 import { ContainerMain } from "@styles/container"
 import { Content, TitleAndMenu } from "@styles/layout"
-// TYPES
-import { iUser } from "src/@types/globalState"
 // GLOBAL STATE
 import { ThemeContext } from "styled-components" 
 // UTILS
@@ -30,7 +28,7 @@ import ModalActivity from "@components/new-activity/ModalActivity"
 
 const NewActivity: NextPage = () => {
     // DATA
-    const exerciseList1: Array<iActivityListSelected> = [
+    const exerciseList1 = [
         { value: 'Supino', label: 'Supino' },
         { value: 'Rosca direta', label: 'Rosca direta' },
         { value: 'Voador', label: 'Voador' },
@@ -45,6 +43,9 @@ const NewActivity: NextPage = () => {
     
     // GLOBAL STATE
     const themeContext = useContext(ThemeContext)
+
+    // ACTIVE MODAL
+    const [activeModal, setActiveModal] = useState<boolean>(false)
 
     // SELECT DATE
     const [dateActivity, setDateActivity] =  useState<Date>(new Date())
@@ -80,8 +81,8 @@ const NewActivity: NextPage = () => {
     {loading === true && <LoadingPage/>}
     {/* HEAD PAGE */}
     <HeadPage titlePage="Atividade"/>
-    
-    {true && <ModalActivity/>}
+    {/* MODAL ACTIVITY */}
+    {activeModal && <ModalActivity activeModal={setActiveModal} maxSeries={4} repetitions={15} secondsInterval={90} />}
 
     <Content>
         <Menu showMenu={showMenu} setPropsShowMenu={setShowMenu}/>
@@ -98,42 +99,46 @@ const NewActivity: NextPage = () => {
 
                 <p>Para realizar um exercicio basta preencher os campos abaixo e clicar em iniciar! o numero de repetições será com base no primeiro.</p>
 
-                <ActivityForm id="form-activity">
+                <ActivityForm id="form-activity" onSubmit={handleSubmit(onSubmit)}>
                     <div>
+                        {/* ACTIVITY */}
                         <SelectActivity>
                             <label htmlFor="selectbox">Exercicio</label>
                              <Select options={exerciseList1} id="selectbox" instanceId="selectbox" styles={styledSelect(themeContext)} defaultValue={exerciseList1[0]} onChange={(exercise)=>setChosenExercise(exercise?.label)} />
                         </SelectActivity>
+                        {/* SELECTED DATE */}
                         <SelectDate>
                             <label htmlFor="">Data</label>
                             <Datetime dateFormat="DD/MM/YYYY" value={dateActivity} timeFormat={false} 
                              onChange={({_d}: any)=>setDateActivity(_d)}  />
                         </SelectDate>
                     </div>
+                        {/* SERIES */}
                         <span>
                             <label htmlFor="series">Series</label>
                             <input type="text" placeholder="4" id="series" {...register('series')}/>
                         </span>
                     <div>
+                        {/* REPETITIONS */}
                         <span>
                             <label htmlFor="repetitions">Repetições</label>
-                            <NumberFormat id="repetitions" format="##, ##, ##, ##" mask="_" placeholder='25, 15, 15, 15'  {...register('repetitions')}/>
+                            <NumberFormat id="repetitions" format="##, ##, ##, ##" mask="_" placeholder='20, 15, 15, 10'  {...register('repetitions')}/>
                         </span>
+                        {/* WEIGHT */}
                         <span>
                             <label htmlFor="weight">Carga (kg)</label>
                             <input type="number" placeholder="12" id="weight" {...register('weight')}/>
                         </span>
                     </div>
+                    {/* INTERVAL */}
                     <span>
                         <label htmlFor="interval">Intervalo (segundos)</label>
                         <input type="text" placeholder="120" id="interval" {...register('interval')}/>
                     </span>
 
-                
-
                 </ActivityForm>
                     <GroupButtons>
-                        <Button variant="contained" color="quaternary">Iniciar treino</Button>
+                        <Button onClick={()=>setActiveModal(true)} variant="contained" color="quaternary">Iniciar treino</Button>
                         <Button form="form-activity" variant="contained">Salvar treino</Button>
                     </GroupButtons>
             </ContainerMain>

@@ -1,40 +1,99 @@
-import { Container, ImageContainer, CircleTime } from "@styles/new-activity/modalActivity"
+import { Button } from "@styles/buttons";
+import { Container, ImageContainer, CircleTime, GroupButtons } from "@styles/new-activity/modalActivity"
 import Image from "next/image"
+import { useEffect, useState } from "react";
+import { CountdownCircleTimer } from 'react-countdown-circle-timer'
 
 interface iModalActivity {
-
+    maxSeries: number
+    secondsInterval: number
+    repetitions: number
+    activeModal: (active: boolean) => void
 }
 
-const ModalActivity = (): JSX.Element => {
+interface exemple {
+    remainingTime: number
+}
+
+const ModalActivity = ({maxSeries, repetitions, secondsInterval, activeModal}: iModalActivity): JSX.Element => {
+ 
+    const [isPlayingInterval, setIsPlayingInterval] = useState<boolean>(false)
+    const [seriesDone, setSeries] = useState<number>(0)
+
+
+    // CIRCLE TIMER INTERVAL
+    function renderTime ({ remainingTime }: exemple) {
+        const minutes = Math.floor((remainingTime % 3600) / 60);
+        const seconds = remainingTime % 60;
+
+        // FINISH COUNT
+        if (remainingTime === 0) {
+            return <div>00:00</div>
+        }
+
+        return (
+            <div>
+                <div>{minutes < 10 ? '0' + minutes : minutes}:{seconds < 10 ? '0' + seconds : seconds}</div>
+            </div>
+        )
+    }
+
     return(<>
     <Container>
         <div>
+            {/* IMAGE ACTIVITY */}
             <ImageContainer>
                 <Image src={'/img/activities/agachamento-com-supino.gif'}  width={235} height={235} alt={'Exercicio'} />
             </ImageContainer>
+
+            {/* INFO */}
             <span>
-                <CircleTime style={{width: '70px', height: '70px'}}>
-                    <svg height="70" width="70">
-                        <circle cx="35" cy="35" r="32" stroke="black"/>
-                        <circle cx="35" cy="35" r="32"/>
-                    </svg>
-                    <p>10</p>
-                </CircleTime>
-                <CircleTime style={{width: '80px', height: '80px'}}>
-                    <svg height="80" width="80">
-                        <circle cx="40" cy="40" r="38" stroke="black"/>
-                        <circle cx="40" cy="40" r="38"/>
-                    </svg>
-                    <p>10</p>
-                </CircleTime>
-                <CircleTime style={{width: '70px', height: '70px'}}>
-                    <svg height="70" width="70">
-                        <circle cx="35" cy="35" r="32" stroke="black"/>
-                        <circle cx="35" cy="35" r="32"/>
-                    </svg>
-                    <p>10</p>
-                </CircleTime>
+                <div> {/* REPETITIONS */}
+                    <CircleTime color={'quaternary'} size={'65px'}>
+                        <svg width="65" height="65">
+                            <path d="m 32.5,2 a 30.5,30.5 0 1,0 0,61 a 30.5,30.5 0 1,0 0,-61" fill="none" strokeWidth="4"/>
+                            <path d="m 32.5,2 a 30.5,30.5 0 1,0 0,61 a 30.5,30.5 0 1,0 0,-61" fill="none" strokeLinecap="round" strokeWidth="4"/>
+                        </svg>
+                        <p>{repetitions}</p>
+                    </CircleTime>
+                    <p>Repetições</p>
+                </div>
+                <div> {/* INTERVAL */}
+                    <CircleTime color={'tertiary'} size={'80px'}>
+                        <CountdownCircleTimer 
+                            isPlaying={isPlayingInterval}
+                            duration={secondsInterval} 
+                            colors={'#009FFF'} 
+                            size={80} 
+                            strokeWidth={4}
+                            onComplete={() => ({ shouldRepeat: true, delay: 0.5 })}
+                            onUpdate={(time: number)=>{
+                                time == secondsInterval && (setIsPlayingInterval(false))
+                                time == 0 && (setSeries(seriesDone + 1))
+                            }}>
+                            {renderTime}
+                        </CountdownCircleTimer>
+                    </CircleTime>
+                    <p>Intervalo</p>
+                </div>
+                <div> {/* SERIES */}
+                    <CircleTime color={'secondary'} size={'65px'}>
+                        <svg width="65" height="65" >
+                            <path d="m 32.5,2 a 30.5,30.5 0 1,0 0,61 a 30.5,30.5 0 1,0 0,-61" fill="none" strokeWidth="4"/>
+                            <path d="m 32.5,2 a 30.5,30.5 0 1,0 0,61 a 30.5,30.5 0 1,0 0,-61" fill="none" strokeLinecap="round" strokeWidth="4" strokeDasharray="191.6" 
+                            strokeDashoffset={seriesDone === 0 ? 191.6 : (seriesDone >= maxSeries ? 0 : 191.6*(1-(seriesDone/maxSeries)) )}/>
+                        </svg>
+                    <p>{seriesDone}/{maxSeries}</p>
+                    </CircleTime>
+                    <p>Séries</p>
+                </div>
             </span>
+
+            {/* GROUP BUTTONS */}
+            <GroupButtons>
+                <Button variant="contained" color="tertiary" onClick={()=>setIsPlayingInterval(true)}>Iniciar intervalo</Button>
+                <Button onClick={()=>activeModal(false)} variant="contained" color="secondary">Finalizar</Button>
+            </GroupButtons>
         </div>
     </Container>
     </>)
