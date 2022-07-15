@@ -111,7 +111,8 @@ const ContainerProvider = ({children}: iContainerProvider) => {
     // UPDATE INFORMATION USER
     useEffect( () => {
         const { 'nextfit-token': token } = parseCookies()
-
+        
+        // VERIFY COOKIE AUTH
         if(token){
             api.get(`/users/token`)
             // RESPONSE

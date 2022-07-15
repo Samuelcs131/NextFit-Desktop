@@ -1,7 +1,8 @@
+import Router from "next/router"
 import { useContext, useEffect, useState } from "react"
 import Image from "next/image"
 import { parseCookies } from "nookies"
-import { GetServerSideProps, NextPage } from "next"
+import { GetServerSideProps, GetStaticProps, NextPage } from "next"
 import dynamic from 'next/dynamic'  
 import { ThemeContext } from "styled-components"
 // COMPONENTS
@@ -99,6 +100,10 @@ const Dashboard: NextPage = () => {
         if(userDateGlobal){
             setLoading(false)
         }
+
+        // VERIFY COOKIE AUTH
+        const { ['nextfit-token']: token } = parseCookies()
+        if(!token){ Router.push('/login') }
     },[userDateGlobal])
 
     return(<>
@@ -164,21 +169,10 @@ const Dashboard: NextPage = () => {
     </>)
 }
 
-export const getServerSideProps: GetServerSideProps = async (context) => {
-    const { ['nextfit-token']: token } = parseCookies(context)
-  
-    // VERIFY COOKIE AUTH
-    if(!token){
-        return {
-            redirect: {
-                destination: '/login',
-                permanent: false
-            }
-        }
-    }
-
-    return{
-        props: {}
+export const getStaticProps: GetStaticProps = (ctx) => {
+ 
+    return {
+        props: {}, // will be passed to the page component as props
     }
 }
 

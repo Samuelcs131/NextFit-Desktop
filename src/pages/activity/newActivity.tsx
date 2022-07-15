@@ -1,4 +1,4 @@
-import { NextPage } from "next"
+import { GetStaticProps, NextPage } from "next"
 import { useContext, useEffect, useState } from "react"
 import * as yup from 'yup'
 import { yupResolver } from "@hookform/resolvers/yup"
@@ -7,6 +7,7 @@ import { InputError } from "@styles/layoutPageInitial"
 import Datetime from 'react-datetime'
 import Select from "react-select"
 import NumberFormat from "react-number-format"
+import { parseCookies } from "nookies"
 // COMPONENTS
 import HeadPage from "@components/HeadPage"
 import { MenuIcon } from "@components/Icons"
@@ -23,6 +24,7 @@ import { yupErrosPtBr } from "@utils/yupErrosPtBr"
 import { ActivityForm, GroupButtons, SelectActivity, SelectDate, styledSelect } from "@styles/new-activity/newActivity"
 import { Button } from "@styles/buttons"
 import ModalActivity from "@components/new-activity/ModalActivity"
+import Router from "next/router"
 
 const NewActivity: NextPage = () => {
     // DATA
@@ -44,6 +46,7 @@ const NewActivity: NextPage = () => {
 
     // ACTIVE MODAL
     const [activeModal, setActiveModal] = useState<boolean>(false)
+    const [activeBottunModal, setActiveBottunModal] = useState<boolean>(false)
 
     // SELECT DATE
     const [dateActivity, setDateActivity] =  useState<Date>(new Date())
@@ -71,21 +74,43 @@ const NewActivity: NextPage = () => {
     const [chosenExercise, setChosenExercise] = useState<string>()
 
     // FORM
-    const { getValues, control, register, handleSubmit, formState: { errors } } = useForm({resolver: yupResolver(validationForm)})
+    const { watch, getValues, control, register, handleSubmit, formState: { errors } } = useForm({resolver: yupResolver(validationForm)})
 
     // SUBMIT FORM
     async function onSubmit(data: any){
-        console.log(data) 
+        console.log(data)
     }
 
     // ACTIVE MODAL ACTIVITIES
     function activeModalActivies(){
-        let repetitions: number = Number((getValues('repetitions') || '').split(',')[0])
+        let repetitionsModal: number = Number((getValues('repetitions') || '').split(',')[0])
         setActiveModal(true)
         setSeriesMax(getValues('series') || 0)
-        setRepetitions(repetitions || 0)
+        setRepetitions(repetitionsModal || 0)
         setSecondsInterval(getValues('interval') || 0)
     }
+
+    // VERIFY INPUTS MODAL ACTIVITY
+    function verifyInputsModal() {
+        let repetitionsModal: number = Number((watch(['repetitions'])[0] || '').split(',')[0])
+        let seriesMaxModal: number = Number(watch(['series'])[0] || 0)
+        let secondsIntervalModal: number = Number(watch(['interval'])[0] || 0)
+        const inputs = [repetitionsModal, seriesMaxModal, secondsIntervalModal]
+
+        if(!inputs.includes(0)){
+            setActiveBottunModal(true)
+        } else {
+            setActiveBottunModal(false)
+        }
+    }
+
+    useEffect(()=>{
+        verifyInputsModal()
+
+        // VERIFY COOKIE AUTH
+        const { ['nextfit-token']: token } = parseCookies()
+        if(!token){ Router.push('/login') }
+    })
 
     return(<>
     {/* LOADING */}
@@ -125,10 +150,10 @@ const NewActivity: NextPage = () => {
                              onChange={({_d}: any)=>setDateActivity(_d)} />
                         </SelectDate>
                     </div>
-                        {/* SERIES */}
                         <span>
+                            {/* SERIES */}
                             <label htmlFor="series">Series</label>
-                            <input type="text" placeholder="4" id="series" {...register('series')}/>
+                            <input type="number" placeholder="4" id="series" {...register('series')}/>
                             {errors?.series?.type &&(<InputError>{errors.series.message}</InputError>)}
                         </span>
                     <div>
@@ -140,15 +165,15 @@ const NewActivity: NextPage = () => {
                             }} />
                             {errors?.repetitions?.type &&(<InputError>{errors.repetitions.message}</InputError>)}
                         </span>
-                        {/* INTERVAL */}
                         <span>
+                            {/* INTERVAL */}
                             <label htmlFor="interval">Intervalo (segundos)</label>
                             <input type="number" placeholder="120" id="interval" {...register('interval')}/>
                             {errors?.interval?.type &&(<InputError>{errors.interval.message}</InputError>)}
                         </span>
                     </div>
-                    {/* WEIGHT */}
                     <span>
+                        {/* WEIGHT */}
                         <label htmlFor="weight">Carga (kg)</label>
                         <input type="number" placeholder="12" id="weight" {...register('weight')}/>
                         {errors?.weight?.type &&(<InputError>{errors.weight.message}</InputError>)}
@@ -157,7 +182,7 @@ const NewActivity: NextPage = () => {
                 </ActivityForm>
                     <GroupButtons>
                         {/* BUTTON ACTIVITY */}
-                        <Button onClick={()=>activeModalActivies()} variant="contained" color="quaternary">Iniciar treino</Button>
+                        <Button onClick={()=>activeModalActivies()} variant="contained" color="quaternary" disabled={!activeBottunModal}>Iniciar treino</Button>
                         {/* BUTTON SUBMIT */}
                         <Button form="form-activity" variant="contained">Salvar treino</Button>
                     </GroupButtons>
@@ -166,6 +191,13 @@ const NewActivity: NextPage = () => {
         </div>
     </Content>
     </>)
+}
+
+export const getStaticProps: GetStaticProps = (ctx) => {
+ 
+    return {
+        props: {}, // will be passed to the page component as props
+    }
 }
 
 export default NewActivity

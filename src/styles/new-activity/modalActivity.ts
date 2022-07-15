@@ -10,9 +10,11 @@ export const Container = styled.div`
 
     & > div{
         position: relative;
+        margin: 0 auto;
         margin-top: 180px;
         padding-top: 105px;
         width: 100%;
+        max-width: 440px;
         height: 480px;
         background-color: ${({theme})=>theme.pallete.background.default};
         display: flex;
@@ -22,7 +24,7 @@ export const Container = styled.div`
             display: flex;
             justify-content: space-evenly;
             align-items: center;
-
+            
             & > div {
                 display: flex;
                 flex-direction: column;
@@ -31,6 +33,14 @@ export const Container = styled.div`
             }
         }
     }
+    
+// MD - 768px
+@media screen and (min-width: ${({theme})=>theme.breakpoints.value.md}) {
+    & > div{
+        max-width: 440px;
+        border-radius: 90px;
+    }
+}
 `
 
 export const GroupButtons = styled.div`

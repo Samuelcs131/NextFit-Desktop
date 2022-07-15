@@ -21,7 +21,6 @@ const ModalActivity = ({maxSeries, repetitions, secondsInterval, activeModal}: i
 
     // BUTTON START INTERVAL
     const [activeButtonStartInterval, setActiveButtonStartInterval] = useState<boolean>(false)
-    const buttonStartInterval = useRef<HTMLButtonElement>(null)
 
     // CIRCLE TIMER INTERVAL
     function renderTime ({ remainingTime }: exemple) {
@@ -88,7 +87,7 @@ const ModalActivity = ({maxSeries, repetitions, secondsInterval, activeModal}: i
                                 if(activeButtonStartInterval){
                                     time == 0 && (setSeries(seriesDone + 1))
                                 }
-                            }}>
+                            }}> 
                             {renderTime}
                         </CountdownCircleTimer>
                     </CircleTime>

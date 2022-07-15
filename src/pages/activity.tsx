@@ -13,6 +13,8 @@ import { iUser } from "src/@types/globalState"
 // GLOBAL STATE
 import { DataContext } from "@store/GlobalState"
 import Link from "next/link";
+import { parseCookies } from "nookies";
+import Router from "next/router";
 
 const Activity: NextPage = () => {
     // LOADING
@@ -28,8 +30,12 @@ const Activity: NextPage = () => {
         // LOADING
         setLoading(true)
         if(userDateGlobal){ setLoading(false) }
-    },[userDateGlobal])
 
+        // VERIFY COOKIE AUTH
+        const { ['nextfit-token']: token } = parseCookies()
+        if(!token){ Router.push('/login') }
+    },[userDateGlobal])
+ 
     return(<>
         {/* LOADING */}
         {loading === true && <LoadingPage/>}

@@ -20,6 +20,8 @@ import { DataContext } from "@store/GlobalState"
 import { iUser } from "src/@types/globalState"
 // UTILS
 import { yupErrosPtBr } from "@utils/yupErrosPtBr"
+import { parseCookies } from "nookies";
+import Router from "next/router";
 
 const Profile: NextPage = () => {
     // LOADING
@@ -56,6 +58,10 @@ const Profile: NextPage = () => {
         // LOADING
         setLoading(true)
         if(userDateGlobal){ setLoading(false) }
+
+        // VERIFY COOKIE AUTH
+        const { ['nextfit-token']: token } = parseCookies()
+        if(!token){ Router.push('/login') }
     },[userDateGlobal])
 
     return(<>
