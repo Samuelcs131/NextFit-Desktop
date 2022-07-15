@@ -80,7 +80,7 @@ const Register: NextPage = () => {
           </Logo>
           </Link>
 
-          <form id='form-register' onSubmit={handleSubmit(onSubmit)}>
+          <form id='form-register' onChange={handleSubmit(onSubmit)}>
             {/* NAME */}
             <input {...register('name')} type='text' placeholder='Nome'/>
             {errors?.name?.type &&(<InputError>{errors.name.message}</InputError>)}
@@ -101,7 +101,7 @@ const Register: NextPage = () => {
             <Controller control={control} name='height' render={({field})=>{
               return <NumberFormat {...field} format="###" mask="_" placeholder='Altura (centimetros)' />
             }}
-            /> 
+            />
             {errors?.height?.type &&(<InputError>{errors.height.message}</InputError>)}
             {/* WEIGHT */}
             <input {...register('weight')} type="number" placeholder='Peso (kilo)' />

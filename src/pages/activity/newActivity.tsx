@@ -2,9 +2,11 @@ import { NextPage } from "next"
 import { useContext, useEffect, useState } from "react"
 import * as yup from 'yup'
 import { yupResolver } from "@hookform/resolvers/yup"
-import { useForm } from "react-hook-form"
+import { Controller, useForm } from "react-hook-form"
 import { InputError } from "@styles/layoutPageInitial"
 import Datetime from 'react-datetime'
+import Select from "react-select"
+import NumberFormat from "react-number-format"
 // COMPONENTS
 import HeadPage from "@components/HeadPage"
 import { MenuIcon } from "@components/Icons"
@@ -19,10 +21,6 @@ import { ThemeContext } from "styled-components"
 // UTILS
 import { yupErrosPtBr } from "@utils/yupErrosPtBr"
 import { ActivityForm, GroupButtons, SelectActivity, SelectDate, styledSelect } from "@styles/new-activity/newActivity"
-import Select from "react-select"
-import { themeSelect } from "@components/dashboard/config/select"
-import { iActivityListSelected } from "src/@types/components"
-import NumberFormat from "react-number-format"
 import { Button } from "@styles/buttons"
 import ModalActivity from "@components/new-activity/ModalActivity"
 
@@ -49,16 +47,21 @@ const NewActivity: NextPage = () => {
 
     // SELECT DATE
     const [dateActivity, setDateActivity] =  useState<Date>(new Date())
+    
+    // DATA ACTIVITY
+    const [seriesMax, setSeriesMax] = useState<number>(0)
+    const [repetitions, setRepetitions] = useState<number>(0)
+    const [secondsInterval, setSecondsInterval] = useState<number>(0)
+  
     // SHOW MENU
     const [showMenu, setShowMenu] = useState<boolean>(false)
 
     // VALIDATION FORM
     const validationForm = yup.object({
-        name: yup.string().min(4).max(16).required().default('robertin'),
-        lastName: yup.string().min(4).max(16).required(),
-        email: yup.string().email().max(50).required(),
-        height: yup.number().min(1).max(300).integer().required().default(0).typeError('somente númerico'),
-        weight: yup.number().min(1).max(200).integer().required().default(0).typeError('somente númerico')
+        series: yup.number().min(1).max(200).integer().required().default(0).typeError('somente númerico'),
+        repetitions: yup.string().required(),
+        weight: yup.number().min(1).max(200).integer().required().default(0).typeError('somente númerico'),
+        interval: yup.number().min(1).max(200).integer().required().default(0).typeError('somente númerico')
     }) 
     
     // CUSTOM ERROR
@@ -68,21 +71,29 @@ const NewActivity: NextPage = () => {
     const [chosenExercise, setChosenExercise] = useState<string>()
 
     // FORM
-    const { register, handleSubmit, formState: { errors } } = useForm({resolver: yupResolver(validationForm)})
+    const { getValues, control, register, handleSubmit, formState: { errors } } = useForm({resolver: yupResolver(validationForm)})
 
     // SUBMIT FORM
     async function onSubmit(data: any){
         console.log(data) 
     }
 
- 
+    // ACTIVE MODAL ACTIVITIES
+    function activeModalActivies(){
+        let repetitions: number = Number((getValues('repetitions') || '').split(',')[0])
+        setActiveModal(true)
+        setSeriesMax(getValues('series') || 0)
+        setRepetitions(repetitions || 0)
+        setSecondsInterval(getValues('interval') || 0)
+    }
+
     return(<>
     {/* LOADING */}
     {loading === true && <LoadingPage/>}
     {/* HEAD PAGE */}
     <HeadPage titlePage="Atividade"/>
     {/* MODAL ACTIVITY */}
-    {activeModal && <ModalActivity activeModal={setActiveModal} maxSeries={4} repetitions={15} secondsInterval={90} />}
+    {activeModal && <ModalActivity activeModal={setActiveModal} maxSeries={seriesMax} repetitions={repetitions} secondsInterval={secondsInterval} />}
 
     <Content>
         <Menu showMenu={showMenu} setPropsShowMenu={setShowMenu}/>
@@ -106,39 +117,48 @@ const NewActivity: NextPage = () => {
                             <label htmlFor="selectbox">Exercicio</label>
                              <Select options={exerciseList1} id="selectbox" instanceId="selectbox" styles={styledSelect(themeContext)} defaultValue={exerciseList1[0]} onChange={(exercise)=>setChosenExercise(exercise?.label)} />
                         </SelectActivity>
+
                         {/* SELECTED DATE */}
                         <SelectDate>
                             <label htmlFor="">Data</label>
                             <Datetime dateFormat="DD/MM/YYYY" value={dateActivity} timeFormat={false} 
-                             onChange={({_d}: any)=>setDateActivity(_d)}  />
+                             onChange={({_d}: any)=>setDateActivity(_d)} />
                         </SelectDate>
                     </div>
                         {/* SERIES */}
                         <span>
                             <label htmlFor="series">Series</label>
                             <input type="text" placeholder="4" id="series" {...register('series')}/>
+                            {errors?.series?.type &&(<InputError>{errors.series.message}</InputError>)}
                         </span>
                     <div>
-                        {/* REPETITIONS */}
                         <span>
+                            {/* REPETITIONS */}
                             <label htmlFor="repetitions">Repetições</label>
-                            <NumberFormat id="repetitions" format="##, ##, ##, ##" mask="_" placeholder='20, 15, 15, 10'  {...register('repetitions')}/>
+                            <Controller name='repetitions' control={control} render={({field})=>{
+                                return <NumberFormat  {...field} id="repetitions" format="##, ##, ##, ##" mask="_" placeholder='20, 15, 15, 10'/>
+                            }} />
+                            {errors?.repetitions?.type &&(<InputError>{errors.repetitions.message}</InputError>)}
                         </span>
-                        {/* WEIGHT */}
+                        {/* INTERVAL */}
                         <span>
-                            <label htmlFor="weight">Carga (kg)</label>
-                            <input type="number" placeholder="12" id="weight" {...register('weight')}/>
+                            <label htmlFor="interval">Intervalo (segundos)</label>
+                            <input type="number" placeholder="120" id="interval" {...register('interval')}/>
+                            {errors?.interval?.type &&(<InputError>{errors.interval.message}</InputError>)}
                         </span>
                     </div>
-                    {/* INTERVAL */}
+                    {/* WEIGHT */}
                     <span>
-                        <label htmlFor="interval">Intervalo (segundos)</label>
-                        <input type="text" placeholder="120" id="interval" {...register('interval')}/>
+                        <label htmlFor="weight">Carga (kg)</label>
+                        <input type="number" placeholder="12" id="weight" {...register('weight')}/>
+                        {errors?.weight?.type &&(<InputError>{errors.weight.message}</InputError>)}
                     </span>
 
                 </ActivityForm>
                     <GroupButtons>
-                        <Button onClick={()=>setActiveModal(true)} variant="contained" color="quaternary">Iniciar treino</Button>
+                        {/* BUTTON ACTIVITY */}
+                        <Button onClick={()=>activeModalActivies()} variant="contained" color="quaternary">Iniciar treino</Button>
+                        {/* BUTTON SUBMIT */}
                         <Button form="form-activity" variant="contained">Salvar treino</Button>
                     </GroupButtons>
             </ContainerMain>
