@@ -19,7 +19,8 @@ const Menu = ({ setPropsShowMenu, showMenu }: iMenu): JSX.Element => {
     const { pathname } = useRouter()
 
     function activeMenuList(item: string){
-        if(pathname === item){
+
+        if(pathname.split('/')[1] === item){
             return true
         } else {
             return false
@@ -38,7 +39,7 @@ const Menu = ({ setPropsShowMenu, showMenu }: iMenu): JSX.Element => {
                 </Link>
                 <ListMenu>
                     <ul>
-                        <ItemList active={activeMenuList('/dashboard')}>
+                        <ItemList active={activeMenuList('dashboard')}>
                             <Link href={'/dashboard'}>
                             <a>
                                 <DashboardIcon/>
@@ -46,7 +47,7 @@ const Menu = ({ setPropsShowMenu, showMenu }: iMenu): JSX.Element => {
                             </a>
                             </Link>
                         </ItemList>
-                        <ItemList active={activeMenuList('/activity')}>
+                        <ItemList active={activeMenuList('activity')}>
                             <Link href={'/activity'}>
                             <a>
                                 <ActivityIcon/>
@@ -54,7 +55,7 @@ const Menu = ({ setPropsShowMenu, showMenu }: iMenu): JSX.Element => {
                             </a>
                             </Link>
                         </ItemList>
-                        <ItemList active={activeMenuList('/profile')}>
+                        <ItemList active={activeMenuList('profile')}>
                             <Link href={'/profile'}>
                             <a>
                                 <ProfileIcon/>
@@ -62,7 +63,7 @@ const Menu = ({ setPropsShowMenu, showMenu }: iMenu): JSX.Element => {
                             </a>
                             </Link>
                         </ItemList>
-                        <ItemList active={activeMenuList('/settings')}>
+                        <ItemList active={activeMenuList('settings')}>
                             <Link href={'/settings'}>
                             <a>
                                 <SettingsIcon/>
@@ -84,6 +85,6 @@ const Menu = ({ setPropsShowMenu, showMenu }: iMenu): JSX.Element => {
         <CloseMenu onClick={()=>setPropsShowMenu(!showMenu)}/>
     </ContainerMenu>)
 }
-
+ 
 export default Menu
 

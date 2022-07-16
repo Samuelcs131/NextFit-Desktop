@@ -59,14 +59,20 @@ const ContainerProvider = ({children}: iContainerProvider) => {
     // LOGOUT
     async function logOut() {
         try{
-            destroyCookie(undefined, 'nextfit-token')
+            destroyCookie(null, 'nextfit-token')
             setUserDateGlobal(null)
-            Router.push('/login')
+
+            const { 'nextfit-token': token } = parseCookies()
+
+            if(!token){
+                Router.push('/login')
+            }
+
         } catch(error){
             console.log(error)
         }
     }
-
+ 
     // REGISTER USER
     async function registerUser(user: iInputFormRegister, password: string | undefined, setLoadingPage: any) {
         try{

@@ -11,7 +11,7 @@ export interface iHeadPage {
 // MENU
 export interface iMenu {
     setPropsShowMenu: any 
-    showMenu: boolean
+    showMenu: boolean 
 }
 
 // PAGE NEW ACTIVITY - MODAL ACTIVITY

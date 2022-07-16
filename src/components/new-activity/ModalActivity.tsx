@@ -6,6 +6,7 @@ import { Button } from "@styles/buttons"
 import { Container, ImageContainer, CircleTime, GroupButtons } from "@styles/new-activity/modalActivity"
 // TYPES
 import { iModalActivity, iRenderTime } from "src/@types/components"
+import LoadingImg from "./LoadingImg"
 
 
 
@@ -13,6 +14,11 @@ import { iModalActivity, iRenderTime } from "src/@types/components"
 const ModalActivity = ({ options: {maxSeries, repetitions, secondsInterval, setActiveModal, chosenExercise}}: iModalActivity): JSX.Element => {
     const [isPlayingInterval, setIsPlayingInterval] = useState<boolean>(false)
     const [seriesDone, setSeries] = useState<number>(0)
+
+    // LOADING IMG
+    const [loadedImg, setLoadedImg] = useState<boolean>(false)
+    const loadingImgStyle = { display: loadedImg ? 'none' : 'block' }
+    const displayImgStyle = { display: loadedImg ? 'block' : 'none' }
 
     // BUTTON START INTERVAL
     const [activeButtonStartInterval, setActiveButtonStartInterval] = useState<boolean>(false)
@@ -53,7 +59,10 @@ const ModalActivity = ({ options: {maxSeries, repetitions, secondsInterval, setA
         <div>
             {/* IMAGE ACTIVITY */}
             <ImageContainer>
-                <Image src={`/img/activities/${chosenExercise}.gif`}  width={235} height={235} alt={'Exercicio'} />
+                <span style={displayImgStyle}>
+                    <Image src={`/img/activities/${chosenExercise}.gif`} onLoad={() => setLoadedImg(true)} width={235} height={235} alt={'Exercicio'} />
+                </span>
+                <LoadingImg style={loadingImgStyle} />
             </ImageContainer>
 
             {/* INFO */}
