@@ -14,6 +14,21 @@ export interface iMenu {
     showMenu: boolean
 }
 
+// PAGE NEW ACTIVITY - MODAL ACTIVITY
+export interface iModalActivity {
+    options: {
+        maxSeries: number
+        secondsInterval: number
+        repetitions: number
+        setActiveModal: (active: boolean) => void
+        chosenExercise?: string
+    }
+}
+export interface iRenderTime {
+    remainingTime: number
+}
+
+
 // PAGE DASHBOARD
 export interface iActivityListSelected {
     value: string,

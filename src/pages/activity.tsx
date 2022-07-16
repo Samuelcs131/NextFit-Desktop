@@ -1,5 +1,8 @@
-import { NextPage } from "next";
 import { useContext, useEffect, useState } from "react"
+import Link from "next/link"
+import { parseCookies } from "nookies"
+import Router from "next/router"
+import { GetStaticProps, NextPage } from "next"
 // COMPONENTS
 import HeadPage from "@components/HeadPage"
 import { MenuIcon } from "@components/Icons"
@@ -12,19 +15,16 @@ import { Content, TitleAndMenu } from "@styles/layout"
 import { iUser } from "src/@types/globalState"
 // GLOBAL STATE
 import { DataContext } from "@store/GlobalState"
-import Link from "next/link";
-import { parseCookies } from "nookies";
-import Router from "next/router";
 
 const Activity: NextPage = () => {
     // LOADING
-    const [loading, setLoading] = useState<boolean>(false);
+    const [loading, setLoading] = useState<boolean>(false)
 
     // DATE USER
     const userDateGlobal: iUser | null = useContext(DataContext).userDateGlobal
 
     // SHOW MENU
-    const [showMenu, setShowMenu] = useState<boolean>(false);
+    const [showMenu, setShowMenu] = useState<boolean>(false)
 
     useEffect(()=>{ 
         // LOADING
@@ -61,6 +61,13 @@ const Activity: NextPage = () => {
             </div>
         </Content>
     </>)
+}
+
+export const getStaticProps: GetStaticProps = (ctx) => {
+ 
+    return {
+        props: {}, // will be passed to the page component as props
+    }
 }
 
 export default Activity

@@ -1,3 +1,4 @@
+import Router from "next/router"
 import { GetStaticProps, NextPage } from "next"
 import { useContext, useEffect, useState } from "react"
 import * as yup from 'yup'
@@ -13,30 +14,31 @@ import HeadPage from "@components/HeadPage"
 import { MenuIcon } from "@components/Icons"
 import LoadingPage from "@components/Loading"
 import Menu from "@components/Menu"
+import ModalActivity from "@components/new-activity/ModalActivity"
 // STYLES
 import "react-datetime/css/react-datetime.css"
 import { ContainerMain } from "@styles/container"
 import { Content, TitleAndMenu } from "@styles/layout"
+import { ActivityForm, GroupButtons, SelectActivity, SelectDate, styledSelect } from "@styles/new-activity/newActivity"
+import { Button } from "@styles/buttons"
 // GLOBAL STATE
 import { ThemeContext } from "styled-components" 
 // UTILS
 import { yupErrosPtBr } from "@utils/yupErrosPtBr"
-import { ActivityForm, GroupButtons, SelectActivity, SelectDate, styledSelect } from "@styles/new-activity/newActivity"
-import { Button } from "@styles/buttons"
-import ModalActivity from "@components/new-activity/ModalActivity"
-import Router from "next/router"
+// SERVICES
+import { api } from "@services/api"
+// TYPES
+import { iExercise, iNewActivity } from "src/@types/pages"
 
-const NewActivity: NextPage = () => {
+
+const NewActivity: NextPage<iNewActivity> = ( { exercises } ) => {
     // DATA
-    const exerciseList1 = [
-        { value: 'Supino', label: 'Supino' },
-        { value: 'Rosca direta', label: 'Rosca direta' },
-        { value: 'Voador', label: 'Voador' },
-        { value: 'Desenvolvimento', label: 'Desenvolvimento' },
-        { value: 'Remada unilateral', label: 'Remada unilateral' },
-        { value: 'Costas', label: 'Costas' },
-        { value: 'Triceps puxador', label: 'Triceps puxador' },
-    ]
+    const exerciseList = exercises.map( (exercise: any) => {
+        return({
+            value: exercise.id,
+            label: exercise.name
+        })
+    })
 
     // LOADING
     const [loading, setLoading] = useState<boolean>(false)
@@ -49,10 +51,13 @@ const NewActivity: NextPage = () => {
     const [activeBottunModal, setActiveBottunModal] = useState<boolean>(false)
 
     // SELECT DATE
-    const [dateActivity, setDateActivity] =  useState<Date>(new Date())
-    
+    const [seletedDateActivity, setSelectedDateActivity] =  useState<Date>(new Date())
+
+    // SELECT ACTIVITY
+    const [chosenExercise, setChosenExercise] = useState<string>()
+
     // DATA ACTIVITY
-    const [seriesMax, setSeriesMax] = useState<number>(0)
+    const [maxSeries, setMaxSeries] = useState<number>(0)
     const [repetitions, setRepetitions] = useState<number>(0)
     const [secondsInterval, setSecondsInterval] = useState<number>(0)
   
@@ -61,6 +66,7 @@ const NewActivity: NextPage = () => {
 
     // VALIDATION FORM
     const validationForm = yup.object({
+        activity: yup.object().required(), 
         series: yup.number().min(1).max(200).integer().required().default(0).typeError('somente númerico'),
         repetitions: yup.string().required(),
         weight: yup.number().min(1).max(200).integer().required().default(0).typeError('somente númerico'),
@@ -70,8 +76,6 @@ const NewActivity: NextPage = () => {
     // CUSTOM ERROR
     yup.setLocale(yupErrosPtBr)
 
-    // SELECT ACTIVITY
-    const [chosenExercise, setChosenExercise] = useState<string>()
 
     // FORM
     const { watch, getValues, control, register, handleSubmit, formState: { errors } } = useForm({resolver: yupResolver(validationForm)})
@@ -85,7 +89,7 @@ const NewActivity: NextPage = () => {
     function activeModalActivies(){
         let repetitionsModal: number = Number((getValues('repetitions') || '').split(',')[0])
         setActiveModal(true)
-        setSeriesMax(getValues('series') || 0)
+        setMaxSeries(getValues('series') || 0)
         setRepetitions(repetitionsModal || 0)
         setSecondsInterval(getValues('interval') || 0)
     }
@@ -95,18 +99,23 @@ const NewActivity: NextPage = () => {
         let repetitionsModal: number = Number((watch(['repetitions'])[0] || '').split(',')[0])
         let seriesMaxModal: number = Number(watch(['series'])[0] || 0)
         let secondsIntervalModal: number = Number(watch(['interval'])[0] || 0)
-        const inputs = [repetitionsModal, seriesMaxModal, secondsIntervalModal]
+        let activityModalId: string = watch('activity')?.value || ''
+        let activityModalImg: string = exercises.find( (exercise) => exercise.id === activityModalId)?.img || ''
 
-        if(!inputs.includes(0)){
+        const inputs = [repetitionsModal, seriesMaxModal, secondsIntervalModal, activityModalImg]
+
+        if(!inputs.includes(0) && !inputs.includes('')){
             setActiveBottunModal(true)
+            setChosenExercise(activityModalImg)
         } else {
             setActiveBottunModal(false)
         }
     }
-
+ 
     useEffect(()=>{
+        // VERIFY INPUTS MODAL
         verifyInputsModal()
-
+ 
         // VERIFY COOKIE AUTH
         const { ['nextfit-token']: token } = parseCookies()
         if(!token){ Router.push('/login') }
@@ -118,7 +127,7 @@ const NewActivity: NextPage = () => {
     {/* HEAD PAGE */}
     <HeadPage titlePage="Atividade"/>
     {/* MODAL ACTIVITY */}
-    {activeModal && <ModalActivity activeModal={setActiveModal} maxSeries={seriesMax} repetitions={repetitions} secondsInterval={secondsInterval} />}
+    {activeModal && <ModalActivity options={{setActiveModal, maxSeries, repetitions, secondsInterval, chosenExercise}} />}
 
     <Content>
         <Menu showMenu={showMenu} setPropsShowMenu={setShowMenu}/>
@@ -140,14 +149,18 @@ const NewActivity: NextPage = () => {
                         {/* ACTIVITY */}
                         <SelectActivity>
                             <label htmlFor="selectbox">Exercicio</label>
-                             <Select options={exerciseList1} id="selectbox" instanceId="selectbox" styles={styledSelect(themeContext)} defaultValue={exerciseList1[0]} onChange={(exercise)=>setChosenExercise(exercise?.label)} />
+                            <Controller name='activity' control={control} render={({field})=>{
+                                return (<Select {...field} options={exerciseList} id="selectbox" instanceId="selectbox"  styles={styledSelect(themeContext)} />)
+                            }} />
+                            {errors?.activity?.type &&(<InputError>{errors.activity.message}</InputError>)}
                         </SelectActivity>
 
                         {/* SELECTED DATE */}
                         <SelectDate>
-                            <label htmlFor="">Data</label>
-                            <Datetime dateFormat="DD/MM/YYYY" value={dateActivity} timeFormat={false} 
-                             onChange={({_d}: any)=>setDateActivity(_d)} />
+                            <label htmlFor="date">Data</label>
+                           <Datetime dateFormat="DD/MM/YYYY" value={seletedDateActivity} timeFormat={false} 
+                                onChange={({_d}: any)=>setSelectedDateActivity(_d)} /> 
+                            {errors?.date?.type &&(<InputError>{'é um campo obrigatório'}</InputError>)}
                         </SelectDate>
                     </div>
                         <span>
@@ -193,10 +206,10 @@ const NewActivity: NextPage = () => {
     </>)
 }
 
-export const getStaticProps: GetStaticProps = (ctx) => {
- 
+export const getStaticProps: GetStaticProps = async (ctx) => {
+    const exercises: iExercise = await (await api.get('/exercises')).data
     return {
-        props: {}, // will be passed to the page component as props
+        props: { exercises }
     }
 }
 

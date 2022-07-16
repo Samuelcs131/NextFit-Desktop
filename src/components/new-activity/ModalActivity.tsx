@@ -1,21 +1,16 @@
-import { Button } from "@styles/buttons";
-import { Container, ImageContainer, CircleTime, GroupButtons } from "@styles/new-activity/modalActivity"
 import Image from "next/image"
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useState } from "react"
 import { CountdownCircleTimer } from 'react-countdown-circle-timer'
+// STYLES
+import { Button } from "@styles/buttons"
+import { Container, ImageContainer, CircleTime, GroupButtons } from "@styles/new-activity/modalActivity"
+// TYPES
+import { iModalActivity, iRenderTime } from "src/@types/components"
 
-interface iModalActivity {
-    maxSeries: number
-    secondsInterval: number
-    repetitions: number
-    activeModal: (active: boolean) => void
-}
 
-interface exemple {
-    remainingTime: number
-}
 
-const ModalActivity = ({maxSeries, repetitions, secondsInterval, activeModal}: iModalActivity): JSX.Element => {
+
+const ModalActivity = ({ options: {maxSeries, repetitions, secondsInterval, setActiveModal, chosenExercise}}: iModalActivity): JSX.Element => {
     const [isPlayingInterval, setIsPlayingInterval] = useState<boolean>(false)
     const [seriesDone, setSeries] = useState<number>(0)
 
@@ -23,9 +18,9 @@ const ModalActivity = ({maxSeries, repetitions, secondsInterval, activeModal}: i
     const [activeButtonStartInterval, setActiveButtonStartInterval] = useState<boolean>(false)
 
     // CIRCLE TIMER INTERVAL
-    function renderTime ({ remainingTime }: exemple) {
-        const minutes = Math.floor((remainingTime % 3600) / 60);
-        const seconds = remainingTime % 60;
+    function renderTime ({ remainingTime }: iRenderTime) {
+        const minutes = Math.floor((remainingTime % 3600) / 60)
+        const seconds = remainingTime % 60
 
         // FINISH COUNT
         if (remainingTime === 0) {
@@ -52,13 +47,13 @@ const ModalActivity = ({maxSeries, repetitions, secondsInterval, activeModal}: i
             setActiveButtonStartInterval(true)
         }
     },[maxSeries, repetitions, secondsInterval])
-
+    
     return(<>
     <Container>
         <div>
             {/* IMAGE ACTIVITY */}
             <ImageContainer>
-                <Image src={'/img/activities/agachamento-com-supino.gif'}  width={235} height={235} alt={'Exercicio'} />
+                <Image src={`/img/activities/${chosenExercise}.gif`}  width={235} height={235} alt={'Exercicio'} />
             </ImageContainer>
 
             {/* INFO */}
@@ -109,7 +104,7 @@ const ModalActivity = ({maxSeries, repetitions, secondsInterval, activeModal}: i
             {/* GROUP BUTTONS */}
             <GroupButtons>
                 <Button variant="contained" color="tertiary" onClick={()=>playing()} disabled={!activeButtonStartInterval}>Iniciar intervalo</Button>
-                <Button onClick={()=>activeModal(false)} variant="contained" color="secondary">Finalizar</Button>
+                <Button onClick={()=>setActiveModal(false)} variant="contained" color="secondary">Finalizar</Button>
             </GroupButtons>
         </div>
     </Container>

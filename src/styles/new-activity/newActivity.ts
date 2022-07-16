@@ -50,6 +50,7 @@ export const GroupButtons = styled.div`
 export const SelectDate = styled.span`
     & > div{
         input {
+            border-radius: initial;
             padding: initial;
             height: initial;
         }
@@ -106,6 +107,7 @@ export const SelectDate = styled.span`
 // SELECT ACTIVITY
 export const SelectActivity = styled.span`
     input {
+        border-radius: initial;
         padding: initial;
         height: initial;
     }
@@ -122,8 +124,7 @@ export function styledSelect(themeContext: DefaultTheme) {
             backgroundColor: themeContext.pallete.primary.main,
             borderRadius: themeContext.shape.borderRadiusPrimary,
             margin: '0px',
-            padding: '0px',
-            overflow: 'hidden', 
+            padding: '0px', 
         }), 
         option: (styles: any, state: any) => ({
             ...styles,

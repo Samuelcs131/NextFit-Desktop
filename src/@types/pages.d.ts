@@ -16,6 +16,18 @@ export interface iInputFormRegister {
     passwordRepeat?: string
 }
 
+// NEW ACTIVITY
+export interface iNewActivity {
+    exercises: Array<iExercise>
+}
+export interface iExercise {
+    id: string
+    muscle: string
+    members: string
+    name: string
+    img: string
+}
+
 // RESET PASSWORD
 export interface iPassword{
     email: string

@@ -96,16 +96,6 @@ export default createGlobalStyle`
      
      // LG - 992px
      @media screen and (min-width: ${({theme})=>theme.breakpoints.value.lg}) {
-          
-     }
-     
-     // XL - 1200px
-     @media screen and (min-width: ${({theme})=>theme.breakpoints.value.xl}) {
-          h1{ font-size: ${({theme})=>theme.typography.h1.fontSize}; }
-          h2{ font-size: ${({theme})=>theme.typography.h2.fontSize}; }
-          h3{ font-size: ${({theme})=>theme.typography.h3.fontSize}; }
-          h4{ font-size: ${({theme})=>theme.typography.h4.fontSize}; }
-
           /* SCROLL */
           ::-webkit-scrollbar{
                width: 10px;
@@ -119,6 +109,14 @@ export default createGlobalStyle`
                background-color: ${({theme})=>theme.pallete.text.primary};
                border-radius: 2px;
           }
+     }
+     
+     // XL - 1200px
+     @media screen and (min-width: ${({theme})=>theme.breakpoints.value.xl}) {
+          h1{ font-size: ${({theme})=>theme.typography.h1.fontSize}; }
+          h2{ font-size: ${({theme})=>theme.typography.h2.fontSize}; }
+          h3{ font-size: ${({theme})=>theme.typography.h3.fontSize}; }
+          h4{ font-size: ${({theme})=>theme.typography.h4.fontSize}; }
      }
      
      // XXL - 1320px

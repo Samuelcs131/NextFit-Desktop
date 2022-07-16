@@ -6,5 +6,5 @@ const { ['nextfit-token']: token } = parseCookies()
 export const api = axios.create({
     /* baseURL: 'http://localhost:8080', */
     baseURL: 'https://nextfit-api.herokuapp.com',
-    headers: { "Authorization": token, /* "AuthClientServer": tokenAuth */ }
+    headers: { "Authorization": token || '', /* "AuthClientServer": tokenAuth */ }
 })
