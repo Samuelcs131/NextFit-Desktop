@@ -60,7 +60,7 @@ const ModalActivity = ({ options: {maxSeries, repetitions, secondsInterval, setA
             {/* IMAGE ACTIVITY */}
             <ImageContainer>
                 <span style={displayImgStyle}>
-                    <Image src={`/img/activities/${chosenExercise}.gif`} onLoad={() => setLoadedImg(true)} width={235} height={235} alt={'Exercicio'} />
+                    <Image src={`/img/activities/${chosenExercise}.gif`} onLoad={() => setInterval(()=>setLoadedImg(true),1000)} width={235} height={235} alt={'Exercicio'} />
                 </span>
                 <LoadingImg style={loadingImgStyle} />
             </ImageContainer>
