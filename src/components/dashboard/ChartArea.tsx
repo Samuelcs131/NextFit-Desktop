@@ -23,7 +23,7 @@ const ChartArea = ({children,exerciseList,dateActivity,setDateActivity,setChosen
             <div>
                 <SelectDate>
                     <CalendarIcon/>
-                    <Datetime dateFormat="MM-YYYY" value={dateActivity} timeFormat={false} 
+                    <Datetime dateFormat="MM-YYYY" timeFormat={false} value={dateActivity} 
                     onChange={({_d}: any)=>setDateActivity(_d)} />
                 </SelectDate>
                 

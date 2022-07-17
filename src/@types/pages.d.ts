@@ -27,6 +27,14 @@ export interface iExercise {
     name: string
     img: string
 }
+export interface iInputFormNewActivity{
+    activity?: { label?: string, value?: string}
+    date?: any
+    interval?: number
+    repetitions?: string
+    series?: number
+    weight?: number
+}
 
 // RESET PASSWORD
 export interface iPassword{

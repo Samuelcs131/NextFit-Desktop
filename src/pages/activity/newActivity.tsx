@@ -9,6 +9,7 @@ import Datetime from 'react-datetime'
 import Select from "react-select"
 import NumberFormat from "react-number-format"
 import { parseCookies } from "nookies"
+import { ToastContainer } from "react-toastify"
 // COMPONENTS
 import HeadPage from "@components/HeadPage"
 import { MenuIcon } from "@components/Icons"
@@ -17,18 +18,22 @@ import Menu from "@components/Menu"
 import ModalActivity from "@components/new-activity/ModalActivity"
 // STYLES
 import "react-datetime/css/react-datetime.css"
+import 'react-toastify/dist/ReactToastify.min.css'
 import { ContainerMain } from "@styles/container"
 import { Content, TitleAndMenu } from "@styles/layout"
 import { ActivityForm, GroupButtons, SelectActivity, SelectDate, styledSelect } from "@styles/new-activity/newActivity"
 import { Button } from "@styles/buttons"
 // GLOBAL STATE
 import { ThemeContext } from "styled-components" 
+import { DataContext } from "@store/GlobalState"
 // UTILS
 import { yupErrosPtBr } from "@utils/yupErrosPtBr"
 // SERVICES
 import { api } from "@services/api"
+import { typeNotify } from "@services/notify"
 // TYPES
-import { iExercise, iNewActivity } from "src/@types/pages"
+import { iExercise, iInputFormNewActivity, iNewActivity } from "src/@types/pages"
+import moment, { min } from "moment"
 
 
 const NewActivity: NextPage<iNewActivity> = ( { exercises } ) => {
@@ -39,6 +44,8 @@ const NewActivity: NextPage<iNewActivity> = ( { exercises } ) => {
             label: exercise.name
         })
     })
+    // GLOBAL STATE
+    const { signIn, notify, setNotify, userDateGlobal } = useContext(DataContext)
 
     // LOADING
     const [loading, setLoading] = useState<boolean>(false)
@@ -50,11 +57,11 @@ const NewActivity: NextPage<iNewActivity> = ( { exercises } ) => {
     const [activeModal, setActiveModal] = useState<boolean>(false)
     const [activeBottunModal, setActiveBottunModal] = useState<boolean>(false)
 
-    // SELECT DATE
-    const [seletedDateActivity, setSelectedDateActivity] =  useState<Date>(new Date())
-
     // SELECT ACTIVITY
     const [chosenExercise, setChosenExercise] = useState<string>()
+
+    // SELECT DATE ACTIVITY
+    const [selectedDateActivity, setSelectedDateActivity] = useState<Date>(new Date());
 
     // DATA ACTIVITY
     const [maxSeries, setMaxSeries] = useState<number>(0)
@@ -63,26 +70,67 @@ const NewActivity: NextPage<iNewActivity> = ( { exercises } ) => {
   
     // SHOW MENU
     const [showMenu, setShowMenu] = useState<boolean>(false)
-
+ 
     // VALIDATION FORM
     const validationForm = yup.object({
-        activity: yup.object().required(), 
-        series: yup.number().min(1).max(200).integer().required().default(0).typeError('somente númerico'),
-        repetitions: yup.string().required(),
-        weight: yup.number().min(1).max(200).integer().required().default(0).typeError('somente númerico'),
+        activity: yup.object().required(),
+        date: yup.object().required(),
+        series: yup.number().min(1).max(10).integer().required().default(0).typeError('somente númerico'),
+        repetitions: yup.string().max(1).max(39).required(),
+        weight: yup.number().min(0).max(200).integer().required().default(0).typeError('somente númerico'),
         interval: yup.number().min(1).max(200).integer().required().default(0).typeError('somente númerico')
-    }) 
-    
+    })
+
     // CUSTOM ERROR
     yup.setLocale(yupErrosPtBr)
-
 
     // FORM
     const { watch, getValues, control, register, handleSubmit, formState: { errors } } = useForm({resolver: yupResolver(validationForm)})
 
     // SUBMIT FORM
-    async function onSubmit(data: any){
-        console.log(data)
+    async function onSubmit(data: iInputFormNewActivity){
+        const { interval, weight, series} = data
+        const activity: string = data.activity?.value || ''
+        const date: Date = data.date?._d
+        const repetitions: Array<number> | undefined = data.repetitions?.split(',').filter( (value: string) => value.trim() !== '').map( (num: string) => ((Number(num) === NaN) ? 0 : Number(num)))
+
+        // VERIFY ARRAY
+        if(repetitions === undefined || repetitions.includes(NaN)){
+            setNotify({type: 400, message: 'Campo repetições obrigatório!'})
+
+        // VERIFY ACTIVITY
+        } else if(activity === ''){
+            setNotify({type: 400, message: 'Escolha uma atividade!'})
+            
+        // VERIFY LENGTH ACTIVITIES AND SERIES
+        } else if(repetitions.length !== series){
+            setNotify({type: 400, message: 'O número de repetições não corresponde ao de serie!'})
+            
+        // VERIFY DATE
+        } else if(date === undefined) {
+            setNotify({type: 400, message: 'Selecione uma data!'})
+            
+            // REGISTER ACTIVITY
+        } else {
+            setLoading(true)
+            api.post(`/trainings/${userDateGlobal?.id}`,{
+                body: {
+                    "exercisesId": activity,
+                    "weight": weight,
+                    "repetitions": repetitions,
+                    "series": series,
+                    "date": moment(date).format('DD-MM-YYYY'),
+                    "interval": interval
+                }
+            }).then( ()=>{
+                setLoading(false)
+                setNotify({type: 200, message: 'Atividade cadastrada com sucesso!'})
+            }).catch( ({response: {data}}) => {
+                // LOADING
+                setLoading(false)
+                setNotify({type: data.status, message: data.message})
+            })
+        }
     }
 
     // ACTIVE MODAL ACTIVITIES
@@ -111,19 +159,27 @@ const NewActivity: NextPage<iNewActivity> = ( { exercises } ) => {
             setActiveBottunModal(false)
         }
     }
- 
+
     useEffect(()=>{
-        // VERIFY INPUTS MODAL
-        verifyInputsModal()
- 
         // VERIFY COOKIE AUTH
         const { ['nextfit-token']: token } = parseCookies()
         if(!token){ Router.push('/login') }
+        
+        // NOTIFY
+        if(notify !== undefined){
+            typeNotify(notify)
+            setNotify(undefined)
+        }
+        
+        // VERIFY INPUTS MODAL
+        verifyInputsModal()
     })
 
     return(<>
     {/* LOADING */}
     {loading === true && <LoadingPage/>}
+    {/* NOTIFY */}
+    <ToastContainer/>
     {/* HEAD PAGE */}
     <HeadPage titlePage="Atividade"/>
     {/* MODAL ACTIVITY */}
@@ -158,8 +214,11 @@ const NewActivity: NextPage<iNewActivity> = ( { exercises } ) => {
                         {/* SELECTED DATE */}
                         <SelectDate>
                             <label htmlFor="date">Data</label>
-                           <Datetime dateFormat="DD/MM/YYYY" value={seletedDateActivity} timeFormat={false} 
-                                onChange={({_d}: any)=>setSelectedDateActivity(_d)} /> 
+                            <Controller name='date' control={control} render={({field: { onChange, value}})=>{
+                                return( <Datetime dateFormat="DD/MM/YYYY" timeFormat={false} 
+                                onChange={(moment: any)=>{ setSelectedDateActivity(moment._d); return (onChange(moment)) }} value={selectedDateActivity}
+                               />
+                            )}}/>
                             {errors?.date?.type &&(<InputError>{'é um campo obrigatório'}</InputError>)}
                         </SelectDate>
                     </div>
@@ -174,7 +233,7 @@ const NewActivity: NextPage<iNewActivity> = ( { exercises } ) => {
                             {/* REPETITIONS */}
                             <label htmlFor="repetitions">Repetições</label>
                             <Controller name='repetitions' control={control} render={({field})=>{
-                                return <NumberFormat  {...field} id="repetitions" format="##, ##, ##, ##" mask="_" placeholder='20, 15, 15, 10'/>
+                                return <NumberFormat {...field} id="repetitions" format={'##, ##, ##, ## , ##, ##, ##, ##, ##, ##'} mask=" " placeholder='20, 15, 15, 10'/>
                             }} />
                             {errors?.repetitions?.type &&(<InputError>{errors.repetitions.message}</InputError>)}
                         </span>
