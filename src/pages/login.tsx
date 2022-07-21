@@ -4,12 +4,12 @@ import { useForm } from 'react-hook-form'
 import { useContext, useEffect, useState } from 'react'
 import { parseCookies } from 'nookies'
 import { ToastContainer } from 'react-toastify'
+import { yupResolver } from '@hookform/resolvers/yup'
 import * as yup from 'yup'
 // STYLES
 import { Button } from '@styles/buttons'
 import { ButtonGoogle, Container, Content, Divider, InputError, Logo } from '@styles/layoutPageInitial'
 import 'react-toastify/dist/ReactToastify.min.css'
-import { yupResolver } from '@hookform/resolvers/yup'
 // COMPONENTS
 import HeadPage from '@components/HeadPage'
 import LoadingPage from '@components/Loading'

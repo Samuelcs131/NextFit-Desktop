@@ -15,6 +15,18 @@ export interface iInputFormRegister {
     password?: string
     passwordRepeat?: string
 }
+// ACTIVITY
+export interface iDataActivity {
+    createAt: Date
+    date: Date
+    exercise: string
+    id: string
+    interval: number
+    muscle: string
+    repetitions: Array<number>
+    series: number
+    weight: number
+}
 
 // NEW ACTIVITY
 export interface iNewActivity {

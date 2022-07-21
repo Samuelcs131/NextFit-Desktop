@@ -37,21 +37,32 @@ import moment, { min } from "moment"
 
 
 const NewActivity: NextPage<iNewActivity> = ( { exercises } ) => {
-    // DATA
+    // GLOBAL STATE
+    const { signIn, notify, setNotify, userDateGlobal } = useContext(DataContext)
+
+    // GLOBAL STATE
+    const themeContext = useContext(ThemeContext)
+    
+    // LOADING
+    const [loading, setLoading] = useState<boolean>(false)
+    
+    // EXERCISE LIST
     const exerciseList = exercises.map( (exercise: any) => {
         return({
             value: exercise.id,
             label: exercise.name
         })
     })
-    // GLOBAL STATE
-    const { signIn, notify, setNotify, userDateGlobal } = useContext(DataContext)
 
-    // LOADING
-    const [loading, setLoading] = useState<boolean>(false)
-    
-    // GLOBAL STATE
-    const themeContext = useContext(ThemeContext)
+    // DEFAULT VALUES FORM
+    const defaultValues = {
+        date: new Date(),
+        activity: exerciseList[0],
+        repetitions: '',
+        series: 0,
+        interval: 0,
+        weight: 0
+    }
 
     // ACTIVE MODAL
     const [activeModal, setActiveModal] = useState<boolean>(false)
@@ -74,7 +85,7 @@ const NewActivity: NextPage<iNewActivity> = ( { exercises } ) => {
     // VALIDATION FORM
     const validationForm = yup.object({
         activity: yup.object().required(),
-        date: yup.object().required(),
+        date: yup.date().required(),
         series: yup.number().min(1).max(10).integer().required().default(0).typeError('somente númerico'),
         repetitions: yup.string().max(1).max(39).required(),
         weight: yup.number().min(0).max(200).integer().required().default(0).typeError('somente númerico'),
@@ -85,13 +96,12 @@ const NewActivity: NextPage<iNewActivity> = ( { exercises } ) => {
     yup.setLocale(yupErrosPtBr)
 
     // FORM
-    const { watch, getValues, control, register, handleSubmit, formState: { errors } } = useForm({resolver: yupResolver(validationForm)})
+    const { watch, getValues, control, register, handleSubmit, formState: { errors } } = useForm({ resolver: yupResolver(validationForm), defaultValues})
 
     // SUBMIT FORM
     async function onSubmit(data: iInputFormNewActivity){
-        const { interval, weight, series} = data
+        const { interval, weight, series, date} = data
         const activity: string = data.activity?.value || ''
-        const date: Date = data.date?._d
         const repetitions: Array<number> | undefined = data.repetitions?.split(',').filter( (value: string) => value.trim() !== '').map( (num: string) => ((Number(num) === NaN) ? 0 : Number(num)))
 
         // VERIFY ARRAY
@@ -159,6 +169,7 @@ const NewActivity: NextPage<iNewActivity> = ( { exercises } ) => {
             setActiveBottunModal(false)
         }
     }
+ 
 
     useEffect(()=>{
         // VERIFY COOKIE AUTH
@@ -170,7 +181,7 @@ const NewActivity: NextPage<iNewActivity> = ( { exercises } ) => {
             typeNotify(notify)
             setNotify(undefined)
         }
-        
+
         // VERIFY INPUTS MODAL
         verifyInputsModal()
     })
@@ -208,7 +219,7 @@ const NewActivity: NextPage<iNewActivity> = ( { exercises } ) => {
                             <Controller name='activity' control={control} render={({field})=>{
                                 return (<Select {...field} options={exerciseList} id="selectbox" instanceId="selectbox"  styles={styledSelect(themeContext)} />)
                             }} />
-                            {errors?.activity?.type &&(<InputError>{errors.activity.message}</InputError>)}
+                            {/* {errors?.activity?.type &&(<InputError>{errors.activity.message}</InputError>)} */}
                         </SelectActivity>
 
                         {/* SELECTED DATE */}
@@ -216,7 +227,7 @@ const NewActivity: NextPage<iNewActivity> = ( { exercises } ) => {
                             <label htmlFor="date">Data</label>
                             <Controller name='date' control={control} render={({field: { onChange, value}})=>{
                                 return( <Datetime dateFormat="DD/MM/YYYY" timeFormat={false} 
-                                onChange={(moment: any)=>{ setSelectedDateActivity(moment._d); return (onChange(moment)) }} value={selectedDateActivity}
+                                onChange={(moment: any)=>{ setSelectedDateActivity(moment._d); return (onChange(moment._d)) }} value={selectedDateActivity}
                                />
                             )}}/>
                             {errors?.date?.type &&(<InputError>{'é um campo obrigatório'}</InputError>)}
