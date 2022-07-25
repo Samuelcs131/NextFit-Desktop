@@ -9,7 +9,7 @@ export const api = axios.create({
     headers: { 
         "Authorization": token || '', 
         "Access-Control-Allow-Credentials": true,
-        "Access-Control-Allow-Origin" : 'http://localhost:3000',
+        "Access-Control-Allow-Origin" : '*',
         "Content-Type": "application/json"
         /* "AuthClientServer": tokenAuth */
     }

@@ -17,14 +17,15 @@ export const Content = styled.main`
             display: grid;
             gap: 30px;
             padding-bottom: 50px;
+            
+            & > header {
+                margin-top: 15px;
+                display: flex;
+                justify-content: space-between;
+            }
         }
     }
 
-    header {
-        margin-top: 15px;
-        display: flex;
-        justify-content: space-between;
-    }
 `
 
 export const TitleAndMenu = styled.div`
@@ -32,7 +33,7 @@ export const TitleAndMenu = styled.div`
     align-items: center;
     gap: 20px;
 
-    span {
+    & > span {
         display: flex;
         align-items: center;
         cursor: pointer;

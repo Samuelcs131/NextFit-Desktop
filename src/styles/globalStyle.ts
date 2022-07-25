@@ -104,7 +104,6 @@ export default createGlobalStyle`
                background-color: ${({theme})=>theme.pallete.background.paper};
                border-radius: 1px;
           }
-
           ::-webkit-scrollbar-thumb{
                background-color: ${({theme})=>theme.pallete.text.primary};
                border-radius: 2px;

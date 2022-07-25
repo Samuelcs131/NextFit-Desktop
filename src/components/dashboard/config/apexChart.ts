@@ -1,6 +1,6 @@
 import { DefaultTheme } from "styled-components";
 
-export function themeApexChartArea(themeContext: DefaultTheme, themeStyledGlobal: string){
+export function themeApexChartArea(themeContext: DefaultTheme, themeStyledGlobal: string, categories: string[] ){
     return({ 
         /* CHART */
         chart: { 
@@ -45,7 +45,8 @@ export function themeApexChartArea(themeContext: DefaultTheme, themeStyledGlobal
         colors: [ 
             themeContext.pallete.quaternary.main,
             themeContext.pallete.tertiary.main, 
-            themeContext.pallete.secondary.main
+            themeContext.pallete.secondary.main,
+            themeContext.pallete.primary.main
         ],
 
         /* FILL */
@@ -88,7 +89,7 @@ export function themeApexChartArea(themeContext: DefaultTheme, themeStyledGlobal
         /* X AXIS */
         xaxis: {
             type: 'datetime',
-            categories: ["2022-06-02", "2022-06-08", "2022-06-15", "2022-06-19", "2022-06-23", "2022-06-025", "2022-06-29"],
+            categories,
             labels: {
                 style: {
                     colors: themeContext.pallete.grey.A200,

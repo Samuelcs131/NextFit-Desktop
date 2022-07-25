@@ -19,7 +19,7 @@ const ChartArea = ({children,exerciseList,dateActivity,setDateActivity,setChosen
     <Container>
         <GroupTitleAndInput>
             <h5>Análise de atividades</h5> 
-
+ 
             <div>
                 <SelectDate>
                     <CalendarIcon/>

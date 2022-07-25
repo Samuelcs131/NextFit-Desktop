@@ -14,7 +14,7 @@ import TableData from "@components/activity/TableData"
 import { ContainerMain } from "@styles/container"
 import { Content, TitleAndMenu } from "@styles/layout"
 import { Button } from "@styles/buttons"
-import 'react-toastify/dist/ReactToastify.min.css'
+
 // TYPES
 import { iUser } from "src/@types/globalState"
 // GLOBAL STATE
@@ -48,9 +48,8 @@ const Activity: NextPage = () => {
                     setTableDataActivity(data)
                 }
                 ).catch( ({response: {data}})=> {
-                    setLoading(false)
-                    console.log(data)
-            })
+                    setLoading(false) 
+            }) 
         }
 
         if(userDateGlobal){
@@ -62,8 +61,6 @@ const Activity: NextPage = () => {
         if(!token){ Router.push('/login') }
  
     }, [userDateGlobal, setLoading])
-    
-    console.log(tableDataActivity)
 
     return(<>
         {/* LOADING */}

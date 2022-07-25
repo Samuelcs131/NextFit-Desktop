@@ -5,6 +5,7 @@ import { parseCookies } from "nookies"
 import { GetServerSideProps, GetStaticProps, NextPage } from "next"
 import dynamic from 'next/dynamic'  
 import { ThemeContext } from "styled-components"
+import Link from "next/link"
 // COMPONENTS
 const ReactApexChart: any = dynamic( () => import('react-apexcharts'),{ ssr: false })
 import HeadPage from "@components/HeadPage"
@@ -23,36 +24,52 @@ import { iActivityListSelected, iMeasurementData } from "src/@types/components"
 // GLOBAL STATE
 import { DataContext } from "@store/GlobalState"
 import LoadingPage from "@components/Loading"
-import Link from "next/link"
+import { iExercise } from "src/@types/pages"
+import { api } from "@services/api"
+import moment from "moment"
 
+interface iDashboard {
+    exercises: iExercise[]
+}
 
-const Dashboard: NextPage = () => {
+const Dashboard: NextPage<iDashboard> = ({exercises}) => {
     // LOADING
     const [loading, setLoading] = useState<boolean>(false);
-
-    // DATE
-    const exerciseList1: Array<iActivityListSelected> = [
-        { value: 'Supino', label: 'Supino' },
-        { value: 'Rosca direta', label: 'Rosca direta' },
-        { value: 'Voador', label: 'Voador' },
-        { value: 'Desenvolvimento', label: 'Desenvolvimento' },
-        { value: 'Remada unilateral', label: 'Remada unilateral' },
-        { value: 'Costas', label: 'Costas' },
-        { value: 'Triceps puxador', label: 'Triceps puxador' },
-    ]
+ 
+    // EXERCISE LIST
+    const exerciseList: iActivityListSelected[] = exercises?.map( (exercise: any) => {
+        return({
+            value: exercise.id,
+            label: exercise.name
+        })
+    }) || []
+ 
+    
+    // ACTIVITY
+    const [selectdDateActivity, setSelectdDateActivity] = useState<Date>(new Date());
+    const [chosenExercise, setChosenExercise] = useState<string | undefined>(exerciseList[0].label);
+    // DATA CHART AREA
+    const [seriesAreaData, setSeriesAreaData] = useState<Array<any>>()
     const seriesArea = [
         {
             name: 'Series',
-            data: [31, 40, 28, 31, 42, 29, 45],
+            data: seriesAreaData?.filter( (activity: any) => activity.exercise === chosenExercise ).map( (activity: any) => activity.series ) || []
         }, {
             name: 'Repetições',
-            data: [61, 52, 75, 52, 44, 52, 31]
+            data: seriesAreaData?.filter( (activity: any) => activity.exercise === chosenExercise ).map( (activity: any) => activity.repetitions ) || []
         }, {
             name: 'Peso',
-            data: [71, 82, 65, 72, 84, 62, 71]
+            data: seriesAreaData?.filter( (activity: any) => activity.exercise === chosenExercise ).map( (activity: any) => activity.weight ) || []
+        }, 
+        {
+            name: 'Intervalo',
+            data: seriesAreaData?.filter( (activity: any) => activity.exercise === chosenExercise ).map( (activity: any) => activity.interval ) || []
         }
     ]
+    const categories: string[] | undefined = seriesAreaData?.filter( (activity: any) => activity.exercise === chosenExercise ).map( (activity: any) => activity.date )
+    console.log(seriesArea)
 
+    // DATA CHART RADAR
     const seriesRadar = [
         {
             name: '7 - fev',
@@ -67,7 +84,6 @@ const Dashboard: NextPage = () => {
             data: [20, 70, 40, 20, 90, 50],
         }
     ]
-    
     const nameCategories = ['deltóide/ombros', 'braço direito', 'antebraço direito', 'peitoral e dorsal', 'antebraço esquerdo ', 'braço esquerdo']
 
     // DATE USER
@@ -82,12 +98,7 @@ const Dashboard: NextPage = () => {
     // VARIABLES GLOBAL
     const { themeStyledGlobal } = useContext(DataContext)
     const themeContext = useContext(ThemeContext)
-
-    // ACTIVITY
-    const [selectdDateActivity, setSelectdDateActivity] = useState<Date>(new Date());
-    const [activityListSelected, setActivityListSelected] = useState<Array<iActivityListSelected>>(exerciseList1);
-    const [chosenExercise, setChosenExercise] = useState<string>();
-    
+ 
     // IMC 
     const IMCdata: number = userDateGlobal?.height ? Number((userDateGlobal?.weight / (((userDateGlobal?.height)/100) * 2)).toFixed(2)) : 0
 
@@ -96,15 +107,30 @@ const Dashboard: NextPage = () => {
     const [measurementData, setMeasurementData] = useState<Array<iMeasurementData>>(seriesRadar);
 
     useEffect(()=>{
+
+        // LOADING
         setLoading(true)
         if(userDateGlobal){
             setLoading(false)
-        }
+            
+            // GET DATA 
+            api.get(`/trainings/user/${userDateGlobal?.id}/${moment(selectdDateActivity).format('MM-YYYY')}`)
+            .then( ({data})=> { 
+                setSeriesAreaData(data.map( (activity: any) => { return { 
+                    interval: activity.interval,
+                    date: activity.date,
+                    exercise: activity.exercise,
+                    series: activity.series,
+                    repetitions: activity.repetitions.reduce((valueInitial: number, value: number) => valueInitial + value) / Number(activity.repetitions.length),
+                    weight: activity.weight,
+                }}))
+            }).catch( (error) => console.log(error))
+        } 
 
         // VERIFY COOKIE AUTH
         const { ['nextfit-token']: token } = parseCookies()
         if(!token){ Router.push('/login') }
-    },[userDateGlobal])
+    },[userDateGlobal, selectdDateActivity])
 
     return(<>
     {/* LOADING */}
@@ -147,8 +173,8 @@ const Dashboard: NextPage = () => {
                     <Info><span>IMC</span><p>{IMCdata}</p></Info>
                 </ContainerInfoUser>
 
-                <ChartArea exerciseList={activityListSelected} dateActivity={selectdDateActivity} setDateActivity={setSelectdDateActivity} setChosenExercise={setChosenExercise} >
-                    <ReactApexChart options={themeApexChartArea(themeContext, themeStyledGlobal)} series={seriesArea} type="area" width="100%" height="400px" />
+                <ChartArea exerciseList={exerciseList} dateActivity={selectdDateActivity} setDateActivity={setSelectdDateActivity} setChosenExercise={setChosenExercise} >
+                    <ReactApexChart options={themeApexChartArea(themeContext, themeStyledGlobal, categories || [])} series={seriesArea} type="area" width="100%" height="400px" />
                 </ChartArea>
 
                 <WrapperCharts>
@@ -169,10 +195,10 @@ const Dashboard: NextPage = () => {
     </>)
 }
 
-export const getStaticProps: GetStaticProps = (ctx) => {
- 
+export const getStaticProps: GetStaticProps = async (ctx) => {
+    const exercises: iExercise = await (await api.get('/exercises')).data
     return {
-        props: {}, // will be passed to the page component as props
+        props: { exercises }
     }
 }
 
