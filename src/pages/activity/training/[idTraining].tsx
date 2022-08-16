@@ -1,3 +1,5 @@
+ 
+import { GetServerSideProps } from "next" 
 import Router from "next/router"
 import { GetStaticProps, NextPage } from "next"
 import { useContext, useEffect, useState } from "react"
@@ -10,6 +12,7 @@ import Select from "react-select"
 import NumberFormat from "react-number-format"
 import { parseCookies } from "nookies"
 import { ToastContainer } from "react-toastify"
+import * as DateFnsPtBR from 'date-fns/locale'
 // COMPONENTS
 import HeadPage from "@components/HeadPage"
 import { MenuIcon } from "@components/Icons"
@@ -34,18 +37,39 @@ import { typeNotify } from "@services/notify"
 // TYPES
 import { iExercise, iInputFormNewActivity, iNewActivity } from "src/@types/pages"
 import moment, { min } from "moment"
+import { LocalizationProvider, MobileDatePicker } from "@mui/x-date-pickers"
+import { AdapterDateFns } from "@mui/x-date-pickers/AdapterDateFns"
+import { TextField, ThemeProvider } from "@mui/material"
+import { theme } from "@styles/globalStyle_MaterialUi"
 
+interface iTraining {
+    training: {
+        createAt: Date
+        date: Date
+        exercise: string
+        id: string
+        interval: number
+        repetitions: Array<number>
+        series: number
+        userId: string
+        weight: number
+        muscle: string
+    }
+    exercises: iExercise[]
+}
 
-const NewActivity: NextPage<iNewActivity> = ( { exercises } ) => {
+const Training = ({ training, exercises }: iTraining): JSX.Element => {
+
     // GLOBAL STATE
     const { signIn, notify, setNotify, userDateGlobal } = useContext(DataContext)
-
-    // GLOBAL STATE
     const themeContext = useContext(ThemeContext)
-    
+
+    // SHOW MENU
+    const [showMenu, setShowMenu] = useState<boolean>(false)
+
     // LOADING
     const [loading, setLoading] = useState<boolean>(false)
-    
+
     // EXERCISE LIST
     const exerciseList = exercises.map( (exercise: any) => {
         return({
@@ -54,34 +78,9 @@ const NewActivity: NextPage<iNewActivity> = ( { exercises } ) => {
         })
     })
 
-    // DEFAULT VALUES FORM
-    const defaultValues = {
-        date: new Date(),
-        activity: exerciseList[0],
-        repetitions: '',
-        series: 0,
-        interval: 0,
-        weight: 0
-    }
-
-    // ACTIVE MODAL
-    const [activeModal, setActiveModal] = useState<boolean>(false)
-    const [activeBottunModal, setActiveBottunModal] = useState<boolean>(false)
-
-    // SELECT ACTIVITY
-    const [chosenExercise, setChosenExercise] = useState<string>()
-
     // SELECT DATE ACTIVITY
-    const [selectedDateActivity, setSelectedDateActivity] = useState<Date>(new Date());
+    const [selectedDateActivity, setSelectedDateActivity] = useState<Date>(training.date);
 
-    // DATA ACTIVITY
-    const [maxSeries, setMaxSeries] = useState<number>(0)
-    const [repetitions, setRepetitions] = useState<number>(0)
-    const [secondsInterval, setSecondsInterval] = useState<number>(0)
-  
-    // SHOW MENU
-    const [showMenu, setShowMenu] = useState<boolean>(false)
- 
     // VALIDATION FORM
     const validationForm = yup.object({
         activity: yup.object().required(),
@@ -94,9 +93,19 @@ const NewActivity: NextPage<iNewActivity> = ( { exercises } ) => {
 
     // CUSTOM ERROR
     yup.setLocale(yupErrosPtBr)
+  
+    // DEFAULT VALUES FORM
+    const defaultValues = {
+        date: training.date,
+        activity: exerciseList[exerciseList.map((props) => props.label).indexOf(training.exercise)],
+        repetitions: training.repetitions.join(', '),
+        series: training.series,
+        interval: training.interval,
+        weight: training.weight
+    }
 
     // FORM
-    const { watch, getValues, control, register, handleSubmit, formState: { errors } } = useForm({ resolver: yupResolver(validationForm), defaultValues})
+    const { watch,control, register, handleSubmit, formState: { errors } } = useForm({ resolver: yupResolver(validationForm), defaultValues})
 
     // SUBMIT FORM
     async function onSubmit(data: iInputFormNewActivity){
@@ -123,7 +132,7 @@ const NewActivity: NextPage<iNewActivity> = ( { exercises } ) => {
             // REGISTER ACTIVITY
         } else {
             setLoading(true)
-            api.post(`/trainings/${userDateGlobal?.id}`,{
+            api.patch(`/trainings/${training.id}`,{
                 body: {
                     "exercisesId": activity,
                     "weight": weight,
@@ -134,7 +143,7 @@ const NewActivity: NextPage<iNewActivity> = ( { exercises } ) => {
                 }
             }).then( ()=>{
                 setLoading(false)
-                setNotify({type: 200, message: 'Atividade cadastrada com sucesso!'})
+                setNotify({type: 200, message: 'Atividade atualizada com sucesso!'})
             }).catch( ({response: {data}}) => {
                 // LOADING
                 setLoading(false)
@@ -142,34 +151,7 @@ const NewActivity: NextPage<iNewActivity> = ( { exercises } ) => {
             })
         }
     }
-
-    // ACTIVE MODAL ACTIVITIES
-    function activeModalActivies(){
-        let repetitionsModal: number = Number((getValues('repetitions') || '').split(',')[0])
-        setActiveModal(true)
-        setMaxSeries(getValues('series') || 0)
-        setRepetitions(repetitionsModal || 0)
-        setSecondsInterval(getValues('interval') || 0)
-    }
-
-    // VERIFY INPUTS MODAL ACTIVITY
-    function verifyInputsModal() {
-        let repetitionsModal: number = Number((watch(['repetitions'])[0] || '').split(',')[0])
-        let seriesMaxModal: number = Number(watch(['series'])[0] || 0)
-        let secondsIntervalModal: number = Number(watch(['interval'])[0] || 0)
-        let activityModalId: string = watch('activity')?.value || ''
-        let activityModalImg: string = exercises.find( (exercise) => exercise.id === activityModalId)?.img || ''
-
-        const inputs = [repetitionsModal, seriesMaxModal, secondsIntervalModal, activityModalImg]
-
-        if(!inputs.includes(0) && !inputs.includes('')){
-            setActiveBottunModal(true)
-            setChosenExercise(activityModalImg)
-        } else {
-            setActiveBottunModal(false)
-        }
-    }
-
+ 
     useEffect(()=>{
         // VERIFY COOKIE AUTH
         const { ['nextfit-token']: token } = parseCookies()
@@ -180,9 +162,6 @@ const NewActivity: NextPage<iNewActivity> = ( { exercises } ) => {
             typeNotify(notify)
             setNotify(undefined)
         }
-
-        // VERIFY INPUTS MODAL
-        verifyInputsModal()
     })
 
     return(<>
@@ -191,11 +170,9 @@ const NewActivity: NextPage<iNewActivity> = ( { exercises } ) => {
     {/* NOTIFY */}
     <ToastContainer/>
     {/* HEAD PAGE */}
-    <HeadPage titlePage="Nova atividade"/>
-    {/* MODAL ACTIVITY */}
-    {activeModal && <ModalActivity options={{setActiveModal, maxSeries, repetitions, secondsInterval, chosenExercise}} />}
-
-    <Content>
+    <HeadPage titlePage="Painel atividade"/>
+    <ThemeProvider theme={theme}>
+       <Content>
         <Menu showMenu={showMenu} setPropsShowMenu={setShowMenu}/>
         <div>
             <ContainerMain>
@@ -204,14 +181,14 @@ const NewActivity: NextPage<iNewActivity> = ( { exercises } ) => {
                         <span onClick={()=>setShowMenu(!showMenu)}>
                             <MenuIcon/>
                         </span> 
-                        <h4>Nova atividade</h4>
+                        <h4>Painel atividade</h4>
                     </TitleAndMenu>
                 </header>
 
-                <p>Para realizar um exercicio basta preencher os campos abaixo e clicar em iniciar! o numero de repetições será com base no primeiro.</p>
+                <p>Faça alguma alteração e salve apertando o botão</p>
 
                 <ActivityForm id="form-activity" onSubmit={handleSubmit(onSubmit)}>
-                    <div>
+               
                         {/* ACTIVITY */}
                         <SelectActivity>
                             <label htmlFor="selectbox">Exercicio</label>
@@ -221,65 +198,87 @@ const NewActivity: NextPage<iNewActivity> = ( { exercises } ) => {
                         </SelectActivity>
 
                         {/* SELECTED DATE */}
-                        <SelectDate>
-                            <label htmlFor="date">Data</label>
+                        <LocalizationProvider adapterLocale={DateFnsPtBR.ptBR} dateAdapter={AdapterDateFns}>
+                            <label htmlFor="date">Data</label> 
+                            <Controller
+                            control={control}
+                            name="date"
+                            render={({ field }) => (
+                                <MobileDatePicker 
+                                    {...field}
+                                    value={selectedDateActivity}
+                                    onChange={(newValue) => {
+                                        field.onChange(newValue)
+                                        setSelectedDateActivity(newValue || selectedDateActivity);
+                                    }}
+                                    renderInput={(params) => <TextField {...params} />}
+                                /> 
+                            )}/>
+                          
+                            {errors?.date?.type &&(<InputError>{'é um campo obrigatório'}</InputError>)}
+                        </LocalizationProvider>
+                        
+                        {/* <SelectDate>
                             <Controller name='date' control={control} render={({field: { onChange, value}})=>{
                                 return( <Datetime dateFormat="DD/MM/YYYY" timeFormat={false} 
                                 onChange={(moment: any)=>{ setSelectedDateActivity(moment._d); return (onChange(moment._d)) }} value={selectedDateActivity}
                                />
                             )}}/>
-                            {errors?.date?.type &&(<InputError>{'é um campo obrigatório'}</InputError>)}
-                        </SelectDate>
-                    </div>
+                        </SelectDate> */}
+                   
+                        {/* SERIES */}
                         <span>
-                            {/* SERIES */}
                             <label htmlFor="series">Series</label>
                             <input type="number" placeholder="4" id="series" {...register('series')}/>
                             {errors?.series?.type &&(<InputError>{errors.series.message}</InputError>)}
                         </span>
-                    <div>
+                
+                        {/* REPETITIONS */}
                         <span>
-                            {/* REPETITIONS */}
                             <label htmlFor="repetitions">Repetições</label>
                             <Controller name='repetitions' control={control} render={({field})=>{
-                                return <NumberFormat {...field} id="repetitions" format={'##, ##, ##, ##, ##, ##, ##, ##, ##, ##'} mask=" " placeholder='20, 15, 15, 10'/>
+                                return <NumberFormat {...field} id="repetitions" format={'##, ##, ##, ##, ##, ##, ##, ##, ##, ##'} mask=" " defaultValue={training.repetitions.join(', ')} placeholder='20, 15, 15, 10'/>
                             }} />
                             {errors?.repetitions?.type &&(<InputError>{errors.repetitions.message}</InputError>)}
                         </span>
+
+                        {/* INTERVAL */}
                         <span>
-                            {/* INTERVAL */}
                             <label htmlFor="interval">Intervalo (segundos)</label>
                             <input type="number" placeholder="120" id="interval" {...register('interval')}/>
                             {errors?.interval?.type &&(<InputError>{errors.interval.message}</InputError>)}
                         </span>
-                    </div>
-                    <span>
-                        {/* WEIGHT */}
-                        <label htmlFor="weight">Carga (kg)</label>
-                        <input type="number" placeholder="12" id="weight" {...register('weight')}/>
-                        {errors?.weight?.type &&(<InputError>{errors.weight.message}</InputError>)}
-                    </span>
 
+                        {/* WEIGHT */}
+                        <span>
+                            <label htmlFor="weight">Carga (kg)</label>
+                            <input type="number" placeholder="12" id="weight" {...register('weight')}/>
+                            {errors?.weight?.type &&(<InputError>{errors.weight.message}</InputError>)}
+                        </span>
                 </ActivityForm>
-                    <GroupButtons>
-                        {/* BUTTON ACTIVITY */}
-                        <Button onClick={()=>activeModalActivies()} variant="contained" color="quaternary" disabled={!activeBottunModal}>Iniciar treino</Button>
+
+                <GroupButtons>
                         {/* BUTTON SUBMIT */}
-                        <Button form="form-activity" variant="contained">Salvar treino</Button>
+                        <Button form="form-activity" variant="contained">Salvar alteração</Button>
+                        {/* BUTTON BACK */}
                         <Button onClick={()=>Router.push('/activity')}>Voltar</Button>
-                    </GroupButtons>
-            </ContainerMain>
-            
-        </div>
-    </Content>
+                </GroupButtons>
+
+                </ContainerMain>
+                </div>
+        </Content>
+    </ThemeProvider>
     </>)
 }
 
-export const getStaticProps: GetStaticProps = async (ctx) => {
+export const getServerSideProps: GetServerSideProps = async (ctx) => {
+
+    const training = await (await api.get(`/trainings/${ctx.params?.idTraining}`)).data
     const exercises: iExercise = await (await api.get('/exercises')).data
+
     return {
-        props: { exercises }
+        props: { training, exercises }
     }
 }
 
-export default NewActivity
+export default Training

@@ -2,7 +2,7 @@ import Router from "next/router"
 import { useContext, useEffect, useState } from "react"
 import Image from "next/image"
 import { parseCookies } from "nookies"
-import { GetServerSideProps, GetStaticProps, NextPage } from "next"
+import { GetStaticProps, NextPage } from "next"
 import dynamic from 'next/dynamic'  
 import { ThemeContext } from "styled-components"
 import Link from "next/link"
@@ -43,8 +43,7 @@ const Dashboard: NextPage<iDashboard> = ({exercises}) => {
             label: exercise.name
         })
     }) || []
- 
-    
+
     // ACTIVITY
     const [selectdDateActivity, setSelectdDateActivity] = useState<Date>(new Date());
     const [chosenExercise, setChosenExercise] = useState<string | undefined>(exerciseList[0].label);
@@ -67,7 +66,6 @@ const Dashboard: NextPage<iDashboard> = ({exercises}) => {
         }
     ]
     const categories: string[] | undefined = seriesAreaData?.filter( (activity: any) => activity.exercise === chosenExercise ).map( (activity: any) => activity.date )
-    console.log(seriesArea)
 
     // DATA CHART RADAR
     const seriesRadar = [

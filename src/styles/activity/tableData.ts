@@ -1,38 +1,9 @@
-import { makeStyles } from "@mui/material/styles";
 import styled from "styled-components"
 
 export const Container = styled.div`
     margin-top: 40px;
-    height: 655px;
+    height: 710px;
     color: red;
-
-    .MuiDataGrid-columnHeaders.css-f3jnds-MuiDataGrid-columnHeaders{
-        background-color: ${({theme})=>theme.pallete.grey.A100};
-        color: ${({theme})=>theme.pallete.background.default};
-        border-bottom: 1px solid ${({theme})=>theme.pallete.background.default};
-        border-radius: none;
-    }
-
-    .MuiDataGrid-root.MuiDataGrid-root--densityStandard.css-r11z79-MuiDataGrid-root{
-        border-radius: ${({theme})=>theme.shape.borderRadiusSecundary};
-        border: none;
-        background-color: ${({theme})=>theme.pallete.background.paper};
-    }
-
-    .css-r11z79-MuiDataGrid-root .MuiDataGrid-cell{
-        border-bottom: 1px solid ${({theme})=>theme.pallete.background.default};
-    }
-
-    .MuiDataGrid-cellContent{
-        color: ${({theme})=>theme.pallete.text.primary};
-    }
-    .css-1ps6pg7-MuiPaper-root{
-
-    }
-    // DROPDOWN TABLE
-    .css-1ps6pg7-MuiPaper-root{
-        background-color: red;
-    }
 `
 
 export const PaginationTable = styled.div`
@@ -40,5 +11,25 @@ export const PaginationTable = styled.div`
     display: flex;
     padding: 5px 0;
     align-items: center;
-    justify-content: flex-end;
+    justify-content: flex-end; 
+`
+
+export const ModalExclude = styled.div`
+    height: 300px;
+    background-color: ${({theme})=>theme.pallete.background.default};
+    border-radius: ${({theme})=>theme.shape.borderRadiusSecundary};
+    display: flex;
+    align-items: center;
+    justify-content: space-evenly;
+    flex-direction: column;
+    padding: 20px;
+    gap: 20px;
+    text-align: center;
+
+    & > span {
+        display: grid;
+        gap: 10px;
+        width: 100%;
+        margin: 0 auto;
+    }
 `

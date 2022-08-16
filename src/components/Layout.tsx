@@ -1,10 +1,9 @@
-import { useContext } from 'react';
+import { useContext } from 'react'
 import { ThemeProvider } from 'styled-components'
-import { DataContext } from '../store/GlobalState';
-import GlobalStyle from "../styles/globalStyle"; 
-import { themeDark, themeLight } from '../theme/themeDefault';
-import { iLayout } from '../@types/components';
-
+import { DataContext } from '../store/GlobalState'
+import GlobalStyle from "../styles/globalStyle" 
+import { themeDark, themeLight } from '../theme/themeDefault'
+import { iLayout } from '../@types/components'
 
 const Layout = ({children}: iLayout): JSX.Element => {
  

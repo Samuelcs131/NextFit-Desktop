@@ -31,7 +31,7 @@ const Register: NextPage = () => {
 
   // VALIDATION FORM
   const validationForm = yup.object({
-    name: yup.string().min(4).max(16).required().default('robertin'),
+    name: yup.string().min(4).max(16).required(),
     lastName: yup.string().min(4).max(16).required(),
     email: yup.string().email().max(50).required(),
     sex: yup.string().required(),
@@ -61,6 +61,7 @@ const Register: NextPage = () => {
       setNotify(undefined)
     }
   })
+   
   return (
     <>
       {/* NOTIFY */}
@@ -80,7 +81,7 @@ const Register: NextPage = () => {
           </Logo>
           </Link>
 
-          <form id='form-register' onChange={handleSubmit(onSubmit)}>
+          <form id='form-register' onSubmit={handleSubmit(onSubmit)}>
             {/* NAME */}
             <input {...register('name')} type='text' placeholder='Nome'/>
             {errors?.name?.type &&(<InputError>{errors.name.message}</InputError>)}

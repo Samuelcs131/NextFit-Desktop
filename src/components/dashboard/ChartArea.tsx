@@ -4,7 +4,6 @@ import Select from 'react-select'
 import { useContext } from 'react'
 import { ThemeContext } from 'styled-components'
 import Datetime from 'react-datetime'
-
 /* INTERNAL MODULES */
 import { Container, GroupTitleAndInput, SelectActivity, SelectDate } from '@styles/dashboard/charts'
 import { ActivityIcon, CalendarIcon } from '../Icons'

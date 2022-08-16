@@ -97,7 +97,7 @@ export default createGlobalStyle`
      // LG - 992px
      @media screen and (min-width: ${({theme})=>theme.breakpoints.value.lg}) {
           /* SCROLL */
-          ::-webkit-scrollbar{
+          /* ::-webkit-scrollbar{
                width: 10px;
           }
           ::-webkit-scrollbar-track{
@@ -107,7 +107,7 @@ export default createGlobalStyle`
           ::-webkit-scrollbar-thumb{
                background-color: ${({theme})=>theme.pallete.text.primary};
                border-radius: 2px;
-          }
+          } */
      }
      
      // XL - 1200px

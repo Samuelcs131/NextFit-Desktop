@@ -3,7 +3,7 @@ import Link from "next/link"
 import { parseCookies } from "nookies"
 import Router from "next/router"
 import { ToastContainer } from "react-toastify"
-import { GetStaticProps, NextPage } from "next"
+import { NextPage } from "next"
 // COMPONENTS
 import HeadPage from "@components/HeadPage"
 import { MenuIcon } from "@components/Icons"
@@ -92,15 +92,6 @@ const Activity: NextPage = () => {
             </div>
         </Content>
     </>)
-}
-
-export const getStaticProps: GetStaticProps = (ctx) => {
-    
-    api.get(`/trainings/user/${''}`)
-
-    return {
-        props: {}, // will be passed to the page component as props
-    }
 }
 
 export default Activity
